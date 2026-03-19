@@ -5,8 +5,23 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files (the dashboard HTML)
+// Serve static files — check both public/ folder and root directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
+
+// Explicitly serve index.html for root route
+app.get('/', (req, res) => {
+  const fs = require('fs');
+  const publicPath = path.join(__dirname, 'public', 'index.html');
+  const rootPath = path.join(__dirname, 'index.html');
+  if (fs.existsSync(publicPath)) {
+    res.sendFile(publicPath);
+  } else if (fs.existsSync(rootPath)) {
+    res.sendFile(rootPath);
+  } else {
+    res.send('index.html not found. Please check deployment structure.');
+  }
+});
 
 // CORS headers for all routes
 app.use((req, res, next) => {
