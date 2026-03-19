@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FII Market Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4f0;
+  --card: #ffffff;
+  --border: #e8e6e0;
+  --text: #1a1a1a;
+  --muted: #7a7670;
+  --dim: #b0ada6;
+  --green: #1a7a4a;
+  --green-bg: #edf7f1;
+  --green-border: #b8deca;
+  --red: #c0392b;
+  --red-bg: #fdf0ee;
+  --red-border: #f0c0bb;
+  --amber: #b45309;
+  --amber-bg: #fef8ec;
+  --amber-border: #f5d98a;
+  --blue: #1d4ed8;
+  --blue-bg: #eff4ff;
+  --blue-border: #bfcfff;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* TOP BAR */
+.topbar {
+  background: var(--text);
+  color: #fff;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.topbar-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.live-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: rgba(255,255,255,0.6);
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.fetch-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.fetch-btn:hover { background: rgba(255,255,255,0.18); }
+.fetch-btn.loading { opacity: 0.6; pointer-events: none; }
+
+/* MAIN LAYOUT */
+.page { max-width: 1100px; margin: 0 auto; padding: 20px 20px 40px; }
+
+/* THE BIG ANSWER CARD */
+.answer-card {
+  background: var(--text);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.answer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.answer-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+.answer-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.answer-phase { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+.answer-phase-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 5px; }
+.bias-chip {
+  font-size: 12px; font-weight: 600;
+  padding: 6px 14px; border-radius: 20px;
+  white-space: nowrap; margin-top: 4px;
+  flex-shrink: 0;
+}
+.bias-bear { background: rgba(255,100,100,0.2); color: #ff8080; border: 1px solid rgba(255,100,100,0.3); }
+.bias-bull { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+.bias-range { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); }
+.bias-squeeze { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+
+.answer-narrative {
+  font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 14px; margin-top: 4px;
+}
+.answer-narrative strong { color: #fff; font-weight: 500; }
+
+.triggers-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.trig-item {
+  font-size: 11px; padding: 4px 10px; border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  display: flex; align-items: center; gap: 5px;
+}
+.trig-item.t-bear { border-color: rgba(255,100,100,0.25); color: #ff9090; }
+.trig-item.t-bull { border-color: rgba(74,222,128,0.25); color: #86efac; }
+.trig-item.t-warn { border-color: rgba(251,191,36,0.25); color: #fcd34d; }
+.trig-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* SECTION HEADERS */
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  margin: 24px 0 12px;
+}
+.section-title { font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+/* TICKER ROW */
+.ticker-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.ticker-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.ticker-name { font-size: 10px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.ticker-val { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; font-family: var(--mono); }
+.ticker-chg { font-size: 11px; margin-top: 2px; font-family: var(--mono); }
+.up { color: var(--green); }
+.dn { color: var(--red); }
+.neu { color: var(--muted); }
+.amb { color: var(--amber); }
+
+/* SIGNAL LAYERS */
+.layers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.layer-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.layer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.layer-num-title { display: flex; align-items: center; gap: 8px; }
+.lnum {
+  width: 22px; height: 22px; border-radius: 5px;
+  background: var(--bg); border: 1px solid var(--border);
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+}
+.ltitle { font-size: 13px; font-weight: 600; }
+.lstatus {
+  font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 5px;
+}
+.s-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.s-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.s-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.s-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.s-gray { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+
+/* DATA ROWS IN CARD */
+.drow { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.drow:last-of-type { border-bottom: none; }
+.dk { font-size: 12px; color: var(--muted); }
+.dv { font-size: 13px; font-weight: 500; font-family: var(--mono); }
+
+/* PLAIN ENGLISH BOX */
+.plain-box {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.plain-box.pb-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.plain-box.pb-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.plain-box.pb-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.plain-box.pb-gray { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+.plain-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; margin-bottom: 3px; opacity: 0.7; }
+
+/* L/S BAR */
+.ls-bar-wrap { margin: 10px 0 4px; }
+.ls-bar-track { height: 8px; background: var(--bg); border-radius: 4px; position: relative; overflow: visible; border: 1px solid var(--border); }
+.ls-bar-fill { height: 100%; border-radius: 3px; transition: width 0.7s ease; }
+.ls-zones { display: flex; font-size: 9px; color: var(--dim); justify-content: space-between; margin-top: 3px; }
+
+/* CONVICTION */
+.conviction-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.conv-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.conv-score-big { font-size: 42px; font-weight: 600; font-family: var(--mono); letter-spacing: -0.03em; }
+.conv-label { font-size: 13px; font-weight: 500; color: var(--muted); }
+.conv-cal { font-size: 11px; color: var(--dim); margin-top: 2px; }
+.layer-bars { display: flex; flex-direction: column; gap: 8px; }
+.lb-row { display: flex; align-items: center; gap: 10px; }
+.lb-name { font-size: 11px; color: var(--muted); width: 110px; flex-shrink: 0; }
+.lb-weight { font-size: 9px; color: var(--dim); width: 24px; flex-shrink: 0; }
+.lb-track { flex: 1; height: 6px; background: var(--bg); border-radius: 3px; border: 1px solid var(--border); }
+.lb-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+.lb-val { font-size: 11px; color: var(--muted); font-family: var(--mono); width: 24px; text-align: right; flex-shrink: 0; }
+
+/* MACRO GRID */
+.macro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.macro-item {
+  padding: 10px 12px; border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--border);
+}
+.macro-name { font-size: 10px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+.macro-val { font-size: 16px; font-weight: 600; font-family: var(--mono); letter-spacing: -0.01em; }
+.macro-sig { font-size: 11px; margin-top: 2px; }
+.macro-why { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+/* MANUAL INPUTS */
+.manual-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.manual-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.manual-sub { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+.manual-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mig { display: flex; flex-direction: column; gap: 4px; }
+.mil { font-size: 11px; color: var(--muted); font-weight: 500; }
+.mil span { font-size: 9px; color: var(--dim); margin-left: 4px; }
+input[type=number] {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-family: var(--mono); font-size: 13px;
+  padding: 7px 10px; width: 100%; outline: none;
+  transition: border 0.15s;
+}
+input[type=number]:focus { border-color: var(--text); }
+input[type=number]::-webkit-inner-spin-button { opacity: 0.4; }
+select {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-family: var(--sans); font-size: 13px;
+  padding: 7px 10px; width: 100%; outline: none;
+}
+.analyse-btn {
+  background: var(--text); color: #fff;
+  border: none; border-radius: 8px;
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  padding: 10px 28px; cursor: pointer;
+  transition: all 0.15s; margin-top: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.analyse-btn:hover { background: #333; }
+.analyse-btn:active { transform: scale(0.98); }
+
+/* DATA SOURCE BADGES */
+.sources-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.src-badge {
+  font-size: 10px; padding: 2px 7px; border-radius: 4px;
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--muted);
+  display: flex; align-items: center; gap: 4px;
+}
+.src-dot { width: 5px; height: 5px; border-radius: 50%; }
+.src-live { background: #4ade80; }
+.src-manual { background: var(--amber); }
+.src-error { background: var(--red); }
+
+/* STATUS BAR */
+.status-bar {
+  font-size: 11px; color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 0; border-top: 1px solid var(--border);
+  margin-top: 16px;
+}
+.status-bar #last-updated { color: var(--text); font-weight: 500; }
+
+/* LOADING OVERLAY */
+.loading-overlay {
+  position: fixed; inset: 0;
+  background: rgba(245,244,240,0.85);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.loading-overlay.show { opacity: 1; pointer-events: all; }
+.loading-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 32px; text-align: center; }
+.loading-spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--text); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 13px; font-weight: 500; }
+.loading-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--text); color: #fff;
+  font-size: 12px; padding: 10px 16px; border-radius: 8px;
+  opacity: 0; transform: translateY(8px);
+  transition: all 0.25s; z-index: 200;
+  max-width: 280px; line-height: 1.4;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* FADE IN */
+.fade-in { animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+@media(max-width:700px) {
+  .ticker-grid { grid-template-columns: repeat(3,1fr); }
+  .layers-grid { grid-template-columns: 1fr; }
+  .manual-grid { grid-template-columns: 1fr 1fr; }
+  .macro-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Fetching live data…</div>
+    <div class="loading-sub" id="loading-sub">Connecting to market feeds</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="topbar">
+  <div>
+    <div class="topbar-title">FII Market Dashboard</div>
+    <div class="topbar-sub">India Equities — Plain English Interpretation</div>
+  </div>
+  <div class="topbar-right">
+    <div class="live-badge"><span class="live-dot"></span><span id="clock-top">—</span></div>
+    <button class="fetch-btn" id="fetch-btn" onclick="fetchAll()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6A4 4 0 1 1 6 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 2v3H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Auto-Fetch Data
+    </button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- BIG ANSWER -->
+  <div class="answer-card fade-in" id="answer-card">
+    <div class="answer-top">
+      <div>
+        <div class="answer-label">Today's Market Phase</div>
+        <div class="answer-phase" id="ans-phase">Loading…</div>
+        <div class="answer-phase-sub" id="ans-sub">Fetching data to generate analysis</div>
+      </div>
+      <span class="bias-chip bias-range" id="bias-chip">—</span>
+    </div>
+    <div class="answer-narrative" id="ans-narrative">
+      Press <strong>Auto-Fetch Data</strong> above to load live market data, or enter numbers manually below and press <strong>Analyse</strong>.
+    </div>
+    <div class="triggers-row" id="triggers-row"></div>
+  </div>
+
+  <!-- LIVE TICKERS -->
+  <div class="section-header">
+    <span class="section-title">Live Prices</span>
+    <div class="section-line"></div>
+    <div class="sources-row" id="sources-row">
+      <span class="src-badge"><span class="src-dot src-manual"></span>Manual mode</span>
+    </div>
+  </div>
+
+  <div class="ticker-grid">
+    <div class="ticker-card">
+      <div class="ticker-name">Nifty 50</div>
+      <div class="ticker-val" id="t-nifty">—</div>
+      <div class="ticker-chg" id="tc-nifty">—</div>
+    </div>
+    <div class="ticker-card">
+      <div class="ticker-name">Bank Nifty</div>
+      <div class="ticker-val" id="t-bnifty">—</div>
+      <div class="ticker-chg" id="tc-bnifty">—</div>
+    </div>
+    <div class="ticker-card">
+      <div class="ticker-name">USD / INR</div>
+      <div class="ticker-val" id="t-inr">—</div>
+      <div class="ticker-chg" id="tc-inr">—</div>
+    </div>
+    <div class="ticker-card">
+      <div class="ticker-name">India VIX</div>
+      <div class="ticker-val" id="t-vix">—</div>
+      <div class="ticker-chg" id="tc-vix">—</div>
+    </div>
+    <div class="ticker-card">
+      <div class="ticker-name">Brent Crude</div>
+      <div class="ticker-val" id="t-brent">—</div>
+      <div class="ticker-chg" id="tc-brent">—</div>
+    </div>
+  </div>
+
+  <!-- FII + DII FLOWS -->
+  <div class="section-header">
+    <span class="section-title">Signal Layers</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="layers-grid">
+    <!-- L1: FII BEHAVIOUR -->
+    <div class="layer-card">
+      <div class="layer-top">
+        <div class="layer-num-title">
+          <div class="lnum">1</div>
+          <div class="ltitle">What are FIIs doing?</div>
+        </div>
+        <span class="lstatus s-gray" id="l1-status">—</span>
+      </div>
+      <div class="drow"><span class="dk">FII bought/sold today</span><span class="dv" id="l1-cash">—</span></div>
+      <div class="drow"><span class="dk">Their futures position</span><span class="dv" id="l1-ls">—</span></div>
+      <div class="drow"><span class="dk">What this means</span><span class="dv" id="l1-stance">—</span></div>
+      <div class="ls-bar-wrap">
+        <div class="ls-bar-track">
+          <div class="ls-bar-fill" id="ls-fill" style="width:0%"></div>
+        </div>
+        <div class="ls-zones">
+          <span>Very Bearish</span><span>Bearish</span><span>Cautious</span><span>Bullish</span>
+        </div>
+      </div>
+      <div class="plain-box pb-gray" id="l1-plain">
+        <div class="plain-label">In plain English</div>
+        <span id="l1-explain">—</span>
+      </div>
+    </div>
+
+    <!-- L2: PRICE REACTION -->
+    <div class="layer-card">
+      <div class="layer-top">
+        <div class="layer-num-title">
+          <div class="lnum">2</div>
+          <div class="ltitle">Is the market agreeing?</div>
+        </div>
+        <span class="lstatus s-gray" id="l2-status">—</span>
+      </div>
+      <div class="drow"><span class="dk">Nifty today</span><span class="dv" id="l2-nifty">—</span></div>
+      <div class="drow"><span class="dk">Bank Nifty today</span><span class="dv" id="l2-bn">—</span></div>
+      <div class="drow"><span class="dk">Signal</span><span class="dv" id="l2-signal">—</span></div>
+      <div class="plain-box pb-gray" id="l2-plain">
+        <div class="plain-label">In plain English</div>
+        <span id="l2-explain">—</span>
+      </div>
+    </div>
+
+    <!-- L3: WHO IS WINNING -->
+    <div class="layer-card">
+      <div class="layer-top">
+        <div class="layer-num-title">
+          <div class="lnum">3</div>
+          <div class="ltitle">Who's controlling the market?</div>
+        </div>
+        <span class="lstatus s-gray" id="l3-status">—</span>
+      </div>
+      <div class="drow"><span class="dk">FIIs sold</span><span class="dv dn" id="l3-fii">—</span></div>
+      <div class="drow"><span class="dk">DIIs bought</span><span class="dv up" id="l3-dii">—</span></div>
+      <div class="drow"><span class="dk">DII covered</span><span class="dv" id="l3-ratio">—</span></div>
+      <div class="plain-box pb-gray" id="l3-plain">
+        <div class="plain-label">In plain English</div>
+        <span id="l3-explain">—</span>
+      </div>
+    </div>
+
+    <!-- L4: MACRO -->
+    <div class="layer-card">
+      <div class="layer-top">
+        <div class="layer-num-title">
+          <div class="lnum">4</div>
+          <div class="ltitle">Global pressure check</div>
+        </div>
+        <span class="lstatus s-gray" id="l4-status">—</span>
+      </div>
+      <div class="macro-grid" id="macro-grid">
+        <div class="macro-item"><div class="macro-name">India 10Y</div><div class="macro-val" id="m-in10y">—</div><div class="macro-sig" id="ms-in10y">—</div><div class="macro-why" id="mw-in10y">—</div></div>
+        <div class="macro-item"><div class="macro-name">US 10Y</div><div class="macro-val" id="m-us10y">—</div><div class="macro-sig" id="ms-us10y">—</div><div class="macro-why" id="mw-us10y">—</div></div>
+        <div class="macro-item"><div class="macro-name">USD/INR</div><div class="macro-val" id="m-inr">—</div><div class="macro-sig" id="ms-inr">—</div><div class="macro-why" id="mw-inr">—</div></div>
+        <div class="macro-item"><div class="macro-name">Brent Crude</div><div class="macro-val" id="m-brent">—</div><div class="macro-sig" id="ms-brent">—</div><div class="macro-why" id="mw-brent">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONVICTION -->
+  <div class="conviction-card">
+    <div class="conv-top">
+      <div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px">Overall Conviction</div>
+        <div style="font-size:12px;color:var(--muted)">How strong is today's signal?</div>
+      </div>
+      <div style="text-align:right">
+        <div class="conv-score-big" id="conv-score" style="color:var(--muted)">—</div>
+        <div class="conv-label" id="conv-label">Awaiting data</div>
+        <div class="conv-cal" id="conv-cal">Enter data and analyse</div>
+      </div>
+    </div>
+    <div class="layer-bars">
+      <div class="lb-row"><span class="lb-name">FII Positioning</span><span class="lb-weight">30%</span><div class="lb-track"><div class="lb-fill" id="lb1" style="width:0%"></div></div><span class="lb-val" id="lv1">—</span></div>
+      <div class="lb-row"><span class="lb-name">Market Agreement</span><span class="lb-weight">25%</span><div class="lb-track"><div class="lb-fill" id="lb2" style="width:0%"></div></div><span class="lb-val" id="lv2">—</span></div>
+      <div class="lb-row"><span class="lb-name">FII vs DII Battle</span><span class="lb-weight">15%</span><div class="lb-track"><div class="lb-fill" id="lb3" style="width:0%"></div></div><span class="lb-val" id="lv3">—</span></div>
+      <div class="lb-row"><span class="lb-name">Global Pressure</span><span class="lb-weight">10%</span><div class="lb-track"><div class="lb-fill" id="lb4" style="width:0%"></div></div><span class="lb-val" id="lv4">—</span></div>
+      <div class="lb-row"><span class="lb-name">Price Structure</span><span class="lb-weight">20%</span><div class="lb-track"><div class="lb-fill" id="lb5" style="width:0%"></div></div><span class="lb-val" id="lv5">—</span></div>
+    </div>
+  </div>
+
+  <!-- MANUAL INPUT -->
+  <div class="manual-section">
+    <div class="manual-title">Enter / Correct Data Manually</div>
+    <div class="manual-sub">Auto-fetch fills most fields. Enter FII/DII flows and L/S ratio from NSE manually — these aren't available via public API.</div>
+    <div class="manual-grid">
+      <div class="mig">
+        <label class="mil">FII Cash Flow (₹ Cr) <span>NSE website</span></label>
+        <input type="number" id="in-fii" value="-2714" step="100" placeholder="e.g. -2714">
+      </div>
+      <div class="mig">
+        <label class="mil">DII Cash Flow (₹ Cr) <span>NSE website</span></label>
+        <input type="number" id="in-dii" value="3253" step="100" placeholder="e.g. 3253">
+      </div>
+      <div class="mig">
+        <label class="mil">FII L/S Ratio <span>NSE F&O participant data</span></label>
+        <input type="number" id="in-ls" value="0.42" step="0.01" min="0" max="1" placeholder="e.g. 0.42">
+      </div>
+      <div class="mig">
+        <label class="mil">Nifty Close <span>auto-fetched if available</span></label>
+        <input type="number" id="in-nifty" value="" placeholder="auto-fetched" step="10">
+      </div>
+      <div class="mig">
+        <label class="mil">Prev Nifty Close</label>
+        <input type="number" id="in-prev" value="" placeholder="auto-fetched" step="10">
+      </div>
+      <div class="mig">
+        <label class="mil">Bank Nifty Close <span>auto-fetched if available</span></label>
+        <input type="number" id="in-bnifty" value="" placeholder="auto-fetched" step="10">
+      </div>
+      <div class="mig">
+        <label class="mil">Prev Bank Nifty</label>
+        <input type="number" id="in-pbn" value="" placeholder="auto-fetched" step="10">
+      </div>
+      <div class="mig">
+        <label class="mil">Market Structure</label>
+        <select id="in-struct">
+          <option value="gap_dn">Gap Down, No Recovery</option>
+          <option value="gap_up_fade">Gap Up, Faded / Weak Close</option>
+          <option value="gap_up_strong" selected>Gap Up, Strong Close</option>
+          <option value="hh_no_follow">Higher High, No Follow-Through</option>
+          <option value="higher_highs">Higher Highs, Strong Trend</option>
+          <option value="lower_highs">Lower Highs Forming</option>
+          <option value="range">Range-Bound / Flat</option>
+        </select>
+      </div>
+      <div class="mig">
+        <label class="mil">India 10Y Yield (%)</label>
+        <input type="number" id="in-in10y" value="6.70" step="0.01">
+      </div>
+    </div>
+    <button class="analyse-btn" onclick="analyse()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="white" stroke-width="1.5"/><path d="M7 4v3l2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Analyse Now
+    </button>
+
+    <div class="status-bar">
+      <span>Last updated:</span>
+      <span id="last-updated">Not yet</span>
+      <span style="margin-left:auto;color:var(--dim)">Auto-fetch: Yahoo Finance (prices) · NSE (flows — manual required)</span>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ─── CLOCK ───
+function tick(){
+  const n=new Date();
+  document.getElementById('clock-top').textContent=
+    n.toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short'})+' '+
+    n.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:false});
+}
+tick(); setInterval(tick,1000);
+
+// ─── TOAST ───
+function toast(msg,dur=3500){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ─── LOADING ───
+function showLoad(msg=''){
+  document.getElementById('loading').classList.add('show');
+  if(msg)document.getElementById('loading-sub').textContent=msg;
+}
+function hideLoad(){ document.getElementById('loading').classList.remove('show'); }
+
+// ─── BACKEND FETCH ENGINE ───
+// All data fetched server-side — no CORS issues, no extensions needed
+
+let fetchedData = {};
+
+async function fetchAll() {
+  const btn = document.getElementById('fetch-btn');
+  btn.classList.add('loading');
+  btn.innerHTML = '<div style="width:10px;height:10px;border:1.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite"></div> Fetching…';
+  showLoad('Getting live market data…');
+  document.getElementById('loading-sub').textContent = 'Connecting to market feeds…';
+
+  try {
+    const res = await fetch('/api/marketdata');
+    if (!res.ok) throw new Error('Server error: ' + res.status);
+    const json = await res.json();
+    const d = json.data;
+
+    const applied = [], failed = [];
+
+    if (d.nifty && d.nifty.cur) {
+      setTicker('t-nifty', 'tc-nifty', d.nifty, '₹', '');
+      document.getElementById('in-nifty').value = d.nifty.cur;
+      document.getElementById('in-prev').value  = d.nifty.prev;
+      fetchedData.nifty = d.nifty;
+      applied.push('Nifty');
+    } else failed.push('Nifty');
+
+    if (d.bnifty && d.bnifty.cur) {
+      setTicker('t-bnifty', 'tc-bnifty', d.bnifty, '₹', '');
+      document.getElementById('in-bnifty').value = d.bnifty.cur;
+      document.getElementById('in-pbn').value    = d.bnifty.prev;
+      fetchedData.bnifty = d.bnifty;
+      applied.push('Bank Nifty');
+    } else failed.push('Bank Nifty');
+
+    if (d.inr && d.inr.cur) {
+      setTickerRaw('t-inr', 'tc-inr', d.inr.cur.toFixed(2), d.inr.chg, '₹');
+      fetchedData.inr = d.inr.cur;
+      applied.push('USD/INR');
+    } else failed.push('USD/INR');
+
+    if (d.vix && d.vix.cur) {
+      setTicker('t-vix', 'tc-vix', d.vix, '', '');
+      fetchedData.vix = d.vix.cur;
+      applied.push('VIX');
+    } else failed.push('VIX');
+
+    if (d.brent && d.brent.cur) {
+      setTicker('t-brent', 'tc-brent', d.brent, '$', '');
+      fetchedData.brent = d.brent.cur;
+      applied.push('Brent');
+    } else failed.push('Brent');
+
+    if (d.us10y && d.us10y.cur) {
+      fetchedData.us10y = d.us10y.cur;
+      applied.push('US 10Y');
+    }
+
+    if (d.in10y && d.in10y.cur) {
+      document.getElementById('in-in10y').value = d.in10y.cur.toFixed(2);
+      applied.push('India 10Y');
+    }
+
+    // Update source badges
+    const srcRow = document.getElementById('sources-row');
+    let html = '';
+    if (applied.length > 0)
+      html += `<span class="src-badge"><span class="src-dot src-live"></span>Live: ${applied.join(', ')}</span>`;
+    html += `<span class="src-badge"><span class="src-dot src-manual"></span>Manual: FII/DII flows, L/S ratio</span>`;
+    if (failed.length > 0)
+      html += `<span class="src-badge"><span class="src-dot src-error"></span>Enter manually: ${failed.join(', ')}</span>`;
+    srcRow.innerHTML = html;
+
+    hideLoad();
+    btn.classList.remove('loading');
+    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6A4 4 0 1 1 6 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 2v3H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh Data';
+
+    if (applied.length > 0) {
+      toast(`✓ Live data loaded: ${applied.join(', ')}. Enter FII/DII flows + L/S ratio, then hit Analyse.`);
+      analyse();
+    }
+
+  } catch (err) {
+    hideLoad();
+    btn.classList.remove('loading');
+    btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6A4 4 0 1 1 6 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 2v3H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Retry Fetch';
+    document.getElementById('sources-row').innerHTML = '<span class="src-badge"><span class="src-dot src-error"></span>Fetch failed — enter all data manually</span>';
+    toast('⚠ Could not fetch data. Enter numbers manually and hit Analyse.');
+    console.error('Fetch error:', err);
+  }
+}
+
+function setTicker(vid,cid,data,prefix,suffix){
+  document.getElementById(vid).textContent=prefix+(data.cur>1000?Math.round(data.cur).toLocaleString('en-IN'):data.cur.toFixed(2))+suffix;
+  const chgEl=document.getElementById(cid);
+  chgEl.textContent=(data.chg>=0?'+':'')+data.chg.toFixed(data.cur>100?0:2)+' ('+( data.chg>=0?'+':'')+data.pct.toFixed(2)+'%)';
+  chgEl.className='ticker-chg '+(data.chg>=0?'up':'dn');
+}
+function setTickerRaw(vid,cid,val,chg,prefix){
+  document.getElementById(vid).textContent=prefix+val;
+  const chgEl=document.getElementById(cid);
+  chgEl.textContent=(chg>=0?'+':'')+chg.toFixed(2);
+  chgEl.className='ticker-chg '+(chg>=0?'up':'dn');
+}
+
+// ─── HELPERS ───
+function g(id){return parseFloat(document.getElementById(id).value)||0;}
+
+function getLSZone(ls){
+  if(ls<0.20)return{label:'Extremely Bearish',color:'var(--red)',barColor:'#c0392b',plain:'FIIs have taken massive short positions — they are betting heavily that the market will fall.',cls:'s-red'};
+  if(ls<0.35)return{label:'Bearish',color:'var(--red)',barColor:'#e74c3c',plain:'FIIs are clearly positioned for a fall. This is not just caution — this is directional.',cls:'s-red'};
+  if(ls<0.50)return{label:'Cautiously Bearish',color:'var(--amber)',barColor:'#f39c12',plain:'FIIs are leaning bearish but not aggressively. They\'re reducing risk, not fully shorting.',cls:'s-amber'};
+  if(ls<0.65)return{label:'Neutral to Bullish',color:'var(--blue)',barColor:'#2980b9',plain:'FIIs are covering their shorts and moving toward a long position. Shift underway.',cls:'s-blue'};
+  return{label:'Bullish',color:'var(--green)',barColor:'#27ae60',plain:'FIIs are net long — they believe the market will rise. Strong institutional backing.',cls:'s-green'};
+}
+
+function getPhase(fii,ls,nChg,bnChg,struct,vix,absRatio){
+  const sell=fii<0, short=ls<0.50;
+  const up=nChg>80, dn=nChg<-80;
+  const bnWeak=bnChg<nChg-80;
+  const gapDn=struct==='gap_dn';
+  const vixSpike=vix>20;
+  if(vixSpike&&sell&&absRatio<60) return{phase:'Panic / Acceleration',color:'#7c3aed',desc:'Sharp selling, fear rising, DII support failing',badge:'pb-panic',next:'Panic selling — wait for VIX to peak before any reversal trade'};
+  if(sell&&short&&(dn||gapDn||struct==='lower_highs')){
+    if(bnWeak||gapDn) return{phase:'Distribution → Breakdown',color:'#dc2626',desc:'FIIs selling + market starting to fall + financials weak',badge:'pb-dist',next:'Breakdown in progress — bearish continuation expected'};
+    return{phase:'Breakdown',color:'#dc2626',desc:'FIIs and price both pointing down — full alignment',badge:'pb-break',next:'Strong bearish signal — downside continuation likely'};
+  }
+  if(sell&&short&&(up||struct==='gap_up_strong')) return{phase:'Distribution (Unstable Rally)',color:'#d97706',desc:'FIIs selling while price is rising — this gap will close',badge:'pb-transit',next:'Rally is unstable — expect reversal or fade'};
+  if(!sell&&ls>=0.50) return{phase:'Accumulation',color:'#059669',desc:'FIIs buying + bullish positioning — institutional support',badge:'pb-accum',next:'Bullish setup — dips are buying opportunities'};
+  return{phase:'Distribution',color:'#dc2626',desc:'FIIs selling, market holding for now — supply building',badge:'pb-dist',next:'Bearish bias — watch for breakdown trigger'};
+}
+
+function getMacro(in10y,us10y,inr,brent){
+  let risk=0, signals=[];
+  if(inr>85){risk+=2;signals.push({k:'USD/INR',v:inr.toFixed(2),s:'↑ Negative',w:'FIIs lose returns when rupee weakens',c:'dn'});}
+  else if(inr<83){risk-=1;signals.push({k:'USD/INR',v:inr.toFixed(2),s:'↓ Positive',w:'Strong rupee helps FII returns',c:'up'});}
+  else signals.push({k:'USD/INR',v:inr.toFixed(2),s:'→ Stable',w:'No major currency pressure',c:'neu'});
+
+  if(in10y>6.9){risk+=2;signals.push({k:'India 10Y',v:in10y.toFixed(2)+'%',s:'↑ Pressure',w:'Higher yields = costlier borrowing',c:'dn'});}
+  else signals.push({k:'India 10Y',v:in10y.toFixed(2)+'%',s:'→ Stable',w:'Yields in normal range',c:'neu'});
+
+  if(us10y>4.5){risk+=2;signals.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'↑ Risk-off',w:'High US yields pull money out of India',c:'dn'});}
+  else if(us10y<4.0){risk-=1;signals.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'↓ Supportive',w:'Lower US yields = money flows to EM',c:'up'});}
+  else signals.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'→ Moderate',w:'US yields not a major driver today',c:'neu'});
+
+  if(brent>90){risk+=2;signals.push({k:'Brent Crude',v:'$'+brent.toFixed(0),s:'↑ Adverse',w:'India imports most oil — hurts CAD',c:'dn'});}
+  else if(brent<75){risk-=1;signals.push({k:'Brent Crude',v:'$'+brent.toFixed(0),s:'↓ Positive',w:'Cheap oil helps India\'s current account',c:'up'});}
+  else signals.push({k:'Brent Crude',v:'$'+brent.toFixed(0),s:'→ Neutral',w:'Oil not a driver today',c:'neu'});
+
+  let label,cls;
+  if(risk>=5){label='Macro Risk High';cls='s-red';}
+  else if(risk>=3){label='Mild Macro Pressure';cls='s-amber';}
+  else if(risk<=0){label='Macro Supportive';cls='s-green';}
+  else{label='Mixed Macro';cls='s-amber';}
+  return{label,cls,risk,signals};
+}
+
+// ─── MAIN ANALYSE ───
+function analyse(){
+  const fii=g('in-fii'), dii=g('in-dii'), ls=g('in-ls');
+  const nifty=g('in-nifty'), prev=g('in-prev');
+  const bnifty=g('in-bnifty'), pbn=g('in-pbn');
+  const in10y=g('in-in10y');
+  const struct=document.getElementById('in-struct').value;
+
+  // Get live values from tickers if available, else fallback inputs
+  const inrVal=fetchedData.inr||84.0;
+  const us10y=fetchedData.us10y||4.31;
+  const brent=fetchedData.brent||(document.getElementById('t-brent').textContent.replace(/[^0-9.]/g,'')||84.1);
+  const brentNum=typeof brent==='object'?brent.cur:parseFloat(brent)||84.1;
+  const us10yNum=typeof us10y==='object'?us10y.cur:parseFloat(us10y)||4.31;
+  const inrNum=typeof inrVal==='object'?inrVal.cur:parseFloat(inrVal)||84.0;
+
+  // Raw VIX from ticker or default
+  let vixNum=14.8;
+  const vixTxt=document.getElementById('t-vix').textContent;
+  if(vixTxt&&vixTxt!=='—') vixNum=parseFloat(vixTxt)||14.8;
+
+  const nChg=nifty-prev;
+  const nPct=prev>0?(nChg/prev*100):0;
+  const bnChg=bnifty-pbn;
+  const bnPct=pbn>0?(bnChg/pbn*100):0;
+  const absRatio=fii<0?Math.min(100,Math.round((dii/Math.abs(fii))*100)):0;
+  const netFlow=fii+dii;
+  const lsZ=getLSZone(ls);
+  const phase=getPhase(fii,ls,nChg,bnChg,struct,vixNum,absRatio);
+  const macro=getMacro(in10y,us10yNum,inrNum,brentNum);
+
+  // ── Update tickers with manual data if not fetched ──
+  if(document.getElementById('t-nifty').textContent==='—'){
+    document.getElementById('t-nifty').textContent='₹'+Math.round(nifty).toLocaleString('en-IN');
+    const el=document.getElementById('tc-nifty');
+    el.textContent=(nChg>=0?'+':'')+Math.round(nChg)+' ('+(nChg>=0?'+':'')+nPct.toFixed(2)+'%)';
+    el.className='ticker-chg '+(nChg>=0?'up':'dn');
+  }
+  if(document.getElementById('t-bnifty').textContent==='—'){
+    document.getElementById('t-bnifty').textContent='₹'+Math.round(bnifty).toLocaleString('en-IN');
+    const el=document.getElementById('tc-bnifty');
+    el.textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+' ('+(bnChg>=0?'+':'')+bnPct.toFixed(2)+'%)';
+    el.className='ticker-chg '+(bnChg>=0?'up':'dn');
+  }
+
+  // ── L1 ──
+  document.getElementById('l1-cash').textContent=(fii>=0?'+':'')+'₹'+Math.abs(fii).toLocaleString('en-IN')+' Cr';
+  document.getElementById('l1-cash').className='dv '+(fii>=0?'up':'dn');
+  document.getElementById('l1-ls').textContent=ls.toFixed(2)+' → '+lsZ.label;
+  document.getElementById('l1-ls').style.color=lsZ.color;
+  document.getElementById('l1-stance').textContent=fii<0?'Selling (exiting India)':'Buying (entering India)';
+  document.getElementById('l1-stance').className='dv '+(fii>=0?'up':'dn');
+  document.getElementById('ls-fill').style.width=Math.round(ls*100)+'%';
+  document.getElementById('ls-fill').style.background=lsZ.barColor;
+  document.getElementById('l1-status').textContent=lsZ.label;
+  document.getElementById('l1-status').className='lstatus '+lsZ.cls;
+  document.getElementById('l1-explain').textContent=lsZ.plain;
+  const l1pb=document.getElementById('l1-plain');
+  l1pb.className='plain-box '+(ls<0.35?'pb-red':ls<0.50?'pb-amber':ls<0.65?'pb-gray':'pb-green');
+
+  // ── L2 ──
+  document.getElementById('l2-nifty').textContent=(nChg>=0?'+':'')+Math.round(nChg)+' pts ('+(nChg>=0?'+':'')+nPct.toFixed(2)+'%)';
+  document.getElementById('l2-nifty').className='dv '+(nChg>=0?'up':'dn');
+  document.getElementById('l2-bn').textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+' pts ('+(bnChg>=0?'+':'')+bnPct.toFixed(2)+'%)';
+  document.getElementById('l2-bn').className='dv '+(bnChg>=0?'up':'dn');
+  const bnWeak=bnChg<nChg-80;
+  const fiiShort=ls<0.50; const mktUp=nChg>60; const mktDn=nChg<-60;
+  let l2sig,l2css,l2exp,l2scls;
+  if(fiiShort&&mktUp){l2sig='Unstable Rally';l2css='pb-amber';l2scls='s-amber';l2exp='FIIs are betting against the market but it\'s still rising. This doesn\'t last — either the market falls to match FII view, or FIIs give up their shorts (squeeze).';}
+  else if(fiiShort&&mktDn){l2sig='Full Alignment — Bearish';l2css='pb-red';l2scls='s-red';l2exp='Both FII positioning AND the market are pointing down. Strong bearish signal — no divergence here.';}
+  else if(!fiiShort&&mktUp){l2sig='Full Alignment — Bullish';l2css='pb-green';l2scls='s-green';l2exp='FIIs are bullish AND the market is rising. Both sides agree. This is a strong, trustworthy signal.';}
+  else{l2sig='Mixed / No Clear Signal';l2css='pb-gray';l2scls='s-gray';l2exp='No clear agreement between FII positioning and price. Wait for clarity before acting.';}
+  if(bnWeak&&fiiShort){l2sig+=' + BN Weak';l2exp+=' Bank Nifty underperforming = FIIs are specifically exiting financial stocks first.';}
+  document.getElementById('l2-signal').textContent=l2sig;
+  document.getElementById('l2-signal').className='dv '+(l2scls==='s-red'?'dn':l2scls==='s-green'?'up':'amb');
+  document.getElementById('l2-explain').textContent=l2exp;
+  document.getElementById('l2-plain').className='plain-box '+l2css;
+  document.getElementById('l2-status').textContent=l2sig.split(' +')[0];
+  document.getElementById('l2-status').className='lstatus '+l2scls;
+
+  // ── L3 ──
+  document.getElementById('l3-fii').textContent='₹'+Math.abs(fii).toLocaleString('en-IN')+' Cr sold';
+  document.getElementById('l3-dii').textContent='₹'+dii.toLocaleString('en-IN')+' Cr bought';
+  document.getElementById('l3-ratio').textContent=fii<0?(absRatio+'% covered, ₹'+Math.abs(netFlow).toLocaleString('en-IN')+' Cr gap'):'FIIs buying too — aligned';
+  const absWeak=absRatio<75&&!mktUp&&fii<0;
+  let l3exp,l3css,l3scls;
+  if(fii>=0){l3exp='FIIs are buying today — no selling to absorb. Both FII and DII on same side.';l3css='pb-green';l3scls='s-green';}
+  else if(absRatio>=90){l3exp='DIIs are buying almost everything FIIs are selling. Market is well-cushioned — expect less downside today.';l3css='pb-green';l3scls='s-green';}
+  else if(absWeak){l3exp='DIIs are buying but the market still isn\'t rising. This means selling pressure is too heavy even for DII support — weak signal.';l3css='pb-red';l3scls='s-red';}
+  else if(absRatio>=70){l3exp='DIIs are absorbing about '+absRatio+'% of FII selling. They\'re slowing the fall but not stopping it. The remaining '+( 100-absRatio)+'% gap = ongoing selling pressure.';l3css='pb-amber';l3scls='s-amber';}
+  else{l3exp='DIIs are only covering '+absRatio+'% of FII selling. Large gap = market exposed to more downside.';l3css='pb-red';l3scls='s-red';}
+  document.getElementById('l3-explain').textContent=l3exp;
+  document.getElementById('l3-plain').className='plain-box '+l3css;
+  document.getElementById('l3-status').textContent=fii<0?(absRatio>=90?'Strong Cover':absRatio>=70?'Partial Cover':'Weak Cover'):'Aligned';
+  document.getElementById('l3-status').className='lstatus '+l3scls;
+
+  // ── L4 ──
+  macro.signals.forEach((s,i)=>{
+    const keys=['in10y','us10y','inr','brent'];
+    document.getElementById('m-'+keys[i]).textContent=s.v;
+    const sigEl=document.getElementById('ms-'+keys[i]);
+    sigEl.textContent=s.s; sigEl.className='macro-sig '+(s.c==='dn'?'dn':s.c==='up'?'up':'neu');
+    document.getElementById('mw-'+keys[i]).textContent=s.w;
+  });
+  document.getElementById('l4-status').textContent=macro.label;
+  document.getElementById('l4-status').className='lstatus '+macro.cls;
+
+  // ── PHASE / BIG ANSWER ──
+  document.getElementById('ans-phase').textContent=phase.phase;
+  document.getElementById('ans-phase').style.color='#fff';
+  document.getElementById('ans-sub').textContent=phase.desc;
+  document.getElementById('answer-card').style.setProperty('--phase-color',phase.color);
+
+  // Bias chip
+  const biasEl=document.getElementById('bias-chip');
+  biasEl.textContent=phase.next.split(' —')[0];
+  const biasMap={bear:'bias-bear',bull:'bias-bull',range:'bias-range',squeeze:'bias-squeeze'};
+  const phaseText=phase.phase.toLowerCase();
+  biasEl.className='bias-chip '+(phaseText.includes('panic')||phaseText.includes('breakdown')||phaseText.includes('distribution')?'bias-bear':phaseText.includes('accum')?'bias-bull':'bias-range');
+
+  // Narrative — plain English
+  let narr='';
+  const fiiDesc=fii<0?`<strong>FIIs sold ₹${Math.abs(fii).toLocaleString('en-IN')} Cr</strong> today`:`<strong>FIIs bought ₹${fii.toLocaleString('en-IN')} Cr</strong> today`;
+  const diiDesc=dii>0?`DIIs bought ₹${dii.toLocaleString('en-IN')} Cr`:`DIIs also sold ₹${Math.abs(dii).toLocaleString('en-IN')} Cr`;
+  const lsDesc=`Their futures positioning (L/S: ${ls.toFixed(2)}) shows they are <strong>${lsZ.label.toLowerCase()}</strong>.`;
+  const mktDesc=nChg>60?`Despite this, <strong>Nifty rose ${Math.round(nChg)} pts</strong> — a divergence that typically doesn't last.`:nChg<-60?`Nifty fell ${Math.abs(Math.round(nChg))} pts, confirming FII direction.`:`Nifty moved only ${Math.abs(Math.round(nChg))} pts — market is absorbing the flows.`;
+  const macroDesc=macro.risk>=3?`Macro is adding pressure: ${macro.signals.filter(s=>s.c==='dn').map(s=>s.k).join(', ')} all headwinds.`:`Macro is not adding significant pressure today.`;
+  narr=`${fiiDesc}. ${diiDesc} (${absRatio>0?absRatio+'% coverage':'flows aligned'}). ${lsDesc} ${mktDesc} ${macroDesc} <strong>Bottom line: ${phase.next}.</strong>`;
+  document.getElementById('ans-narrative').innerHTML=narr;
+
+  // Trigger conditions
+  const trigs=[];
+  if(fiiShort&&mktUp){ trigs.push({t:`Bearish if Nifty fails to hold ${Math.round(nifty-100)}`,cls:'t-bear'}); trigs.push({t:'Squeeze if L/S rises above 0.50',cls:'t-warn'}); }
+  if(fiiShort&&mktDn){ trigs.push({t:`Continuation if Nifty breaks ${Math.round(nifty-150)}`,cls:'t-bear'}); trigs.push({t:'Stabilise only if DII cover exceeds 90%',cls:'t-warn'}); }
+  if(!fiiShort){ trigs.push({t:'Bullish holds if L/S stays above 0.55',cls:'t-bull'}); trigs.push({t:`Watch if FII turns seller (cash < −1000 Cr)`,cls:'t-warn'}); }
+  if(bnWeak){ trigs.push({t:'Bank Nifty weakness = watch for broader fall',cls:'t-bear'}); }
+  if(macro.risk>=3){ trigs.push({t:'Macro headwinds sustaining FII outflow',cls:'t-bear'}); }
+  document.getElementById('triggers-row').innerHTML=trigs.map(t=>`<span class="trig-item ${t.cls}"><span class="trig-dot"></span>${t.t}</span>`).join('');
+
+  // ── CONVICTION ──
+  let s1=ls<0.20?90:ls<0.35?75:ls<0.50?60:ls<0.65?60:80;
+  if(mktDn&&fiiShort) s1=Math.min(100,s1+15);
+  let s2=fiiShort&&mktUp?65:fiiShort&&mktDn?85:!fiiShort&&mktUp?80:40;
+  let s3=fii>=0?70:absRatio>=90?30:absWeak?80:absRatio>=70?55:75;
+  let s4=macro.risk>=5?85:macro.risk>=3?65:macro.risk>=1?45:25;
+  let s5=struct==='gap_dn'?90:struct==='lower_highs'?80:struct==='hh_no_follow'?70:struct==='gap_up_fade'?65:struct==='higher_highs'&&!fiiShort?80:55;
+  if(bnWeak) s5=Math.min(100,s5+10);
+  const score=Math.round(s1*.30+s2*.25+s3*.15+s4*.10+s5*.20);
+
+  const scoreColor=score>=70?'var(--red)':score>=50?'var(--amber)':'var(--green)';
+  document.getElementById('conv-score').textContent=score;
+  document.getElementById('conv-score').style.color=scoreColor;
+  document.getElementById('conv-label').textContent=score>=70?'Strong signal — act with confidence':score>=50?'Moderate signal — watch for confirmation':'Weak signal — too mixed to act';
+  document.getElementById('conv-cal').textContent=score>=75?'Strong trend':score>=60?'Clear alignment':score>=40?'Mild signal':'Low conviction';
+
+  const barColor=(v)=>v>65?'#c0392b':v>45?'#d97706':'#27ae60';
+  [s1,s2,s3,s4,s5].forEach((v,i)=>{
+    document.getElementById('lb'+(i+1)).style.width=v+'%';
+    document.getElementById('lb'+(i+1)).style.background=barColor(v);
+    document.getElementById('lv'+(i+1)).textContent=v;
+  });
+
+  document.getElementById('last-updated').textContent=new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'});
+  toast('Analysis updated ✓');
+}
+
+// Auto-fetch on load
+window.addEventListener("DOMContentLoaded", () => {
+  // Fetch live data first. analyse() fires automatically after fetch.
+  // If all sources fail, user enters data manually and clicks Analyse.
+  fetchAll();
+});
+</script>
+</body>
+</html>
