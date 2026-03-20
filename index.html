@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FII Dashboard v7</title>
+<title>FII Dashboard v8</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f5f4f0;--card:#fff;--border:#e8e6e0;--text:#1a1a1a;--muted:#7a7670;--dim:#b0ada6;
---green:#1a7a4a;--gbg:#edf7f1;--gbd:#b8deca;--red:#c0392b;--rbg:#fdf0ee;--rbd:#f0c0bb;
---amber:#b45309;--abg:#fef8ec;--abd:#f5d98a;--purple:#6d28d9;--pbg:#f3f0ff;--pbd:#c4b5fd;
---mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;}
+:root{
+  --bg:#f5f4f0;--card:#fff;--border:#e8e6e0;--text:#1a1a1a;--muted:#7a7670;--dim:#b0ada6;
+  --green:#1a7a4a;--gbg:#edf7f1;--gbd:#b8deca;
+  --red:#c0392b;--rbg:#fdf0ee;--rbd:#f0c0bb;
+  --amber:#b45309;--abg:#fef8ec;--abd:#f5d98a;
+  --purple:#6d28d9;--pbg:#f3f0ff;--pbd:#c4b5fd;
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;}
 
@@ -23,73 +27,93 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .fbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-family:var(--sans);font-size:12px;padding:5px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;}
 .fbtn:hover{background:rgba(255,255,255,.18);}
 
-/* MODE BANNERS */
-.mode-banner{border-radius:8px;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.mb-cf{background:#f1f0ec;border:1px solid var(--border);}  /* carry-forward = neutral grey */
-.mb-pf{background:var(--abg);border:1px solid var(--abd);}  /* pre-flow = amber */
-.mb-icon{font-size:18px;flex-shrink:0;}
+/* MODE BANNER */
+.mode-banner{border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.mb-cf{background:#f1f0ec;border:1px solid var(--border);}
+.mb-pf{background:var(--abg);border:1px solid var(--abd);}
 .mb-title{font-size:12px;font-weight:600;}
 .mb-sub{font-size:11px;opacity:.75;margin-top:1px;}
+.mb-cf .mb-title,.mb-cf .mb-sub,.mb-cf .mb-right{color:var(--muted);}
+.mb-pf .mb-title,.mb-pf .mb-sub,.mb-pf .mb-right{color:var(--amber);}
 .mb-right{font-size:11px;text-align:right;flex-shrink:0;}
-.mb-cf .mb-title{color:var(--muted);}
-.mb-cf .mb-sub{color:var(--muted);}
-.mb-cf .mb-right{color:var(--muted);}
-.mb-pf .mb-title{color:var(--amber);}
-.mb-pf .mb-sub{color:var(--amber);}
-.mb-pf .mb-right{color:var(--amber);}
 
 /* PAGE */
 .page{max-width:1140px;margin:0 auto;padding:14px 16px 50px;display:flex;flex-direction:column;gap:10px;}
 
-/* REGIME BANNER */
-.rb{border-radius:12px;padding:18px 22px;color:#fff;position:relative;overflow:hidden;}
-.rb-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:11px;}
-.rb-lbl{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
-.rb-phase{font-size:19px;font-weight:600;letter-spacing:-.02em;}
-.rb-desc{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px;}
-.rb-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:14px;}
-.bchip{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;}
-.bc-bear{background:rgba(255,100,100,.2);color:#ff9090;border:1px solid rgba(255,100,100,.3);}
-.bc-bull{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.25);}
-.bc-cf{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);}
-.bc-exhaust{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.25);}
-.bc-counter{background:rgba(249,115,22,.15);color:#fdba74;border:1px solid rgba(249,115,22,.3);}
-.rb-narr{font-size:13px;color:rgba(255,255,255,.72);line-height:1.7;border-top:1px solid rgba(255,255,255,.1);padding-top:11px;}
-.rb-narr strong{color:#fff;font-weight:500;}
-.trigs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
-.trig{font-size:10px;padding:3px 9px;border-radius:4px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);display:flex;align-items:center;gap:4px;}
-.tdot{width:4px;height:4px;border-radius:50%;background:currentColor;}
-.trig.tw{border-color:rgba(251,191,36,.3);color:#fcd34d;}
-.trig.tr{border-color:rgba(255,100,100,.3);color:#fca5a5;}
-.trig.tg{border-color:rgba(74,222,128,.3);color:#86efac;}
-.trig.tp{border-color:rgba(167,139,250,.3);color:#c4b5fd;}
-.trig.to{border-color:rgba(249,115,22,.3);color:#fdba74;}
-
-/* PDI */
-.pdi-bar{background:rgba(255,255,255,.06);border-radius:7px;padding:10px 14px;margin-top:10px;}
-.pdi-lbl{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+/* REGIME HEADER */
+.regime-header{border-radius:12px;padding:16px 20px;color:#fff;}
+.rh-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.rh-lbl{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;}
+.rh-phase{font-size:18px;font-weight:600;letter-spacing:-.02em;}
+.rh-desc{font-size:12px;color:rgba(255,255,255,.5);margin-top:3px;}
+.rh-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:14px;}
+.modechip{font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);}
+.pdi-bar{background:rgba(255,255,255,.06);border-radius:7px;padding:8px 12px;margin-top:8px;}
+.pdi-lbl{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
 .pdi-zones{display:flex;gap:2px;margin-bottom:3px;}
 .pdi-z{height:3px;border-radius:2px;flex:1;}
-.pdi-track{height:7px;background:rgba(255,255,255,.1);border-radius:4px;}
-.pdi-fill{height:100%;border-radius:4px;transition:width .8s ease;}
-.pdi-marks{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.3);margin-top:3px;}
-.rb-meta{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:10px;}
-.rb-mi{background:rgba(255,255,255,.06);border-radius:6px;padding:8px 11px;}
-.rb-ml{font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
-.rb-mv{font-size:12px;font-weight:500;}
+.pdi-track{height:6px;background:rgba(255,255,255,.1);border-radius:3px;}
+.pdi-fill{height:100%;border-radius:3px;transition:width .8s ease;}
+.pdi-marks{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.25);margin-top:2px;}
 
-/* TWO-AXIS CONVICTION DISPLAY */
-.conv-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.conv-axis-card{border-radius:8px;padding:12px 14px;border:1px solid var(--border);}
-.conv-axis-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;opacity:.7;}
-.conv-axis-val{font-size:36px;font-weight:600;font-family:var(--mono);letter-spacing:-.03em;}
-.conv-axis-sub{font-size:11px;color:var(--muted);margin-top:3px;}
-.conv-axis-tag{font-size:10px;padding:2px 8px;border-radius:4px;margin-top:5px;display:inline-block;}
-.tag-state{background:rgba(26,122,74,.1);color:var(--green);border:1px solid rgba(26,122,74,.2);}
-.tag-high{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
-.tag-med{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
-.tag-low{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
-.tag-cf{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+/* ═══ AUTHORITATIVE OUTPUT PANEL ═══ */
+.auth-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.auth-panel-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.auth-panel-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.auth-panel-tag{font-size:10px;padding:2px 8px;border-radius:4px;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
+.auth-sections{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);}
+.auth-section{padding:16px 18px;border-right:1px solid var(--border);}
+.auth-section:last-child{border-right:none;}
+.as-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.as-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.as-dot-state{background:var(--text);}
+.as-dot-struct{background:var(--blue,#1d4ed8);}
+.as-dot-behav{background:var(--amber);}
+.as-dot-conf{background:var(--purple);}
+.as-label-state{color:var(--text);}
+.as-label-struct{color:#1d4ed8;}
+.as-label-behav{color:var(--amber);}
+.as-label-conf{color:var(--purple);}
+
+/* STATE section */
+.state-phase{font-size:14px;font-weight:600;margin-bottom:6px;}
+.state-sc-wrap{display:flex;align-items:baseline;gap:6px;margin-top:8px;}
+.state-sc-num{font-size:32px;font-weight:600;font-family:var(--mono);letter-spacing:-.03em;}
+.state-sc-lbl{font-size:11px;color:var(--muted);}
+.state-sc-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;margin-top:4px;display:inline-block;letter-spacing:.06em;}
+.sc-tag-live{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.sc-tag-preserved{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.sc-tag-cf{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.state-terminal{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.st-lbl{font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+.st-bar-wrap{display:flex;align-items:center;gap:8px;}
+.st-bar{flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);overflow:hidden;}
+.st-bar-fill{height:100%;border-radius:2px;transition:width .7s ease;}
+.st-pct{font-size:12px;font-weight:600;font-family:var(--mono);min-width:36px;text-align:right;}
+.st-verdict{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* STRUCTURE section */
+.struct-row{display:flex;align-items:flex-start;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);}
+.struct-row:last-of-type{border-bottom:none;}
+.struct-key{font-size:11px;color:var(--muted);}
+.struct-val{font-size:11px;font-weight:500;text-align:right;max-width:55%;}
+
+/* BEHAVIOR section */
+.behav-state{font-size:13px;font-weight:600;margin-bottom:6px;}
+.behav-sub{font-size:11px;color:var(--muted);line-height:1.5;}
+.behav-note{font-size:11px;padding:7px 10px;border-radius:6px;margin-top:8px;line-height:1.5;}
+
+/* CONFIDENCE section */
+.conf-uc-wrap{display:flex;align-items:baseline;gap:6px;margin-bottom:6px;}
+.conf-uc-num{font-size:22px;font-weight:600;font-family:var(--mono);}
+.conf-uc-lbl{font-size:11px;color:var(--muted);}
+.uc-tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:4px;display:inline-block;letter-spacing:.06em;margin-bottom:8px;}
+.uc-high{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.uc-med{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.uc-low{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
+.uc-none{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.conf-reason{font-size:11px;color:var(--muted);line-height:1.5;}
+.conf-penalty{font-size:10px;padding:5px 9px;border-radius:5px;margin-top:8px;line-height:1.5;background:var(--pbg);color:var(--purple);border:1px solid var(--pbd);}
 
 /* TICKERS */
 .tg5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
@@ -101,14 +125,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 
 /* SECTION */
 .sh{display:flex;align-items:center;gap:10px;margin:2px 0 6px;}
-.st{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;}
+.st-lbl2{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;}
 .sl{flex:1;height:1px;background:var(--border);}
+.diag-note{font-size:10px;color:var(--dim);padding:4px 10px;background:var(--bg);border-radius:4px;border:1px solid var(--border);}
 
-/* CARDS */
+/* DIAGNOSTIC CARDS */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;}
-.card.frozen{opacity:.65;border-style:dashed;position:relative;}
-.card.frozen::after{content:'FROZEN';position:absolute;top:10px;right:12px;font-size:8px;font-weight:600;letter-spacing:.1em;color:var(--dim);background:var(--bg);padding:1px 5px;border-radius:3px;}
+.card.frozen{opacity:.6;border-style:dashed;position:relative;}
+.card.frozen::after{content:'DIAGNOSTIC — FROZEN';position:absolute;top:8px;right:10px;font-size:8px;font-weight:600;letter-spacing:.08em;color:var(--dim);background:var(--bg);padding:1px 5px;border-radius:3px;border:1px solid var(--border);}
+.diag-badge{font-size:8px;font-weight:600;letter-spacing:.08em;color:var(--dim);background:var(--bg);padding:1px 6px;border-radius:3px;border:1px solid var(--border);margin-left:6px;}
 .ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .ctit{display:flex;align-items:center;gap:7px;}
 .cnum{width:19px;height:19px;border-radius:4px;background:var(--bg);border:1px solid var(--border);font-size:9px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;}
@@ -122,15 +148,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .dr:last-of-type{border-bottom:none;}
 .dk{font-size:11px;color:var(--muted);}
 .dv{font-size:12px;font-weight:500;font-family:var(--mono);}
-.plain{margin-top:9px;padding:9px 11px;border-radius:7px;font-size:12px;line-height:1.6;}
-.pl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;opacity:.7;margin-bottom:3px;}
-.pr{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
-.pg{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
-.pa{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
-.pn{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.plain{margin-top:9px;padding:8px 10px;border-radius:6px;font-size:11px;line-height:1.6;color:var(--muted);background:var(--bg);border:1px solid var(--border);}
 .ls-wrap{margin:8px 0 3px;}
-.ls-track{height:7px;background:var(--bg);border-radius:4px;border:1px solid var(--border);overflow:hidden;}
-.ls-fill{height:100%;border-radius:3px;transition:width .7s ease;}
+.ls-track{height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);overflow:hidden;}
+.ls-fill{height:100%;border-radius:2px;transition:width .7s ease;}
 .ls-zones{display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-top:3px;}
 .mg{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
 .mi{padding:8px 10px;border-radius:7px;background:var(--bg);border:1px solid var(--border);}
@@ -139,55 +160,42 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .ms{font-size:10px;margin-top:1px;}.mw{font-size:10px;color:var(--muted);}
 
 /* ELASTICITY */
-.er-zones{display:flex;gap:6px;margin:10px 0 6px;flex-wrap:wrap;}
-.erz{flex:1;padding:8px 10px;border-radius:6px;border:2px solid transparent;text-align:center;min-width:80px;transition:all .3s;}
-.er-l{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
-.er-r{font-size:10px;opacity:.7;}
-.eg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
-.ei{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 11px;}
+.er-zones{display:flex;gap:6px;margin:8px 0 6px;}
+.erz{flex:1;padding:7px 9px;border-radius:6px;border:2px solid transparent;text-align:center;min-width:60px;}
+.er-l{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1px;}
+.er-r{font-size:9px;opacity:.7;}
+.eg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px;}
+.ei{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;}
 .eilbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
-.eiv{font-size:15px;font-weight:600;font-family:var(--mono);}
+.eiv{font-size:14px;font-weight:600;font-family:var(--mono);}
 .eisub{font-size:10px;color:var(--muted);margin-top:2px;}
 
 /* CASCADE */
 .ccd{border-radius:10px;padding:13px 15px;}
-.cond-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.cond-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.08);}
 .cond-row:last-of-type{border-bottom:none;}
-.cond-n{font-size:12px;color:rgba(255,255,255,.7);}
-.cond-v{font-size:12px;font-weight:500;font-family:var(--mono);}
-.cm{color:#4ade80;}.cu{color:rgba(255,255,255,.35);}
+.cond-n{font-size:11px;color:rgba(255,255,255,.65);}
+.cond-v{font-size:11px;font-weight:500;font-family:var(--mono);}
+.cm{color:#4ade80;}.cu{color:rgba(255,255,255,.3);}
 
-/* ABSORPTION */
-.abs-bars{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
-.abr{display:flex;align-items:center;gap:9px;}
+/* ABSORPTION BARS */
+.abs-bars{display:flex;flex-direction:column;gap:5px;margin-top:8px;}
+.abr{display:flex;align-items:center;gap:8px;}
 .abd-lbl{font-size:10px;color:var(--muted);width:44px;flex-shrink:0;}
-.abt{flex:1;height:10px;background:var(--bg);border-radius:5px;border:1px solid var(--border);}
-.abf{height:100%;border-radius:4px;transition:width .6s ease;}
+.abt{flex:1;height:9px;background:var(--bg);border-radius:4px;border:1px solid var(--border);}
+.abf{height:100%;border-radius:3px;transition:width .6s ease;}
 .abv{font-size:10px;font-family:var(--mono);width:34px;text-align:right;flex-shrink:0;}
-.aba{font-size:12px;width:14px;flex-shrink:0;}
+.aba{font-size:11px;width:14px;flex-shrink:0;}
 
-/* TERMINAL */
-.ts-strength{display:flex;align-items:center;gap:16px;margin:12px 0 10px;}
-.ts-bar-wrap{flex:1;}
-.ts-bar-track{height:12px;background:var(--bg);border-radius:6px;border:1px solid var(--border);overflow:hidden;}
-.ts-bar-fill{height:100%;border-radius:5px;transition:width .8s ease;}
-.ts-pct{font-size:22px;font-weight:600;font-family:var(--mono);flex-shrink:0;}
-.tc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
-.tci{padding:10px 12px;border-radius:7px;border:1px solid var(--border);}
-.tc-check{font-size:16px;margin-bottom:4px;}
+/* TERMINAL GRID */
+.tc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px;}
+.tci{padding:9px 11px;border-radius:7px;border:1px solid var(--border);}
+.tc-check{font-size:14px;margin-bottom:3px;}
 .tc-lbl{font-size:11px;font-weight:500;margin-bottom:2px;}
 .tc-sub{font-size:10px;color:var(--muted);}
 .tc-met{background:var(--gbg);border-color:var(--gbd);}
 .tc-partial{background:var(--abg);border-color:var(--abd);}
 .tc-unmet{background:var(--bg);}
-.tc-verdict{margin-top:10px;padding:10px 13px;border-radius:7px;font-size:12px;line-height:1.6;font-weight:500;}
-
-/* ACCEPTANCE */
-.accept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
-.accept-item{padding:10px 12px;border-radius:7px;background:var(--bg);border:1px solid var(--border);}
-.accept-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
-.accept-val{font-size:14px;font-weight:600;font-family:var(--mono);}
-.accept-sub{font-size:10px;color:var(--muted);margin-top:2px;}
 
 /* HISTORY */
 .ht{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px;}
@@ -219,60 +227,132 @@ select{font-family:var(--sans);}
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;font-size:12px;padding:9px 15px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .25s;z-index:300;max-width:300px;line-height:1.4;}
 .toast.show{opacity:1;transform:translateY(0);}
-@media(max-width:700px){.tg5,.g2,.eg,.tc-grid,.accept-grid,.rb-meta,.ig4,.conv-axes{grid-template-columns:1fr 1fr;}}
+@media(max-width:700px){.tg5,.g2,.eg,.tc-grid,.ig4,.auth-sections{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
-<div class="lov" id="lov"><div class="lbox"><div class="spin"></div><div style="font-size:13px;font-weight:500">Loading v7…</div><div style="font-size:11px;color:var(--muted);margin-top:3px" id="lsub">Connecting</div></div></div>
+<div class="lov" id="lov"><div class="lbox"><div class="spin"></div><div style="font-size:13px;font-weight:500">Loading v8…</div><div style="font-size:11px;color:var(--muted);margin-top:3px" id="lsub">Connecting</div></div></div>
 <div class="toast" id="toast"></div>
 
 <div class="topbar">
   <div>
-    <div class="logo">FII Market Dashboard <span style="font-size:10px;opacity:.3;font-weight:400;margin-left:6px">v7.0 · Three-Mode · Two-Axis Conviction · State Separation</span></div>
-    <div class="logo-sub">Pre-flow uncertainty ≠ regime degradation · Carry-forward refuses to interpret absence of data</div>
+    <div class="logo">FII Market Dashboard <span style="font-size:10px;opacity:.3;font-weight:400;margin-left:6px">v8.0 · SC/UC Separated · Three-Mode · Signal Hierarchy Enforced</span></div>
+    <div class="logo-sub">State Conviction never penalised · Price annotates only · Flow governs · Terminal governs decay</div>
   </div>
   <div class="tbr">
     <span><span class="ld"></span><span style="font-size:10px;color:rgba(255,255,255,.5)" id="clock">—</span></span>
-    <button class="fbtn" onclick="fetchAll()">↻ Refresh Data</button>
+    <button class="fbtn" onclick="fetchAll()">↻ Refresh</button>
   </div>
 </div>
 
 <div class="page">
 
-<!-- MODE BANNER — shown only in pre-flow or carry-forward -->
+<!-- MODE BANNER -->
 <div id="mode-banner" style="display:none"></div>
 
-<!-- REGIME BANNER -->
-<div class="rb" id="rb" style="background:#1a1a1a">
-  <div class="rb-top">
+<!-- REGIME HEADER (phase + PDI only) -->
+<div class="regime-header" id="rh" style="background:#1a1a1a">
+  <div class="rh-top">
     <div>
-      <div class="rb-lbl">Market Phase · <span id="mode-lbl">Full Mode</span> · PDI: <span id="pdi-inline">—</span></div>
-      <div class="rb-phase" id="rb-phase">Loading…</div>
-      <div class="rb-desc" id="rb-desc">Enter today's data</div>
+      <div class="rh-lbl">Market Phase · PDI: <span id="pdi-inline">—</span> · <span id="mode-lbl">Full Mode</span></div>
+      <div class="rh-phase" id="rh-phase">Loading…</div>
+      <div class="rh-desc" id="rh-desc">Enter data and analyse</div>
     </div>
-    <div class="rb-right">
-      <span class="bchip bc-bear" id="bchip">—</span>
+    <div class="rh-right">
+      <span class="modechip" id="mode-chip">—</span>
       <span style="font-size:10px;color:rgba(255,255,255,.3)" id="rdcount">—</span>
     </div>
   </div>
   <div class="pdi-bar">
-    <div class="pdi-lbl"><span>Panic Depth Index — Governing Variable</span><span id="pdi-val">—</span></div>
+    <div class="pdi-lbl"><span>Panic Depth Index (governing)</span><span id="pdi-val">—</span></div>
     <div class="pdi-zones"><div class="pdi-z" style="background:rgba(74,222,128,.35)"></div><div class="pdi-z" style="background:rgba(251,191,36,.35)"></div><div class="pdi-z" style="background:rgba(249,115,22,.35)"></div><div class="pdi-z" style="background:rgba(167,139,250,.35)"></div></div>
     <div class="pdi-track"><div class="pdi-fill" id="pdi-fill" style="width:0%;background:#4ade80"></div></div>
-    <div class="pdi-marks"><span>Neutral</span><span>Early Panic</span><span>Mid Panic</span><span>Late/Exhaustion</span></div>
+    <div class="pdi-marks"><span>Neutral</span><span>Early Panic</span><span>Mid Panic</span><span>Late/Exhaust</span></div>
   </div>
-  <div class="rb-meta">
-    <div class="rb-mi"><div class="rb-ml">PDI Context</div><div class="rb-mv" id="pdi-ctx">—</div></div>
-    <div class="rb-mi"><div class="rb-ml">Time in Regime</div><div class="rb-mv" id="time-ctx">—</div></div>
-    <div class="rb-mi"><div class="rb-ml">Flow Exhaustion</div><div class="rb-mv" id="exhaust-val">—</div></div>
-    <div class="rb-mi"><div class="rb-ml">Price State</div><div class="rb-mv" id="price-state-meta">—</div></div>
+</div>
+
+<!-- ═══ AUTHORITATIVE OUTPUT PANEL ═══ -->
+<div class="auth-panel">
+  <div class="auth-panel-header">
+    <span class="auth-panel-title">Authoritative Output — Only valid interpretation in this system</span>
+    <span class="auth-panel-tag" id="auth-mode-tag">—</span>
   </div>
-  <div class="rb-narr" id="rb-narr">Enter data and hit <strong>Analyse & Save</strong>.</div>
-  <div class="trigs" id="trigs"></div>
+  <div class="auth-sections">
+
+    <!-- STATE -->
+    <div class="auth-section">
+      <div class="as-label as-label-state"><span class="as-dot as-dot-state"></span>STATE</div>
+      <div class="state-phase" id="st-phase">—</div>
+      <div style="font-size:11px;color:var(--muted)" id="st-phase-sub">—</div>
+      <div class="state-sc-wrap">
+        <div class="state-sc-num" id="sc-num" style="color:var(--muted)">—</div>
+        <div class="state-sc-lbl">State Conviction</div>
+      </div>
+      <div class="state-sc-tag sc-tag-cf" id="sc-tag">—</div>
+      <div class="state-terminal">
+        <div class="st-lbl">Bearish Strength</div>
+        <div class="st-bar-wrap">
+          <div class="st-bar"><div class="st-bar-fill" id="ts-bar" style="width:0%;background:var(--red)"></div></div>
+          <div class="st-pct" id="ts-pct" style="color:var(--red)">—%</div>
+        </div>
+        <div class="st-verdict" id="ts-verdict">—</div>
+      </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="auth-section">
+      <div class="as-label as-label-struct"><span class="as-dot as-dot-struct"></span>STRUCTURE</div>
+      <div class="struct-row"><span class="struct-key">Elasticity</span><span class="struct-val" id="str-elast">—</span></div>
+      <div class="struct-row"><span class="struct-key">Absorption</span><span class="struct-val" id="str-absorb">—</span></div>
+      <div class="struct-row"><span class="struct-key">Gradient</span><span class="struct-val" id="str-gradient">—</span></div>
+      <div class="struct-row"><span class="struct-key">Cascade type</span><span class="struct-val" id="str-cascade">—</span></div>
+      <div class="struct-row"><span class="struct-key">Flow exhaustion</span><span class="struct-val" id="str-exhaust">—</span></div>
+      <div class="struct-row"><span class="struct-key">Structural signal</span><span class="struct-val" id="str-signal">—</span></div>
+    </div>
+
+    <!-- BEHAVIOR -->
+    <div class="auth-section">
+      <div class="as-label as-label-behav"><span class="as-dot as-dot-behav"></span>BEHAVIOR</div>
+      <div class="behav-state" id="beh-state">—</div>
+      <div class="behav-sub" id="beh-sub">—</div>
+      <div class="behav-note" id="beh-note" style="display:none"></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+        <div style="font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Acceptance</div>
+        <div style="font-size:12px;font-weight:500" id="beh-accept">—</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px" id="beh-accept-sub">—</div>
+        <div style="margin-top:6px;font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">BN Divergence</div>
+        <div style="font-size:12px;font-weight:500" id="beh-bn">—</div>
+      </div>
+    </div>
+
+    <!-- CONFIDENCE -->
+    <div class="auth-section">
+      <div class="as-label as-label-conf"><span class="as-dot as-dot-conf"></span>CONFIDENCE</div>
+      <div class="conf-uc-wrap">
+        <div class="conf-uc-num" id="uc-label" style="color:var(--muted)">—</div>
+        <div class="conf-uc-lbl">Update Confidence</div>
+      </div>
+      <div class="uc-tag uc-none" id="uc-tag">—</div>
+      <div class="conf-reason" id="uc-reason">—</div>
+      <div class="conf-penalty" id="uc-penalty" style="display:none"></div>
+    </div>
+
+  </div>
+  <!-- BOTTOM: next-day bias -->
+  <div style="padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div>
+      <div style="font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px">Next-Day Bias</div>
+      <div style="font-size:13px;font-weight:600" id="auth-bias">—</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px">Trigger Conditions</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end" id="auth-triggers"></div>
+    </div>
+  </div>
 </div>
 
 <!-- LIVE PRICES -->
-<div class="sh"><span class="st">Live Prices</span><div class="sl"></div><div class="sb" id="src-row"><span class="sbadge"><span class="sdot smanual"></span>Manual mode</span></div></div>
+<div class="sh"><span class="st-lbl2">Live Prices</span><div class="sl"></div><div class="sb" id="src-row"><span class="sbadge"><span class="sdot smanual"></span>Manual mode</span></div></div>
 <div class="tg5">
   <div class="tc"><div class="tn">Nifty 50</div><div class="tv" id="t-nifty">—</div><div class="tch" id="tc-nifty">—</div></div>
   <div class="tc"><div class="tn">Bank Nifty</div><div class="tv" id="t-bnifty">—</div><div class="tch" id="tc-bnifty">—</div></div>
@@ -281,37 +361,40 @@ select{font-family:var(--sans);}
   <div class="tc"><div class="tn">Brent Crude</div><div class="tv" id="t-brent">—</div><div class="tch" id="tc-brent">—</div></div>
 </div>
 
-<!-- SIGNAL LAYERS -->
-<div class="sh"><span class="st">Signal Layers — PDI Governed</span><div class="sl"></div><span id="layers-frozen-tag" style="font-size:10px;color:var(--dim);display:none">ALL LAYERS FROZEN — CARRY-FORWARD MODE</span></div>
+<!-- DIAGNOSTIC LAYERS -->
+<div class="sh">
+  <span class="st-lbl2">Diagnostic Layers</span><div class="sl"></div>
+  <span class="diag-note">Informational only — no interpretation authority</span>
+  <span id="layers-frozen-tag" style="font-size:10px;color:var(--dim);margin-left:8px;display:none">ALL FROZEN</span>
+</div>
 <div class="g2">
   <div class="card" id="l1-card">
-    <div class="ch"><div class="ctit"><div class="cnum">1</div><div class="clbl">What are FIIs doing?</div></div><span class="cst sn" id="l1-st">—</span></div>
+    <div class="ch"><div class="ctit"><div class="cnum">1</div><div class="clbl">FII Positioning</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l1-st">—</span></div>
     <div class="dr"><span class="dk">Cash flow</span><span class="dv" id="l1-cash">—</span></div>
     <div class="dr"><span class="dk">Futures L/S</span><span class="dv" id="l1-ls">—</span></div>
     <div class="dr"><span class="dk">Stance</span><span class="dv" id="l1-stance">—</span></div>
     <div class="dr"><span class="dk">Selling type</span><span class="dv" id="l1-stype">—</span></div>
     <div class="ls-wrap"><div class="ls-track"><div class="ls-fill" id="ls-fill" style="width:0%"></div></div><div class="ls-zones"><span>Very Bearish</span><span>Bearish</span><span>Cautious</span><span>Bullish</span></div></div>
-    <div class="plain pn" id="l1-plain"><div class="pl">In plain English</div><span id="l1-exp">—</span></div>
+    <div class="plain" id="l1-plain">—</div>
   </div>
   <div class="card" id="l2-card">
-    <div class="ch"><div class="ctit"><div class="cnum">2</div><div class="clbl">Is the market agreeing?</div></div><span class="cst sn" id="l2-st">—</span></div>
-    <div class="dr"><span class="dk">Nifty today</span><span class="dv" id="l2-nifty">—</span></div>
+    <div class="ch"><div class="ctit"><div class="cnum">2</div><div class="clbl">Price vs Positioning</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l2-st">—</span></div>
+    <div class="dr"><span class="dk">Nifty</span><span class="dv" id="l2-nifty">—</span></div>
     <div class="dr"><span class="dk">Bank Nifty</span><span class="dv" id="l2-bn">—</span></div>
     <div class="dr"><span class="dk">BN divergence</span><span class="dv" id="l2-bndiv">—</span></div>
     <div class="dr"><span class="dk">Price state</span><span class="dv" id="l2-pstate">—</span></div>
-    <div class="dr"><span class="dk">PDI context</span><span class="dv amb" id="l2-pdi-ctx">—</span></div>
-    <div class="plain pn" id="l2-plain"><div class="pl">In plain English</div><span id="l2-exp">—</span></div>
+    <div class="plain" id="l2-plain">—</div>
   </div>
   <div class="card" id="l3-card">
-    <div class="ch"><div class="ctit"><div class="cnum">3</div><div class="clbl">Who controls the market?</div></div><span class="cst sn" id="l3-st">—</span></div>
-    <div class="dr"><span class="dk">FII sold</span><span class="dv dn" id="l3-fii">—</span></div>
-    <div class="dr"><span class="dk">DII bought</span><span class="dv up" id="l3-dii">—</span></div>
+    <div class="ch"><div class="ctit"><div class="cnum">3</div><div class="clbl">Liquidity Flow</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l3-st">—</span></div>
+    <div class="dr"><span class="dk">FII</span><span class="dv dn" id="l3-fii">—</span></div>
+    <div class="dr"><span class="dk">DII</span><span class="dv up" id="l3-dii">—</span></div>
     <div class="dr"><span class="dk">Coverage</span><span class="dv" id="l3-ratio">—</span></div>
-    <div class="dr"><span class="dk">Absorption quality</span><span class="dv" id="l3-qual">—</span></div>
-    <div class="plain pn" id="l3-plain"><div class="pl">In plain English</div><span id="l3-exp">—</span></div>
+    <div class="dr"><span class="dk">Absorption</span><span class="dv" id="l3-qual">—</span></div>
+    <div class="plain" id="l3-plain">—</div>
   </div>
   <div class="card" id="l4-card">
-    <div class="ch"><div class="ctit"><div class="cnum">4</div><div class="clbl">Global pressure check</div></div><span class="cst sn" id="l4-st">—</span></div>
+    <div class="ch"><div class="ctit"><div class="cnum">4</div><div class="clbl">Macro Context</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l4-st">—</span></div>
     <div class="mg">
       <div class="mi"><div class="mn">India 10Y</div><div class="mv" id="m-in10y">—</div><div class="ms" id="ms-in10y">—</div><div class="mw" id="mw-in10y">—</div></div>
       <div class="mi"><div class="mn">US 10Y</div><div class="mv" id="m-us10y">—</div><div class="ms" id="ms-us10y">—</div><div class="mw" id="mw-us10y">—</div></div>
@@ -321,141 +404,80 @@ select{font-family:var(--sans);}
   </div>
 </div>
 
-<!-- ACCEPTANCE METER -->
-<div class="sh"><span class="st">Acceptance Meter — VIX-Adjusted</span><div class="sl"></div></div>
-<div class="card" id="accept-card">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:4px">
-    <div><div style="font-size:12px;font-weight:600;margin-bottom:2px">Does the market accept higher prices?</div>
-    <div style="font-size:11px;color:var(--muted)">VIX-adjusted threshold. Gap distortion filtered. Invalid/distorted = trend only, not regime.</div></div>
-    <div style="text-align:right;flex-shrink:0"><div style="font-size:10px;color:var(--muted);margin-bottom:2px">Acceptance state</div>
-    <div style="font-size:16px;font-weight:600" id="accept-state">—</div>
-    <div style="font-size:10px;color:var(--muted);margin-top:2px" id="accept-reason">—</div></div>
-  </div>
-  <div class="accept-grid">
-    <div class="accept-item"><div class="accept-lbl">Range threshold (VIX-adj)</div><div class="accept-val" id="range-thr">—</div><div class="accept-sub" id="range-act">—</div></div>
-    <div class="accept-item"><div class="accept-lbl">Acceptance ratio</div><div class="accept-val" id="accept-ratio">—</div><div class="accept-sub">(close−open)/(high−open)</div></div>
-    <div class="accept-item"><div class="accept-lbl">Flow gate</div><div class="accept-val" id="flow-gate-val">—</div><div class="accept-sub" id="flow-gate-sub">—</div></div>
-    <div class="accept-item"><div class="accept-lbl">Distortion check</div><div class="accept-val" id="distort-val">—</div><div class="accept-sub" id="distort-sub">—</div></div>
-    <div class="accept-item"><div class="accept-lbl">BN divergence</div><div class="accept-val" id="bn-div-val">—</div><div class="accept-sub" id="bn-div-sub">—</div></div>
-    <div class="accept-item"><div class="accept-lbl">Price classification</div><div class="accept-val" id="price-class">—</div><div class="accept-sub" id="price-class-sub">—</div></div>
-  </div>
-</div>
-
-<!-- ELASTICITY -->
-<div class="sh"><span class="st">Elasticity Engine — Confidence Tiered</span><div class="sl"></div></div>
+<!-- ELASTICITY DIAGNOSTIC -->
+<div class="sh"><span class="st-lbl2">Elasticity</span><div class="sl"></div><span class="diag-note">Structural signal only — confirmed tag required for regime influence</span></div>
 <div class="card" id="elast-card">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
     <div><div style="font-size:12px;font-weight:600;margin-bottom:2px">Nifty pts per ₹1000 Cr FII selling</div>
-    <div style="font-size:11px;color:var(--muted)">Must be directional + persistent to influence phase. Confidence = flow size × persistence days.</div></div>
+    <div style="font-size:11px;color:var(--muted)">Only "Confirmed" tag (3+ days persistent) influences structure. Unconfirmed/Provisional = diagnostic display only.</div></div>
     <div style="text-align:right;flex-shrink:0">
       <div style="font-size:10px;color:var(--muted);margin-bottom:1px">Today</div>
-      <div style="font-size:24px;font-weight:600;font-family:var(--mono)" id="elast-today">—</div>
+      <div style="font-size:22px;font-weight:600;font-family:var(--mono)" id="elast-today">—</div>
       <div style="font-size:11px;margin-top:2px" id="elast-rlbl">—</div>
       <div style="font-size:10px;margin-top:2px;padding:2px 8px;border-radius:4px;display:inline-block" id="elast-cbadge">—</div>
     </div>
   </div>
   <div class="er-zones">
-    <div class="erz" style="background:var(--gbg)" id="ez1"><div class="er-l" style="color:var(--green)">Strong Absorption</div><div class="er-r" style="color:var(--green)">&lt;60 pts</div></div>
+    <div class="erz" style="background:var(--gbg)" id="ez1"><div class="er-l" style="color:var(--green)">Strong Abs</div><div class="er-r" style="color:var(--green)">&lt;60</div></div>
     <div class="erz" style="background:var(--bg)" id="ez2"><div class="er-l" style="color:var(--muted)">Neutral</div><div class="er-r" style="color:var(--muted)">60–100</div></div>
     <div class="erz" style="background:var(--abg)" id="ez3"><div class="er-l" style="color:var(--amber)">Weakening</div><div class="er-r" style="color:var(--amber)">100–140</div></div>
-    <div class="erz" style="background:var(--rbg)" id="ez4"><div class="er-l" style="color:var(--red)">Cascade Risk</div><div class="er-r" style="color:var(--red)">&gt;140</div></div>
+    <div class="erz" style="background:var(--rbg)" id="ez4"><div class="er-l" style="color:var(--red)">Cascade</div><div class="er-r" style="color:var(--red)">&gt;140</div></div>
   </div>
   <div class="eg">
     <div class="ei"><div class="eilbl">3-Day Avg</div><div class="eiv" id="elast-avg">—</div><div class="eisub">pts/₹1000Cr</div></div>
     <div class="ei"><div class="eilbl">Trend</div><div class="eiv" id="elast-trend">—</div><div class="eisub" id="elast-tsub">—</div></div>
-    <div class="ei"><div class="eilbl">Elasticity tag</div><div class="eiv" id="elast-tag" style="font-size:12px;line-height:1.3">—</div><div class="eisub" id="elast-tag-sub">—</div></div>
-    <div class="ei"><div class="eilbl">Decision signal</div><div class="eiv" id="elast-dec" style="font-size:11px;line-height:1.3">—</div></div>
+    <div class="ei"><div class="eilbl">Tag</div><div class="eiv" id="elast-tag" style="font-size:12px">—</div><div class="eisub" id="elast-tag-sub">—</div></div>
+    <div class="ei"><div class="eilbl">Structural influence</div><div class="eiv" id="elast-influence" style="font-size:11px;line-height:1.3">—</div></div>
   </div>
 </div>
 
-<!-- CASCADE -->
-<div class="sh"><span class="st">Cascade Detector — Controlled vs Forced Selling</span><div class="sl"></div></div>
+<!-- CASCADE DIAGNOSTIC -->
+<div class="sh"><span class="st-lbl2">Cascade / Selling Type</span><div class="sl"></div><span class="diag-note">Frozen in non-full modes</span></div>
 <div class="ccd card" id="cascade-card" style="background:#1a1a1a;border-color:rgba(255,255,255,.1)">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-    <div><div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:2px">Selling Type Classification</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.45)">Controlled = institutional unwinding. Forced = margin calls, liquidity vacuum.</div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <div><div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:2px">Selling Type</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4)">Controlled = institutional. Forced = margin calls.</div></div>
     <span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:6px;flex-shrink:0;margin-left:14px" id="casc-chip">—</span>
   </div>
   <div id="casc-conds"></div>
-  <div style="margin-top:10px;padding:9px 12px;border-radius:6px;font-size:12px;line-height:1.5" id="casc-verdict">—</div>
+  <div style="margin-top:8px;padding:8px 11px;border-radius:6px;font-size:11px;line-height:1.5" id="casc-verdict">—</div>
 </div>
 
 <!-- ABSORPTION GRADIENT -->
-<div class="sh"><span class="st">Absorption Gradient — Rate of Deterioration</span><div class="sl"></div></div>
+<div class="sh"><span class="st-lbl2">Absorption Gradient</span><div class="sl"></div><span class="diag-note">Frozen in non-full modes</span></div>
 <div class="card" id="abs-card">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-    <div><div style="font-size:12px;font-weight:600;margin-bottom:2px">DII Coverage Over Time</div>
-    <div style="font-size:11px;color:var(--muted)">Path matters. Frozen in non-full modes.</div></div>
+    <div><div style="font-size:12px;font-weight:600;margin-bottom:2px">DII Coverage Over Time</div></div>
     <div style="font-size:12px;font-weight:600" id="absgrad-lbl">—</div>
   </div>
-  <div class="abs-bars" id="abs-bars"><div style="font-size:11px;color:var(--muted);padding:8px 0">Building…</div></div>
-  <div class="plain pn" id="abs-verdict" style="margin-top:10px"><div class="pl">Gradient signal</div>—</div>
+  <div class="abs-bars" id="abs-bars"><div style="font-size:11px;color:var(--muted);padding:6px 0">Building…</div></div>
+  <div class="plain" id="abs-verdict" style="margin-top:8px">—</div>
 </div>
 
-<!-- TWO-AXIS CONVICTION -->
-<div class="sh"><span class="st">Conviction — Two-Axis: State vs Update Confidence</span><div class="sl"></div></div>
+<!-- TERMINAL DETAIL -->
+<div class="sh"><span class="st-lbl2">Terminal Conditions</span><div class="sl"></div><span class="diag-note">Governs phase decay — dominant over all other signals</span></div>
 <div class="card">
-  <div style="font-size:11px;color:var(--muted);margin-bottom:10px">State Conviction = confirmed past data, never degraded by uncertainty. Update Confidence = today's data completeness.</div>
-  <div class="conv-axes">
-    <div class="conv-axis-card" style="background:var(--bg)">
-      <div class="conv-axis-lbl" style="color:var(--green)">State Conviction</div>
-      <div class="conv-axis-val" id="state-conv" style="color:var(--red)">—</div>
-      <div class="conv-axis-sub" id="state-conv-sub">Derived from confirmed data</div>
-      <div class="conv-axis-tag tag-state" id="state-conv-tag">PERSISTENT</div>
-    </div>
-    <div class="conv-axis-card" style="background:var(--bg)">
-      <div class="conv-axis-lbl" style="color:var(--amber)">Update Confidence</div>
-      <div class="conv-axis-val" id="upd-conf" style="color:var(--muted)">—</div>
-      <div class="conv-axis-sub" id="upd-conf-sub">Today's data completeness</div>
-      <div class="conv-axis-tag tag-cf" id="upd-conf-tag">—</div>
-    </div>
-  </div>
-  <div style="font-size:12px;font-weight:600;margin-bottom:8px">Layer Breakdown (State Conviction)</div>
-  <div style="display:flex;flex-direction:column;gap:7px">
-    <div style="display:flex;align-items:center;gap:9px"><span style="font-size:11px;color:var(--muted);width:128px;flex-shrink:0">FII Positioning</span><span style="font-size:9px;color:var(--dim);width:22px;flex-shrink:0">30%</span><div style="flex:1;height:5px;background:var(--bg);border-radius:3px;border:1px solid var(--border)"><div id="lb1" style="height:100%;border-radius:2px;transition:width .6s"></div></div><span style="font-size:10px;color:var(--muted);font-family:var(--mono);width:22px;text-align:right" id="lv1">—</span></div>
-    <div style="display:flex;align-items:center;gap:9px"><span style="font-size:11px;color:var(--muted);width:128px;flex-shrink:0">Market Agreement</span><span style="font-size:9px;color:var(--dim);width:22px;flex-shrink:0">25%</span><div style="flex:1;height:5px;background:var(--bg);border-radius:3px;border:1px solid var(--border)"><div id="lb2" style="height:100%;border-radius:2px;transition:width .6s"></div></div><span style="font-size:10px;color:var(--muted);font-family:var(--mono);width:22px;text-align:right" id="lv2">—</span></div>
-    <div style="display:flex;align-items:center;gap:9px"><span style="font-size:11px;color:var(--muted);width:128px;flex-shrink:0">FII vs DII</span><span style="font-size:9px;color:var(--dim);width:22px;flex-shrink:0">15%</span><div style="flex:1;height:5px;background:var(--bg);border-radius:3px;border:1px solid var(--border)"><div id="lb3" style="height:100%;border-radius:2px;transition:width .6s"></div></div><span style="font-size:10px;color:var(--muted);font-family:var(--mono);width:22px;text-align:right" id="lv3">—</span></div>
-    <div style="display:flex;align-items:center;gap:9px"><span style="font-size:11px;color:var(--muted);width:128px;flex-shrink:0">Global Pressure</span><span style="font-size:9px;color:var(--dim);width:22px;flex-shrink:0">10%</span><div style="flex:1;height:5px;background:var(--bg);border-radius:3px;border:1px solid var(--border)"><div id="lb4" style="height:100%;border-radius:2px;transition:width .6s"></div></div><span style="font-size:10px;color:var(--muted);font-family:var(--mono);width:22px;text-align:right" id="lv4">—</span></div>
-    <div style="display:flex;align-items:center;gap:9px"><span style="font-size:11px;color:var(--muted);width:128px;flex-shrink:0">Price Structure</span><span style="font-size:9px;color:var(--dim);width:22px;flex-shrink:0">20%</span><div style="flex:1;height:5px;background:var(--bg);border-radius:3px;border:1px solid var(--border)"><div id="lb5" style="height:100%;border-radius:2px;transition:width .6s"></div></div><span style="font-size:10px;color:var(--muted);font-family:var(--mono);width:22px;text-align:right" id="lv5">—</span></div>
-  </div>
-  <div style="margin-top:10px;padding:9px 11px;border-radius:6px;font-size:12px;line-height:1.5;display:none" id="conv-warn" class="plain pa"></div>
-</div>
-
-<!-- TERMINAL -->
-<div class="sh"><span class="st">Terminal Condition Layer — Weighted Bearish Decay</span><div class="sl"></div></div>
-<div class="card">
-  <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Bearish strength decays as conditions are met. Phase exits when below 30%.</div>
-  <div class="ts-strength">
-    <div style="text-align:center;flex-shrink:0"><div style="font-size:10px;color:var(--muted);margin-bottom:3px">Bearish Strength</div><div class="ts-pct" id="ts-pct" style="color:var(--red)">—%</div></div>
-    <div class="ts-bar-wrap">
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px"><span>Reversal zone</span><span>Weakening</span><span>Active bearish</span></div>
-      <div class="ts-bar-track"><div class="ts-bar-fill" id="ts-bar" style="width:0%;background:var(--red)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-top:3px"><span>0%</span><span>30%</span><span>60%</span><span>100%</span></div>
-    </div>
-  </div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:8px">All 4 conditions weighted. Phase exits bearish when strength below 30%.</div>
   <div class="tc-grid" id="tc-grid">
     <div class="tci tc-unmet"><div class="tc-check">○</div><div class="tc-lbl">FII Selling Reduced</div><div class="tc-sub" id="tc1">—</div></div>
-    <div class="tci tc-unmet"><div class="tc-check">○</div><div class="tc-lbl">DII Coverage >80%</div><div class="tc-sub" id="tc2">—</div></div>
+    <div class="tci tc-unmet"><div class="tc-check">○</div><div class="tc-lbl">DII Coverage &gt;80%</div><div class="tc-sub" id="tc2">—</div></div>
     <div class="tci tc-unmet"><div class="tc-check">○</div><div class="tc-lbl">Price Stops Falling</div><div class="tc-sub" id="tc3">—</div></div>
     <div class="tci tc-unmet"><div class="tc-check">○</div><div class="tc-lbl">VIX Stops Expanding</div><div class="tc-sub" id="tc4">—</div></div>
   </div>
-  <div class="tc-verdict pn" id="tc-verdict">Awaiting analysis</div>
 </div>
 
 <!-- HISTORY -->
-<div class="sh"><span class="st">10-Day Memory</span><div class="sl"></div></div>
+<div class="sh"><span class="st-lbl2">10-Day Memory</span><div class="sl"></div></div>
 <div class="card">
-  <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Pre-loaded Mar 12–19 2026. Conviction saved with each analysis for carry-forward accuracy.</div>
-  <table class="ht"><thead><tr><th>Date</th><th>Nifty</th><th>Chg</th><th>FII</th><th>DII</th><th>Cover%</th><th>L/S</th><th>VIX</th><th>PDI</th><th>Conv</th><th>Phase</th></tr></thead>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:4px">SC saved with each full-mode analysis. Carry-forward uses stored SC — no recomputation.</div>
+  <table class="ht"><thead><tr><th>Date</th><th>Nifty</th><th>Chg</th><th>FII</th><th>DII</th><th>Cover%</th><th>L/S</th><th>VIX</th><th>PDI</th><th>SC</th><th>Phase</th></tr></thead>
   <tbody id="hist-body"></tbody></table>
 </div>
 
 <!-- INPUTS -->
-<div class="sh"><span class="st">Enter Today's Data</span><div class="sl"></div></div>
+<div class="sh"><span class="st-lbl2">Enter Today's Data</span><div class="sl"></div></div>
 <div class="card">
-  <div style="font-size:12px;color:var(--muted);margin-bottom:11px">
-    <strong>Full Mode:</strong> Enter all fields. <strong>Pre-Flow Mode:</strong> Leave FII/DII blank (enter High + Open for acceptance). <strong>Carry-Forward:</strong> Leave FII/DII AND High/Open blank — system shows last confirmed state only.
-  </div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:11px"><strong>Full:</strong> All fields → full computation, SC updated. <strong>Pre-Flow:</strong> FII/DII blank + High/Open entered → SC preserved, UC computed. <strong>Carry-Forward:</strong> FII/DII + High/Open all blank → last state shown, nothing computed.</div>
   <div class="ig4">
     <div class="ig"><label class="il">FII Cash (₹ Cr) <span>blank = pre-flow/CF</span></label><input type="number" id="in-fii" placeholder="blank = pre-flow" step="100"></div>
     <div class="ig"><label class="il">DII Cash (₹ Cr) <span>NSE</span></label><input type="number" id="in-dii" placeholder="blank = pre-flow" step="100"></div>
@@ -463,8 +485,8 @@ select{font-family:var(--sans);}
     <div class="ig"><label class="il">India VIX <span>auto-fetched</span></label><input type="number" id="in-vix" placeholder="auto-fetched" step="0.1"></div>
     <div class="ig"><label class="il">Nifty Close <span>auto-fetched</span></label><input type="number" id="in-nifty" placeholder="auto-fetched" step="10"></div>
     <div class="ig"><label class="il">Prev Nifty <span>auto-fetched</span></label><input type="number" id="in-prev" placeholder="auto-fetched" step="10"></div>
-    <div class="ig"><label class="il">Nifty High of Day <span>for acceptance</span></label><input type="number" id="in-high" placeholder="blank = carry-forward" step="10"></div>
-    <div class="ig"><label class="il">Nifty Open <span>for acceptance</span></label><input type="number" id="in-open" placeholder="blank = carry-forward" step="10"></div>
+    <div class="ig"><label class="il">Nifty High <span>for acceptance</span></label><input type="number" id="in-high" placeholder="blank = carry-fwd" step="10"></div>
+    <div class="ig"><label class="il">Nifty Open <span>for acceptance</span></label><input type="number" id="in-open" placeholder="blank = carry-fwd" step="10"></div>
     <div class="ig"><label class="il">Bank Nifty <span>auto-fetched</span></label><input type="number" id="in-bnifty" placeholder="auto-fetched" step="10"></div>
     <div class="ig"><label class="il">Prev Bank Nifty <span>auto-fetched</span></label><input type="number" id="in-pbn" placeholder="auto-fetched" step="10"></div>
     <div class="ig"><label class="il">India 10Y (%)</label><input type="number" id="in-in10y" value="6.70" step="0.01"></div>
@@ -479,23 +501,22 @@ select{font-family:var(--sans);}
         <option value="range">Range-Bound</option>
       </select>
     </div>
-    <div class="ig"><label class="il">Consecutive Down Days</label><input type="number" id="in-dd" value="3" min="0" max="30" step="1"></div>
-    <div class="ig"><label class="il">% Below Recent High</label><input type="number" id="in-fh" value="12.8" step="0.1" min="0" max="50"></div>
-    <div class="ig" style="grid-column:span 2"><label class="il">Trading Date <span>change if entering yesterday's data today</span></label><input type="date" id="in-date" style="font-family:var(--sans)"></div>
+    <div class="ig"><label class="il">Consecutive Down Days</label><input type="number" id="in-dd" value="0" min="0" max="30" step="1"></div>
+    <div class="ig"><label class="il">% Below Recent High</label><input type="number" id="in-fh" value="12.0" step="0.1" min="0" max="50"></div>
+    <div class="ig" style="grid-column:span 2"><label class="il">Trading Date <span>change if entering yesterday's data</span></label><input type="date" id="in-date" style="font-family:var(--sans)"></div>
   </div>
   <button class="abtn" onclick="analyse()">
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="white" stroke-width="1.5"/><path d="M7 4v3l2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
     Analyse & Save
   </button>
-  <div class="sbar"><span>Last analysed:</span><span id="last-upd" style="color:var(--text);font-weight:500">Not yet</span><span style="margin-left:auto;color:var(--dim)">v7 · Three-mode · Two-axis conviction</span></div>
+  <div class="sbar"><span>Last:</span><span id="last-upd" style="color:var(--text);font-weight:500">Not yet</span><span style="margin-left:auto;color:var(--dim)">v8 · SC never penalised · Price annotates only</span></div>
 </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════
-// SEED DATA — Real Mar 12-19 2026
-// ═══════════════════════════════════════
+// ═══ SEED DATA ═══
 const SEED=[
+  {date:'2026-03-20',nifty:23114,niftyChg:112,fii:-5340,dii:5334,absRatio:100,ls:0.40,vix:20.1,pdi:35,conviction:65,downDays:0,fromHigh:12.0,phase:'Distribution (Unstable Rally)'},
   {date:'2026-03-19',nifty:23002,niftyChg:-776,fii:-7207,dii:3410,absRatio:47,ls:0.38,vix:22.8,pdi:43,conviction:72,downDays:1,fromHigh:12.8,phase:'Panic — Continuation'},
   {date:'2026-03-18',nifty:23778,niftyChg:197,fii:-2714,dii:3253,absRatio:120,ls:0.42,vix:17.8,pdi:38,conviction:68,downDays:2,fromHigh:9.5,phase:'Distribution'},
   {date:'2026-03-17',nifty:23581,niftyChg:-312,fii:-4890,dii:3100,absRatio:63,ls:0.38,vix:19.2,pdi:52,conviction:75,downDays:3,fromHigh:10.2,phase:'Distribution → Breakdown'},
@@ -504,9 +525,7 @@ const SEED=[
   {date:'2026-03-12',nifty:24363,niftyChg:-420,fii:-6800,dii:3900,absRatio:57,ls:0.28,vix:21.4,pdi:61,conviction:80,downDays:4,fromHigh:7.3,phase:'Breakdown'},
 ];
 
-// ═══════════════════════════════════════
-// UTILITIES
-// ═══════════════════════════════════════
+// ═══ UTILITIES ═══
 function tick(){const n=new Date();document.getElementById('clock').textContent=n.toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short'})+' '+n.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:false});}
 tick();setInterval(tick,1000);
 function toast(m,d=3500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
@@ -515,63 +534,51 @@ function hideL(){document.getElementById('lov').classList.remove('show');}
 function g(id){const v=document.getElementById(id).value;return v===''?null:parseFloat(v);}
 function gv(id){return parseFloat(document.getElementById(id).value)||0;}
 let FD={},H=[...SEED];
-let _lastConv=null;
 
-// ═══════════════════════════════════════
-// AUTO-FETCH
-// ═══════════════════════════════════════
+// ═══ AUTO-FETCH ═══
 async function fetchAll(){
-  showL('Fetching live prices…');
+  showL('Fetching…');
   try{
     const r=await fetch('/api/marketdata');const j=await r.json();const d=j.data;
     const ok=[],fail=[];
     if(d.nifty?.cur>0){setTk('t-nifty','tc-nifty',d.nifty,'₹');document.getElementById('in-nifty').value=d.nifty.cur;document.getElementById('in-prev').value=d.nifty.prev;FD.nifty=d.nifty;ok.push('Nifty');}else fail.push('Nifty');
     if(d.bnifty?.cur>0){setTk('t-bnifty','tc-bnifty',d.bnifty,'₹');document.getElementById('in-bnifty').value=d.bnifty.cur;document.getElementById('in-pbn').value=d.bnifty.prev;FD.bnifty=d.bnifty;ok.push('BN');}else fail.push('BN');
-    if(d.inr?.cur>0){const v=d.inr.cur;document.getElementById('t-inr').textContent='₹'+v;const el=document.getElementById('tc-inr');el.textContent=(d.inr.chg>=0?'+':'')+d.inr.chg;el.className='tch '+(d.inr.chg>=0?'up':'dn');FD.inr=v;ok.push('INR');}else fail.push('INR');
+    if(d.inr?.cur>0){document.getElementById('t-inr').textContent='₹'+d.inr.cur;const el=document.getElementById('tc-inr');el.textContent=(d.inr.chg>=0?'+':'')+d.inr.chg;el.className='tch '+(d.inr.chg>=0?'up':'dn');FD.inr=d.inr.cur;ok.push('INR');}else fail.push('INR');
     if(d.vix?.cur>0){setTk('t-vix','tc-vix',d.vix,'');document.getElementById('in-vix').value=d.vix.cur;FD.vix=d.vix.cur;ok.push('VIX');}else fail.push('VIX');
     if(d.brent?.cur>0){setTk('t-brent','tc-brent',d.brent,'$');FD.brent=d.brent.cur;ok.push('Brent');}else fail.push('Brent');
     if(d.us10y?.cur>0)FD.us10y=d.us10y.cur;
     if(d.in10y?.cur>0)document.getElementById('in-in10y').value=d.in10y.cur.toFixed(2);
-    const sr=document.getElementById('src-row');
-    sr.innerHTML=(ok.length?`<span class="sbadge"><span class="sdot slive"></span>Live: ${ok.join(', ')}</span>`:'')+`<span class="sbadge"><span class="sdot smanual"></span>Manual: FII/DII, L/S</span>`+(fail.length?`<span class="sbadge"><span class="sdot serr"></span>Enter: ${fail.join(', ')}</span>`:'');
-    if(ok.length>0){toast(`✓ Live: ${ok.join(', ')}. Enter FII/DII + L/S then Analyse.`);analyse();}
-    else toast('⚠ Fetch failed — enter data manually');
+    document.getElementById('src-row').innerHTML=(ok.length?`<span class="sbadge"><span class="sdot slive"></span>Live: ${ok.join(', ')}</span>`:'')+`<span class="sbadge"><span class="sdot smanual"></span>Manual: FII/DII, L/S</span>`+(fail.length?`<span class="sbadge"><span class="sdot serr"></span>Enter: ${fail.join(', ')}</span>`:'');
+    if(ok.length>0){toast(`✓ ${ok.join(', ')} fetched`);analyse();}else toast('⚠ Fetch failed — enter manually');
   }catch(e){toast('⚠ Server error');console.error(e);}
   hideL();
 }
 function setTk(vid,cid,data,pre){
   document.getElementById(vid).textContent=pre+(data.cur>1000?Math.round(data.cur).toLocaleString('en-IN'):data.cur.toFixed(2));
-  const el=document.getElementById(cid);
-  el.textContent=(data.chg>=0?'+':'')+(data.cur>100?Math.round(data.chg):data.chg.toFixed(2))+' ('+(data.chg>=0?'+':'')+data.pct.toFixed(2)+'%)';
-  el.className='tch '+(data.chg>=0?'up':'dn');
+  const el=document.getElementById(cid);el.textContent=(data.chg>=0?'+':'')+(data.cur>100?Math.round(data.chg):data.chg.toFixed(2))+' ('+(data.chg>=0?'+':'')+data.pct.toFixed(2)+'%)';el.className='tch '+(data.chg>=0?'up':'dn');
 }
 
-// ═══════════════════════════════════════
-// HISTORY
-// ═══════════════════════════════════════
+// ═══ HISTORY ═══
 async function loadH(){
   try{const r=await fetch('/api/history');const j=await r.json();
-  if(j.history?.length>0){const sD=new Set(j.history.map(h=>h.date));const sX=SEED.filter(s=>!sD.has(s.date));H=[...j.history,...sX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);}
+    if(j.history?.length>0){const sD=new Set(j.history.map(h=>h.date));const sX=SEED.filter(s=>!sD.has(s.date));H=[...j.history,...sX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);}
   }catch(e){}renderH();
 }
 function renderH(){
   const today=new Date().toISOString().split('T')[0];
   const tb=document.getElementById('hist-body');
   if(!H.length){tb.innerHTML='<tr><td colspan="11" style="color:var(--muted);font-family:var(--sans)">No data</td></tr>';return;}
-  tb.innerHTML=H.map(h=>`<tr class="${h.date===today?'today-row':''}"><td>${h.date}${h.date===today?' ★':''}</td><td>${h.nifty?Math.round(h.nifty):'—'}</td><td class="${(h.niftyChg||0)>=0?'up':'dn'}">${h.niftyChg?(h.niftyChg>0?'+':'')+Math.round(h.niftyChg):'—'}</td><td class="${(h.fii||0)<0?'dn':'up'}">${h.fii?(h.fii>0?'+':'')+Math.round(h.fii):'—'}</td><td class="${(h.dii||0)>=0?'up':'dn'}">${h.dii?(h.dii>0?'+':'')+Math.round(h.dii):'—'}</td><td>${h.absRatio!=null?h.absRatio+'%':'—'}</td><td>${h.ls||'—'}</td><td>${h.vix||'—'}</td><td>${h.pdi!=null?h.pdi:'—'}</td><td>${h.conviction!=null?h.conviction:'—'}</td><td style="font-size:10px;font-family:var(--sans)">${(h.phase||'—').slice(0,22)}</td></tr>`).join('');
+  tb.innerHTML=H.map(h=>`<tr class="${h.date===today?'today-row':''}"><td>${h.date}${h.date===today?' ★':''}</td><td>${h.nifty?Math.round(h.nifty):'—'}</td><td class="${(h.niftyChg||0)>=0?'up':'dn'}">${h.niftyChg?(h.niftyChg>0?'+':'')+Math.round(h.niftyChg):'—'}</td><td class="${(h.fii||0)<0?'dn':'up'}">${h.fii?(h.fii>0?'+':'')+Math.round(h.fii):'—'}</td><td class="${(h.dii||0)>=0?'up':'dn'}">${h.dii?(h.dii>0?'+':'')+Math.round(h.dii):'—'}</td><td>${h.absRatio!=null?h.absRatio+'%':'—'}</td><td>${h.ls||'—'}</td><td>${h.vix||'—'}</td><td>${h.pdi!=null?h.pdi:'—'}</td><td style="font-weight:600">${h.conviction!=null?h.conviction:'—'}</td><td style="font-size:10px;font-family:var(--sans)">${(h.phase||'—').slice(0,22)}</td></tr>`).join('');
 }
 
-// ═══════════════════════════════════════
-// PURE FUNCTIONS
-// ═══════════════════════════════════════
+// ═══ CALCULATION ENGINE ═══
 function getLSZ(ls){
-  if(ls<0.20)return{lbl:'Extremely Bearish',col:'#c0392b',bc:'#e74c3c',exp:'Massive short positions. Extreme bearish — squeeze risk real.',cls:'sr'};
-  if(ls<0.35)return{lbl:'Bearish',col:'#c0392b',bc:'#e74c3c',exp:'Clearly positioned for a fall. Directional — not just caution.',cls:'sr'};
-  if(ls<0.50)return{lbl:'Cautiously Bearish',col:'#b45309',bc:'#f59e0b',exp:'Leaning bearish. Reducing risk, watching for direction.',cls:'sa'};
+  if(ls<0.20)return{lbl:'Extremely Bearish',col:'#c0392b',bc:'#e74c3c',exp:'Massive shorts. Extreme bearish — squeeze risk real.',cls:'sr'};
+  if(ls<0.35)return{lbl:'Bearish',col:'#c0392b',bc:'#e74c3c',exp:'Directional bearish positioning — not just caution.',cls:'sr'};
+  if(ls<0.50)return{lbl:'Cautiously Bearish',col:'#b45309',bc:'#f59e0b',exp:'Leaning bearish. Reducing risk.',cls:'sa'};
   if(ls<0.65)return{lbl:'Neutral to Bullish',col:'#1d4ed8',bc:'#3b82f6',exp:'Covering shorts, shifting toward long.',cls:'sn'};
-  return{lbl:'Bullish',col:'#1a7a4a',bc:'#22c55e',exp:'Net long — strong institutional backing.',cls:'sg'};
+  return{lbl:'Bullish',col:'#1a7a4a',bc:'#22c55e',exp:'Net long — institutional backing.',cls:'sg'};
 }
-
 function getMacro(in10y,us10y,inr,brent){
   let risk=0,sigs=[];
   if(inr>85){risk+=2;sigs.push({k:'USD/INR',v:inr.toFixed(2),s:'↑ Negative',w:'FIIs lose returns when rupee weakens',c:'dn'});}
@@ -580,23 +587,23 @@ function getMacro(in10y,us10y,inr,brent){
   if(in10y>6.9){risk+=2;sigs.push({k:'India 10Y',v:in10y.toFixed(2)+'%',s:'↑ Pressure',w:'Higher yields = costlier borrowing',c:'dn'});}
   else sigs.push({k:'India 10Y',v:in10y.toFixed(2)+'%',s:'→ Stable',w:'Yields in normal range',c:'neu'});
   if(us10y>4.5){risk+=2;sigs.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'↑ Risk-off',w:'High US yields pull money from India',c:'dn'});}
-  else if(us10y<4.0){risk--;sigs.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'↓ Supportive',w:'Lower US yields help EM flows',c:'up'});}
-  else sigs.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'→ Moderate',w:'Not a major driver today',c:'neu'});
+  else if(us10y<4.0){risk--;sigs.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'↓ Supportive',w:'Lower yields help EM flows',c:'up'});}
+  else sigs.push({k:'US 10Y',v:us10y.toFixed(2)+'%',s:'→ Moderate',w:'Not a major driver',c:'neu'});
   if(brent>90){risk+=2;sigs.push({k:'Brent',v:'$'+brent.toFixed(0),s:'↑ Adverse',w:'India imports oil — hurts current account',c:'dn'});}
-  else if(brent<75){risk--;sigs.push({k:'Brent',v:'$'+brent.toFixed(0),s:'↓ Positive',w:'Cheap oil helps India current account',c:'up'});}
+  else if(brent<75){risk--;sigs.push({k:'Brent',v:'$'+brent.toFixed(0),s:'↓ Positive',w:'Cheap oil helps current account',c:'up'});}
   else sigs.push({k:'Brent',v:'$'+brent.toFixed(0),s:'→ Neutral',w:'Oil not a driver today',c:'neu'});
   let lbl,cls;
   if(risk>=5){lbl='Macro Risk High';cls='sr';}else if(risk>=3){lbl='Mild Macro Pressure';cls='sa';}else if(risk<=0){lbl='Macro Supportive';cls='sg';}else{lbl='Mixed Macro';cls='sa';}
   return{lbl,cls,risk,sigs};
 }
-
-function classifyAcceptance(nifty,open,high,low,close,vix){
-  if(!high||!open||!low||!close)return{state:'unknown',reason:'Missing OHLC',ratio:null,invalid:true,distorted:false};
+function classifyAcceptance(nifty,open,high,close,vix){
+  if(!high||!open||!close)return{state:'unknown',reason:'Missing OHLC — enter High and Open',invalid:true};
+  const low=Math.min(open,close);
   const range=high-low;
   const thr=Math.max(nifty*0.01,0.5*(vix/100)*nifty);
-  if(range<thr)return{state:'invalid',reason:`Range ${Math.round(range)}pts < threshold ${Math.round(thr)}pts`,ratio:null,invalid:true,distorted:false,thr:Math.round(thr),range:Math.round(range)};
+  if(range<thr)return{state:'invalid',reason:`Range ${Math.round(range)}pts < VIX-adj threshold ${Math.round(thr)}pts`,invalid:true,thr:Math.round(thr),range:Math.round(range)};
   const gapSize=high-open;
-  if(gapSize<0.3*range)return{state:'distorted',reason:'Gap-driven: opening drive dominated range',ratio:null,invalid:false,distorted:true,thr:Math.round(thr),range:Math.round(range)};
+  if(gapSize<0.3*range)return{state:'distorted',reason:'Gap-driven: opening dominated range',distorted:true,thr:Math.round(thr),range:Math.round(range)};
   const ratio=(close-open)/gapSize;
   let state,reason;
   if(ratio>0.60){state='accepted';reason='Close in top 40% — market accepted higher prices';}
@@ -604,137 +611,116 @@ function classifyAcceptance(nifty,open,high,low,close,vix){
   else{state='neutral';reason='Inconclusive close position';}
   return{state,reason,ratio:ratio.toFixed(2),invalid:false,distorted:false,thr:Math.round(thr),range:Math.round(range)};
 }
-
 function checkFlowGate(fii,hist){
-  if(!hist.length||fii>=0)return{passes:false,reason:'No comparison or FII buying'};
+  if(fii>=0)return{passes:false,reason:'FII buying — gate N/A'};
   const r=hist.filter(h=>h.fii<0).slice(0,3).map(h=>Math.abs(h.fii));
   if(r.length<2)return{passes:false,reason:'Need 2+ selling days'};
   const avg=r.reduce((a,b)=>a+b,0)/r.length;
-  const abs=Math.abs(fii);
-  const pct=(1-abs/avg)*100;
-  if(pct>40&&abs<4000)return{passes:true,reason:`${pct.toFixed(0)}% reduction AND ₹${Math.round(abs)}Cr <4000`};
-  if(pct>40)return{passes:false,reason:`${pct.toFixed(0)}% reduction but ₹${Math.round(abs)}Cr still heavy`};
+  const abs=Math.abs(fii),pct=(1-abs/avg)*100;
+  if(pct>40&&abs<4000)return{passes:true,reason:`${pct.toFixed(0)}% reduction + ₹${Math.round(abs)}Cr <4000`};
+  if(pct>40)return{passes:false,reason:`${pct.toFixed(0)}% reduction but ₹${Math.round(abs)}Cr too heavy`};
   return{passes:false,reason:`Only ${pct.toFixed(0)}% reduction (need >40%)`};
 }
-
 function calcBNDiv(nPct,bnPct,bearish){
   const div=bnPct-nPct;
   if(Math.abs(div)<=0.5)return{div:div.toFixed(2),meaningful:false,signal:'<0.5% — ignored',cls:'neu'};
   if(bearish&&div<-0.5)return{div:div.toFixed(2),meaningful:true,signal:'BN lagging — financial weakness',cls:'dn'};
-  if(!bearish&&div>0.5)return{div:div.toFixed(2),meaningful:true,signal:'BN leading — institutional strength',cls:'up'};
+  if(!bearish&&div>0.5)return{div:div.toFixed(2),meaningful:true,signal:'BN leading — strength',cls:'up'};
   return{div:div.toFixed(2),meaningful:false,signal:'Present but regime-neutral',cls:'neu'};
 }
-
 function calcElast(hist,fii,nChg,frozen,prevFII){
   const pts=[];
   if(!frozen&&Math.abs(fii)>100&&nChg!==0)pts.push({e:Math.abs(nChg)/(Math.abs(fii)/1000),flow:Math.abs(fii)});
   hist.slice(0,5).forEach(h=>{if(h.fii&&h.niftyChg&&Math.abs(h.fii)>100)pts.push({e:Math.abs(h.niftyChg)/(Math.abs(h.fii)/1000),flow:Math.abs(h.fii)});});
-  const today=pts[0]?.e||0;
-  const avg3=pts.length>0?pts.slice(0,Math.min(3,pts.length)).reduce((a,b)=>a+b.e,0)/Math.min(3,pts.length):0;
+  const today=pts[0]?.e||0,avg3=pts.length>0?pts.slice(0,Math.min(3,pts.length)).reduce((a,b)=>a+b.e,0)/Math.min(3,pts.length):0;
   const flowForConf=frozen?Math.abs(prevFII||0):Math.abs(fii||0);
   const baseConf=flowForConf>5000?0.70:flowForConf>3000?0.85:1.00;
   const persist=pts.length>=3?1.0:pts.length>=2?0.90:0.70;
   const effConf=baseConf*persist;
   const confLabel=effConf>=0.90?'HIGH':effConf>=0.75?'MED':'LOW';
   const confColor=effConf>=0.90?'var(--green)':effConf>=0.75?'var(--amber)':'var(--red)';
-  let regime,regIdx,decCls;
-  if(today<60){regime='Strong Absorption';regIdx=0;decCls='up';}
-  else if(today<100){regime='Neutral';regIdx=1;decCls='neu';}
-  else if(today<140){regime='Weakening';regIdx=2;decCls='amb';}
-  else{regime='Cascade Risk';regIdx=3;decCls='dn';}
+  let regime,regIdx;
+  if(today<60){regime='Strong Absorption';regIdx=0;}
+  else if(today<100){regime='Neutral';regIdx=1;}
+  else if(today<140){regime='Weakening';regIdx=2;}
+  else{regime='Cascade Risk';regIdx=3;}
   let tag,tagSub;
-  if(frozen){tag='Unconfirmed';tagSub='Pre-flow/CF: last known flow';}
+  if(frozen){tag='Unconfirmed';tagSub='Non-full mode';}
   else if(pts.length<2){tag='Unconfirmed';tagSub='Single data point';}
-  else if(pts.length<3){tag='Provisional';tagSub='2 days — not yet persistent';}
+  else if(pts.length<3){tag='Provisional';tagSub='2 days — not persistent';}
   else{tag='Confirmed';tagSub='3+ days persistent';}
-  let trend='—',tsub='Need more data',dec='Insufficient data';
+  // Only confirmed elasticity gets structural influence
+  const isConfirmed=tag==='Confirmed';
+  let trend='—',tsub='Need more data',influence='No influence ('+tag+')';
   if(pts.length>=3){
     const sl=pts[0].e-pts[pts.length-1].e;
-    if(sl>15){trend='↑ Rising (persistent)';tsub='Confirmed weakening';dec='Acceleration — PDI rising expected';}
-    else if(sl>5){trend='↑ Rising';tsub='Weakening trend';dec='Monitor for cascade';}
-    else if(sl<-15){trend='↓ Falling (persistent)';tsub='Confirmed absorption';dec='Hidden stabilization — genuine signal';}
-    else if(sl<-5){trend='↓ Falling';tsub='Improving';dec='Provisional stabilization';}
-    else{trend='→ Stable';tsub='Consistent regime';dec='Regime persisting';}
+    if(sl>15){trend='↑ Rising (persistent)';tsub='Confirmed weakening';}
+    else if(sl>5){trend='↑ Rising';tsub='Weakening trend';}
+    else if(sl<-15){trend='↓ Falling (persistent)';tsub='Confirmed absorption';}
+    else if(sl<-5){trend='↓ Falling';tsub='Improving';}
+    else{trend='→ Stable';tsub='Consistent';}
+    if(isConfirmed){
+      if(trend.includes('↓'))influence='Structural: absorption improving';
+      else if(trend.includes('↑'))influence='Structural: weakening confirmed';
+      else influence='Structural: regime stable';
+    }
   }
-  return{today:today.toFixed(1),avg3:avg3.toFixed(1),trend,tsub,regime,regIdx,dec,decCls,tag,tagSub,confLabel,confColor,effConf,days:pts.length};
+  return{today:today.toFixed(1),avg3:avg3.toFixed(1),trend,tsub,regime,regIdx,tag,tagSub,confLabel,confColor,effConf,days:pts.length,influence,isConfirmed};
 }
-
 function calcPDI(dd,cumOut,vix,fh,vixH,absR,aligned,elastVal){
   const dS=Math.min(100,dd*15),fS=Math.min(100,(cumOut/50000)*100),vS=Math.min(100,Math.max(0,(vix-12)/(30-12)*100)),hS=Math.min(100,fh*4);
   let vA=0;if(vixH.length>=2){const sl=vixH[vixH.length-1]-vixH[0];vA=Math.min(100,Math.max(0,sl*15));}
-  const aS=absR<50?20:absR<70?10:0;
-  const alS=aligned?10:0;
-  const eS=elastVal>140?15:elastVal>100?7:0;
+  const aS=absR<50?20:absR<70?10:0,alS=aligned?10:0,eS=elastVal>140?15:elastVal>100?7:0;
   const pdi=Math.min(100,Math.round(dS*.20+fS*.20+vS*.15+hS*.15+vA*.10+aS*.10+alS*.05+eS*.05));
   let lbl,col,ctx;
   if(pdi<25){lbl='Neutral';col='#4ade80';ctx='Normal conditions';}
   else if(pdi<50){lbl='Early Panic';col='#fbbf24';ctx='Initiation — expansion likely';}
-  else if(pdi<75){lbl='Mid Panic';col='#f97316';ctx='Continuation — check elasticity daily';}
+  else if(pdi<75){lbl='Mid Panic';col='#f97316';ctx='Continuation — check elasticity';}
   else{lbl='Late Panic/Exhaustion';col='#a78bfa';ctx='Reversal risk rising';}
   return{pdi,lbl,col,ctx};
 }
-
-function timeInterp(dd){
-  if(dd<=0)return'Regime just detected';
-  if(dd<=2)return`Day ${dd} — expansion likely`;
-  if(dd<=5)return`Day ${dd} — watch for acceleration or exhaustion`;
-  return`Day ${dd}+ — diminishing impact, exhaustion window`;
-}
-
 function calcExhaustion(fii,hist){
   const r=hist.filter(h=>h.fii<0).slice(0,3).map(h=>Math.abs(h.fii));
-  if(r.length<2||fii>=0)return{label:'Need 2+ days',signal:false,cls:'neu'};
-  const avg=r.reduce((a,b)=>a+b,0)/r.length;
-  const ratio=Math.abs(fii)/avg;
-  if(ratio<0.60)return{label:`${(ratio*100).toFixed(0)}% of avg — EXHAUSTION`,signal:true,cls:'up'};
-  if(ratio<0.80)return{label:`${(ratio*100).toFixed(0)}% of avg — reducing`,signal:false,cls:'amb'};
-  return{label:`${(ratio*100).toFixed(0)}% of avg — sustained`,signal:false,cls:'dn'};
+  if(r.length<2||fii>=0)return{label:'—',signal:false};
+  const avg=r.reduce((a,b)=>a+b,0)/r.length,ratio=Math.abs(fii)/avg;
+  if(ratio<0.60)return{label:`${(ratio*100).toFixed(0)}% of 3-day avg — EXHAUSTION SIGNAL`,signal:true};
+  if(ratio<0.80)return{label:`${(ratio*100).toFixed(0)}% of avg — reducing`,signal:false};
+  return{label:`${(ratio*100).toFixed(0)}% of avg — sustained`,signal:false};
 }
-
 function calcCascade(absR,elast,dd,vix,vixH,fii,hist){
   const c1=absR<50,c2=elast.regIdx>=2,c3=dd>=3;
   let vA=0;if(vixH.length>=2)vA=vixH[vixH.length-1]-vixH[0];
-  const c4=vA>3;
-  const prev=hist.length>0?Math.abs(hist[0].fii||0):0;
-  const c5=prev>0&&Math.abs(fii||0)>prev*1.3;
+  const c4=vA>3,prev=hist.length>0?Math.abs(hist[0].fii||0):0,c5=prev>0&&Math.abs(fii||0)>prev*1.3;
   const met=[c1,c2,c3,c4,c5].filter(Boolean).length;
   let type,typeStyle,verdict;
-  if(met>=4){type='FORCED — CASCADE RISK';typeStyle='background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)';verdict='Margin calls and forced liquidation likely. Non-linear moves possible.';}
-  else if(met>=2){type='TRANSITIONING';typeStyle='background:rgba(249,115,22,.12);color:#fdba74;border:1px solid rgba(249,115,22,.25)';verdict='Forced elements emerging. Not full cascade yet. Monitor elasticity.';}
+  if(met>=4){type='FORCED — CASCADE';typeStyle='background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)';verdict='Forced selling. Non-linear moves possible.';}
+  else if(met>=2){type='TRANSITIONING';typeStyle='background:rgba(249,115,22,.12);color:#fdba74;border:1px solid rgba(249,115,22,.25)';verdict='Forced elements emerging. Monitor elasticity.';}
   else{type='CONTROLLED';typeStyle='background:rgba(74,222,128,.1);color:#86efac;border:1px solid rgba(74,222,128,.2)';verdict='Orderly institutional exit. Distribution, not cascade.';}
   const conds=[
-    {n:'Absorption <50%',met:c1,v:absR+'%'},
-    {n:'Elasticity weakening/cascade',met:c2,v:elast.regime},
-    {n:'Consecutive down ≥3',met:c3,v:dd+' days'},
-    {n:'VIX accelerating >+3',met:c4,v:vA>0?'+'+vA.toFixed(1):vA.toFixed(1)},
+    {n:'Absorption <50%',met:c1,v:absR+'%'},{n:'Elasticity weakening/cascade',met:c2,v:elast.regime},
+    {n:'Consecutive down ≥3',met:c3,v:dd+' days'},{n:'VIX accelerating >+3',met:c4,v:vA>0?'+'+vA.toFixed(1):vA.toFixed(1)},
     {n:'Selling velocity ↑>30%',met:c5,v:prev>0?((Math.abs(fii||0)/prev-1)*100).toFixed(0)+'%':'—'},
   ];
   return{type,typeStyle,verdict,conds,met};
 }
-
 function calcAbsGrad(hist,todayR,frozen){
   const pts=[{date:'Today',ratio:todayR,frozen}];
   hist.slice(0,4).forEach(h=>{if(h.absRatio!=null)pts.push({date:h.date.slice(5),ratio:h.absRatio,frozen:false});});
-  if(pts.length<2)return{pts,verdict:'Need 2+ days',cls:'pn',lbl:'Insufficient'};
+  if(pts.length<2)return{pts,verdict:'Need 2+ days',cls:'pn',lbl:'—'};
   const diffs=[];for(let i=0;i<pts.length-1;i++)diffs.push(pts[i].ratio-pts[i+1].ratio);
   const avg=diffs.reduce((a,b)=>a+b,0)/diffs.length;
   let verdict,cls,lbl;
-  if(frozen){verdict='Frozen — not updated in non-full mode.';cls='pn';lbl='→ Frozen';}
-  else if(avg>15){verdict=`Rapidly deteriorating (avg ${avg.toFixed(0)}%/day). Selling overwhelming DII.`;cls='pr';lbl='↓ Rapid';}
+  if(frozen){verdict='Frozen.';cls='pn';lbl='Frozen';}
+  else if(avg>15){verdict=`Rapidly deteriorating (avg ${avg.toFixed(0)}%/day).`;cls='pr';lbl='↓ Rapid';}
   else if(avg>5){verdict=`Gradually weakening (avg ${avg.toFixed(0)}%/day).`;cls='pa';lbl='↓ Gradual';}
-  else if(avg<-5){verdict=`Improving (avg ${Math.abs(avg).toFixed(0)}%/day). DII gaining control.`;cls='pg';lbl='↑ Improving';}
-  else{verdict=`Stable at ~${todayR}%. Equilibrium.`;cls='pn';lbl='→ Stable';}
+  else if(avg<-5){verdict=`Improving (avg ${Math.abs(avg).toFixed(0)}%/day).`;cls='pg';lbl='↑ Improving';}
+  else{verdict='Stable.';cls:'pn';lbl='→ Stable';}
   return{pts,verdict,cls,lbl};
 }
-
 function checkTerminal(fii,absR,nChg,vix,hist){
-  const pF=hist.length>0?hist[0].fii:null;
-  const pV=hist.length>0?hist[0].vix:null;
-  const c1=fii>-2000||(pF&&fii>pF*0.6);
-  const c2=absR>=80;const c3=nChg>=0;
-  const c4=pV?vix<=pV:vix<16;
-  const decay=(c1?30:0)+(c2?25:0)+(c3?25:0)+(c4?20:0);
-  const bearStr=100-decay;
+  const pF=hist.length>0?hist[0].fii:null,pV=hist.length>0?hist[0].vix:null;
+  const c1=fii>-2000||(pF&&fii>pF*0.6),c2=absR>=80,c3=nChg>=0,c4=pV?vix<=pV:vix<16;
+  const decay=(c1?30:0)+(c2?25:0)+(c3?25:0)+(c4?20:0),bearStr=100-decay;
   const conds=[
     {met:c1,partial:false,lbl:'FII Selling Reduced',sub:fii<0?`₹${Math.abs(Math.round(fii))} Cr`:'Positive ✓',id:'tc1'},
     {met:c2,partial:absR>=65&&absR<80,lbl:'DII Coverage >80%',sub:`${absR}%`,id:'tc2'},
@@ -742,38 +728,34 @@ function checkTerminal(fii,absR,nChg,vix,hist){
     {met:c4,partial:false,lbl:'VIX Stops Expanding',sub:pV?`${pV}→${vix.toFixed(1)}`:`${vix.toFixed(1)}`,id:'tc4'},
   ];
   let verdict,vcls;
-  if(bearStr<=30){verdict=`Bearish thesis near expiry (${bearStr}%). Watch for reversal confirmation.`;vcls='pg';}
-  else if(bearStr<=60){verdict=`Bearish weakening (${bearStr}%). Regime active but losing conviction.`;vcls='pa';}
-  else{verdict=`Bearish thesis active (${bearStr}%). High-alignment regime continues.`;vcls='pr';}
+  if(bearStr<=30){verdict=`Bearish thesis near expiry (${bearStr}%). Reversal confirmation watch.`;vcls='pg';}
+  else if(bearStr<=60){verdict=`Bearish weakening (${bearStr}%). Regime active but losing strength.`;vcls='pa';}
+  else{verdict=`Bearish thesis active (${bearStr}%).`;vcls='pr';}
   return{conds,bearStr,verdict,vcls};
 }
-
 function getPhase(fii,ls,nChg,bnChg,struct,vix,absR,pdi,dd){
   const sell=fii<0,short=ls<0.50,up=nChg>60,dn=nChg<-60,bnWk=bnChg<nChg-80,vixSp=vix>20,gapDn=struct==='gap_dn';
   if(vixSp&&sell&&absR<60){
-    if(pdi>=75)return{phase:'Panic — Late Stage',bg:'#4c1d95',desc:'PDI governs: exhaustion zone. Reversal risk rising.',next:'Monitor exhaustion — reversal window opening'};
-    if(dd<=2||pdi<35)return{phase:'Panic — Initiation Phase',bg:'#7c3aed',desc:'PDI governs: early stage, expansion likely.',next:'Do not fade initiation'};
-    return{phase:'Panic — Continuation Phase',bg:'#6d28d9',desc:'Mid-panic. Check elasticity daily for exhaustion.',next:'Wait for flow exhaustion + VIX peak'};
+    if(pdi>=75)return{phase:'Panic — Late Stage',bg:'#4c1d95',desc:'PDI governs: exhaustion zone. Reversal risk rising.',next:'Reversal window opening'};
+    if(dd<=2||pdi<35)return{phase:'Panic — Initiation',bg:'#7c3aed',desc:'PDI governs: early stage, expansion likely.',next:'Do not fade initiation'};
+    return{phase:'Panic — Continuation',bg:'#6d28d9',desc:'Mid-panic. Check structural signals daily.',next:'Wait for flow exhaustion'};
   }
   if(sell&&short&&(dn||gapDn||struct==='lower_highs')){
     if(bnWk||gapDn)return{phase:'Distribution → Breakdown',bg:'#991b1b',desc:'Trend activation. FII + price + BN aligned.',next:'Bearish continuation'};
-    return{phase:'Breakdown',bg:'#b91c1c',desc:'Full alignment. FII and price pointing down.',next:'Downside continuation likely'};
+    return{phase:'Breakdown',bg:'#b91c1c',desc:'Full alignment. FII and price pointing down.',next:'Downside continuation'};
   }
-  if(sell&&short&&up)return{phase:'Distribution (Unstable Rally)',bg:'#92400e',desc:'FIIs selling while price rises. Flow must confirm.',next:'Counter-trend — await flow confirmation'};
-  if(!sell&&ls>=0.50)return{phase:'Accumulation',bg:'#065f46',desc:'FIIs buying + bullish positioning.',next:'Bullish — dips are buying opportunities'};
+  if(sell&&short&&up)return{phase:'Distribution (Unstable Rally)',bg:'#92400e',desc:'FIIs selling while price rises. Structural conflict.',next:'Counter-trend — await flow'};
+  if(!sell&&ls>=0.50)return{phase:'Accumulation',bg:'#065f46',desc:'FIIs buying + bullish positioning.',next:'Bullish — dips are entries'};
   return{phase:'Distribution',bg:'#7f1d1d',desc:'FIIs selling, market holding. Supply building.',next:'Bearish bias — watch for breakdown'};
 }
 
-// ═══════════════════════════════════════
-// STATE CONVICTION — never penalised
-// Derived from confirmed data only
-// ═══════════════════════════════════════
-function calcStateConviction(ls,fii,nChg,absR,macroR,struct,bnChg,pdi,absGradType,elastRegIdx){
+// ═══ STATE CONVICTION — FULL MODE ONLY, NO PENALTIES ═══
+function calcSC(ls,fii,nChg,absR,macroR,struct,bnChg,pdi,absGradType,elastIsConfirmed,elastRegIdx,termBearStr){
   const short=ls<0.50,mDn=nChg<-60,mUp=nChg>60,bnWk=bnChg<nChg-80;
   let s1=ls<0.20?90:ls<0.35?75:ls<0.50?60:ls<0.65?55:80;
   if(mDn&&short)s1=Math.min(100,s1+15);
-  let s2=short&&mUp?60:short&&mDn?88:!short&&mUp?82:40;
-  if(short&&mUp)s2=Math.max(35,s2-15);
+  let s2=short&&mUp?55:short&&mDn?85:!short&&mUp?82:40;
+  // No SC penalty for price — price state only annotates, never reduces
   let s3=fii>=0?65:absR>=90?25:absR>=70?55:78;
   if(absGradType==='rapid')s3=Math.min(100,s3+15);
   else if(absGradType==='improving')s3=Math.max(20,s3-20);
@@ -781,159 +763,173 @@ function calcStateConviction(ls,fii,nChg,absR,macroR,struct,bnChg,pdi,absGradTyp
   let s5=struct==='gap_dn'?90:struct==='lower_highs'?82:struct==='hh_no_follow'?68:struct==='gap_up_fade'?62:struct==='higher_highs'&&!short?80:50;
   if(bnWk)s5=Math.min(100,s5+10);
   let raw=Math.round(s1*.30+s2*.25+s3*.15+s4*.10+s5*.20);
-  if(pdi>=75)raw=Math.round(raw*0.85); // PDI late-stage governs
-  if(elastRegIdx>=3)raw=Math.min(100,raw+8);
-  // Panic floor
+  // PDI late-stage governs: same signals = different meaning
+  if(pdi>=75)raw=Math.round(raw*0.85);
+  // Elasticity: only if confirmed, only as structural signal
+  if(elastIsConfirmed&&elastRegIdx>=3)raw=Math.min(100,raw+8);
+  // Terminal override: if bearish strength < 35%, suppress heavy bearish signals
+  if(termBearStr<35){raw=Math.min(raw,65);} // Cap SC when terminal says regime weakening
+  // Panic floor (mid-range only)
   if(pdi>=25&&pdi<75)raw=Math.max(raw,50);
-  // Noise filter ±5
-  if(_lastConv!==null&&Math.abs(raw-_lastConv)<=5)raw=_lastConv;
-  let regime,rsub,warn='';
-  if(raw>=80){regime='High-Alignment Regime';rsub='Strong regime — monitor exhaustion triggers';warn='High alignment ≠ certainty. Check PDI, elasticity tag, terminal conditions.';}
-  else if(raw>=65){regime='Clear Signal';rsub='Direction confirmed';}
-  else if(raw>=45){regime='Mild Signal';rsub='Some alignment — insufficient for full conviction';}
+  let regime,rsub;
+  if(raw>=75){regime='High-Alignment Regime';rsub='Strong regime — monitor exhaustion';}
+  else if(raw>=60){regime='Clear Signal';rsub='Direction confirmed';}
+  else if(raw>=45){regime='Mild Signal';rsub='Some alignment';}
   else{regime='Low / Mixed';rsub='Wait for clarity';}
-  if(pdi>=75&&raw>=65){regime='High-Alignment + Exhaustion Risk';rsub='Late-stage regime — reversal window opening';}
-  return{s1,s2,s3,s4,s5,score:raw,regime,rsub,warn};
+  if(pdi>=75&&raw>=60){regime='High-Alignment + Exhaustion Risk';rsub='Late-stage — reversal window opening';}
+  return{s1,s2,s3,s4,s5,score:raw,regime,rsub};
 }
 
-// ═══════════════════════════════════════
-// UPDATE CONFIDENCE — penalised
-// Reflects today's data completeness
-// ═══════════════════════════════════════
-function calcUpdateConfidence(mode,accept,flowGate,elastTag,priceState){
-  // mode: 'full' | 'preflow' | 'carryforward'
+// ═══ UPDATE CONFIDENCE — ALL MODES, PENALTIES ONLY HERE ═══
+function calcUC(mode,accept,flowGate,elastTag,priceConflict,termBearStr){
   if(mode==='full'){
-    if(flowGate?.passes&&accept?.state==='accepted'&&elastTag==='Confirmed')return{label:'HIGH',score:95,tag:'tag-high',sub:'Flow confirmed + acceptance validated + elasticity confirmed'};
-    if(elastTag==='Confirmed')return{label:'HIGH',score:85,tag:'tag-high',sub:'Flow confirmed. Elasticity confirmed.'};
-    return{label:'MED',score:70,tag:'tag-med',sub:'Flow present. Some signals unconfirmed.'};
+    let label,tag,reason,penalty=null,score;
+    if(flowGate?.passes&&accept?.state==='accepted'&&elastTag==='Confirmed'){label='HIGH';tag='uc-high';reason='Flow confirmed + acceptance validated + elasticity confirmed';score=95;}
+    else if(elastTag==='Confirmed'){label='HIGH';tag='uc-high';reason='Flow confirmed. Elasticity confirmed.';score=85;}
+    else if(priceConflict){
+      label='MED';tag='uc-med';reason='Flow confirmed but price contradicts positioning.';score=65;
+      penalty='Price conflict flag active — counter-trend move detected. SC unaffected.';
+    }
+    else{label='MED';tag='uc-med';reason='Flow present. Partial signal confirmation.';score=70;}
+    return{label,tag,reason,penalty,score};
   }
   if(mode==='preflow'){
-    if(accept?.state==='accepted'||accept?.state==='rejected')return{label:'MED',score:55,tag:'tag-med',sub:'OHLC present, flow pending. Price classified.'};
-    if(accept?.state==='invalid'||accept?.state==='distorted')return{label:'LOW',score:35,tag:'tag-low',sub:'OHLC present but acceptance invalid. Flow pending.'};
-    return{label:'LOW',score:30,tag:'tag-low',sub:'Flow pending. Limited new information.'};
+    if(accept?.state==='accepted'||accept?.state==='rejected')return{label:'MED',tag:'uc-med',reason:'OHLC present + acceptance classified. Flow pending.',score:55,penalty:'Pre-flow: UC reduced. SC preserved unchanged.'};
+    if(accept?.state==='invalid'||accept?.state==='distorted')return{label:'LOW',tag:'uc-low',reason:'OHLC present but acceptance invalid. Flow pending.',score:35,penalty:'Pre-flow + invalid range: UC low. SC preserved.'};
+    return{label:'LOW',tag:'uc-low',reason:'Flow pending. Limited new information today.',score:30,penalty:'Pre-flow: UC reduced. SC preserved unchanged.'};
   }
-  // carry-forward
-  return{label:'NONE',score:0,tag:'tag-cf',sub:'No new data. State carried from last confirmed session.'};
+  return{label:'NONE',tag:'uc-none',reason:'No new data. System refuses to interpret absence.',score:0,penalty:null};
 }
 
-// ═══════════════════════════════════════
-// CARRY-FORWARD DISPLAY
-// Pure state display — no recomputation
-// ═══════════════════════════════════════
-function renderCarryForward(lastH,niftyLive){
-  // Show last confirmed state only
-  const rb=document.getElementById('rb');
-  rb.style.background=lastH.phase?.includes('Panic')?'#6d28d9':lastH.phase?.includes('Breakdown')?'#991b1b':'#7f1d1d';
-  document.getElementById('rb-phase').textContent=(lastH.phase||'Unknown')+ ' (last confirmed)';
-  document.getElementById('rb-desc').textContent='Displaying last confirmed state from '+lastH.date+'. No new data to interpret.';
-  document.getElementById('mode-lbl').textContent='Carry-Forward Mode';
-  document.getElementById('rdcount').textContent=`Last confirmed: ${lastH.date} · PDI: ${lastH.pdi||'—'}`;
-  document.getElementById('bchip').textContent='No new data';
-  document.getElementById('bchip').className='bchip bc-cf';
-  document.getElementById('pdi-fill').style.width=(lastH.pdi||0)+'%';
-  document.getElementById('pdi-fill').style.background='#a78bfa';
-  document.getElementById('pdi-val').textContent=(lastH.pdi||'—')+'/100 — last session';
-  document.getElementById('pdi-ctx').textContent='Carried from '+lastH.date;document.getElementById('pdi-ctx').style.color='rgba(255,255,255,.6)';
-  document.getElementById('time-ctx').textContent='State age: 1+ session';
-  document.getElementById('exhaust-val').textContent='Not computed';document.getElementById('exhaust-val').style.color='rgba(255,255,255,.4)';
-  document.getElementById('price-state-meta').textContent='Live price only (not interpreted)';document.getElementById('price-state-meta').style.color='rgba(255,255,255,.4)';
-  // Narrative
-  const nChgLive=niftyLive&&lastH.nifty?(niftyLive-lastH.nifty):null;
-  const priceCtx=nChgLive?` Live Nifty shows ${nChgLive>0?'+':''}${Math.round(nChgLive)} pts vs last close — <strong>not interpreted until flow data arrives</strong>.`:'';
-  document.getElementById('rb-narr').innerHTML=`<strong>No new data to interpret.</strong> Displaying last confirmed state from ${lastH.date}. Phase: ${lastH.phase||'—'}. Conviction: ${lastH.conviction||'—'}.${priceCtx} Enter FII/DII flows and hit Analyse to resume computation.`;
-  document.getElementById('trigs').innerHTML='<span class="trig tw"><span class="tdot"></span>Enter today\'s data to resume analysis</span>';
+// ═══ AUTHORITATIVE PANEL SYNTHESIS ═══
+function buildAuthOutput(phase,sc,term,elast,absGrad,exhaust,cascade,accept,flowGate,bnDiv,mode,priceConflict,nChg,fii,ls,lastH){
+  // STRUCTURE signal (governed by confirmed elasticity + absorption)
+  let strSignal,strClass;
+  if(term.bearStr<35){strSignal='Regime weakening — stabilisation signals permitted to dominate';strClass='up';}
+  else if(elast.isConfirmed&&elast.trend.includes('↓')&&absGrad.lbl.includes('↑')){strSignal='Confirmed stabilisation — elasticity + absorption both improving';strClass='up';}
+  else if(elast.isConfirmed&&elast.trend.includes('↑')){strSignal='Confirmed deterioration — acceleration risk';strClass='dn';}
+  else if(exhaust.signal){strSignal='Flow exhaustion detected — selling intensity reducing';strClass='amb';}
+  else{strSignal='No confirmed structural shift';strClass='neu';}
 
-  // Freeze all layers
-  ['l1-card','l2-card','l3-card','l4-card','accept-card','elast-card','cascade-card','abs-card'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.classList.add('frozen');}
-  });
-  document.getElementById('layers-frozen-tag').style.display='inline';
+  // BEHAVIOR (price annotates only — lowest authority)
+  let behavState,behavSub,behavNote=null,behavClass;
+  const mU=nChg>60,mD=nChg<-60;
+  if(mode==='carryforward'){behavState='Not interpreted';behavSub='No price data in carry-forward mode';behavClass='neu';}
+  else if(priceConflict&&mU){
+    behavState='Counter-trend rally';
+    behavSub='Price rising while FII bearish. Flag only — does not affect SC or regime.';
+    behavNote=accept.state==='accepted'&&flowGate.passes?'Accepted (confirmed) — stabilisation signal':'accept.state'==='accepted'?'Accepted (provisional) — flow gate not satisfied':null;
+    behavClass='amb';
+  }else if(!priceConflict&&mD){behavState='Trend confirming';behavSub='Price aligning with FII positioning.';behavClass='dn';}
+  else if(!priceConflict&&mU){behavState='Trend confirming (bullish)';behavSub='Price aligning with FII positioning.';behavClass='up';}
+  else{behavState='Flat';behavSub='No meaningful price signal today.';behavClass='neu';}
 
-  // Two-axis conviction: state = yesterday, update = NONE
-  document.getElementById('state-conv').textContent=lastH.conviction||'—';
-  document.getElementById('state-conv').style.color=lastH.conviction>=70?'var(--red)':lastH.conviction>=50?'var(--amber)':'var(--green)';
-  document.getElementById('state-conv-sub').textContent='Last confirmed: '+lastH.date;
-  document.getElementById('state-conv-tag').textContent='PERSISTENT — unchanged';
-  document.getElementById('state-conv-tag').className='conv-axis-tag tag-state';
-  document.getElementById('upd-conf').textContent='—';
-  document.getElementById('upd-conf-sub').textContent='No new data — system refuses to interpret';
-  document.getElementById('upd-conf-tag').textContent='NONE — carry-forward active';
-  document.getElementById('upd-conf-tag').className='conv-axis-tag tag-cf';
+  // NEXT-DAY BIAS (terminal governs → structural → behavior)
+  let bias;
+  if(term.bearStr<35)bias='Reversal attempt possible — terminal conditions weakening';
+  else if(term.bearStr<60&&elast.isConfirmed&&elast.trend.includes('↓'))bias='Bearish weakening — watch for stabilisation confirmation';
+  else if(exhaust.signal)bias='Flow exhaustion signal — monitor next session FII data';
+  else if(priceConflict&&mU)bias='Counter-trend — phase locked, await flow confirmation';
+  else if(phase.phase.includes('Breakdown')||phase.phase.includes('Panic'))bias='Bearish continuation — high-alignment regime';
+  else bias=phase.next;
 
-  // No layer scores — show dashes
-  ['lb1','lb2','lb3','lb4','lb5'].forEach(id=>document.getElementById(id).style.width='0%');
-  ['lv1','lv2','lv3','lv4','lv5'].forEach(id=>document.getElementById(id).textContent='—');
+  return{strSignal,strClass,behavState,behavSub,behavNote,behavClass,bias};
 }
 
-// ═══════════════════════════════════════
-// MAIN ANALYSE — THREE-MODE EXECUTION
-// ═══════════════════════════════════════
+// ═══ MAIN ANALYSE ═══
 async function analyse(){
   const fiiRaw=g('in-fii'),diiRaw=g('in-dii'),lsRaw=g('in-ls');
-  const niftyRaw=g('in-nifty'),prevRaw=g('in-prev');
-  const highRaw=g('in-high'),openRaw=g('in-open');
+  const niftyRaw=g('in-nifty'),prevRaw=g('in-prev'),highRaw=g('in-high'),openRaw=g('in-open');
   const lastH=H[0]||{};
 
-  // ── DETERMINE MODE ──
-  const flowMissing=(fiiRaw===null||diiRaw===null);
-  const ohlcMissing=(!highRaw||!openRaw);
-  let MODE;
-  if(!flowMissing)MODE='full';
-  else if(!ohlcMissing)MODE='preflow';
-  else MODE='carryforward';
+  // ── MODE DETERMINATION ──
+  const flowMissing=fiiRaw===null||diiRaw===null;
+  const ohlcMissing=!highRaw||!openRaw;
+  const MODE=!flowMissing?'full':!ohlcMissing?'preflow':'carryforward';
 
   // ── MODE BANNER ──
   const banner=document.getElementById('mode-banner');
   if(MODE==='carryforward'){
-    banner.style.display='flex';
-    banner.className='mode-banner mb-cf';
-    banner.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span class="mb-icon">🔒</span><div><div class="mb-title">Carry-Forward Mode — No new data</div><div class="mb-sub">System refuses to interpret absence of data. Displaying last confirmed state from ${lastH.date||'—'}.</div></div></div><div class="mb-right">Enter FII/DII + High/Open<br>to resume computation</div>`;
-  } else if(MODE==='preflow'){
-    banner.style.display='flex';
-    banner.className='mode-banner mb-pf';
-    banner.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span class="mb-icon">⏳</span><div><div class="mb-title">Pre-Flow Mode — Flow pending</div><div class="mb-sub">State Conviction preserved from last session. Update Confidence reduced. Acceptance computed from OHLC.</div></div></div><div class="mb-right" id="pf-price-sig">Computing…</div>`;
-  } else {
-    banner.style.display='none';
-  }
+    banner.style.display='flex';banner.className='mode-banner mb-cf';
+    banner.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">🔒</span><div><div class="mb-title">Carry-Forward Mode</div><div class="mb-sub">No new data. Displaying last confirmed state from ${lastH.date||'—'}. No recomputation.</div></div></div><div class="mb-right">Enter FII/DII + High/Open to resume</div>`;
+  }else if(MODE==='preflow'){
+    banner.style.display='flex';banner.className='mode-banner mb-pf';
+    banner.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⏳</span><div><div class="mb-title">Pre-Flow Mode — Flow pending</div><div class="mb-sub">SC preserved from last session. UC computed from OHLC. SC not penalised.</div></div></div><div class="mb-right" id="pf-price-sig">—</div>`;
+  }else{banner.style.display='none';}
 
-  // ── CARRY-FORWARD: pure state display, no computation ──
+  // ── CARRY-FORWARD: zero computation ──
   if(MODE==='carryforward'){
-    const niftyLive=niftyRaw||(FD.nifty?.cur)||lastH.nifty;
-    renderCarryForward(lastH,niftyLive);
+    const lH=lastH;
+    const niftyLive=niftyRaw||(FD.nifty?.cur)||lH.nifty||23000;
+    document.getElementById('rh').style.background=lH.phase?.includes('Panic')?'#6d28d9':lH.phase?.includes('Break')?'#991b1b':'#7f1d1d';
+    document.getElementById('rh-phase').textContent=(lH.phase||'Unknown')+' (last confirmed)';
+    document.getElementById('rh-desc').textContent='Last confirmed: '+lH.date+' — system refuses to interpret absence of data';
+    document.getElementById('mode-lbl').textContent='Carry-Forward';
+    document.getElementById('mode-chip').textContent='No new data';
+    document.getElementById('pdi-inline').textContent=lH.pdi||'—';
+    document.getElementById('rdcount').textContent=`Last session: ${lH.date}`;
+    document.getElementById('pdi-fill').style.width=(lH.pdi||0)+'%';document.getElementById('pdi-fill').style.background='#a78bfa';
+    document.getElementById('pdi-val').textContent=(lH.pdi||'—')+' — last session';
+    document.getElementById('auth-mode-tag').textContent='CARRY-FORWARD — NO NEW DATA';
+    document.getElementById('auth-mode-tag').style.background='var(--bg)';document.getElementById('auth-mode-tag').style.color='var(--muted)';
+    // State section — yesterday's SC, unchanged
+    document.getElementById('st-phase').textContent=lH.phase||'—';
+    document.getElementById('st-phase-sub').textContent='Last confirmed — not recomputed';
+    document.getElementById('sc-num').textContent=lH.conviction||'—';
+    document.getElementById('sc-num').style.color=lH.conviction>=70?'var(--red)':lH.conviction>=50?'var(--amber)':'var(--green)';
+    document.getElementById('sc-tag').textContent='CARRIED — unchanged';document.getElementById('sc-tag').className='state-sc-tag sc-tag-cf';
+    // Terminal — from history
+    const bearStr=lH.absRatio>=80&&lH.niftyChg>=0?30:75;
+    document.getElementById('ts-pct').textContent=bearStr+'%';document.getElementById('ts-pct').style.color=bearStr<=30?'var(--green)':bearStr<=60?'var(--amber)':'var(--red)';
+    document.getElementById('ts-bar').style.width=bearStr+'%';document.getElementById('ts-bar').style.background=bearStr<=30?'var(--green)':bearStr<=60?'var(--amber)':'var(--red)';
+    document.getElementById('ts-verdict').textContent='Carried from last session';
+    // Structure — frozen
+    document.getElementById('str-elast').textContent='Frozen';document.getElementById('str-absorb').textContent='Frozen';
+    document.getElementById('str-gradient').textContent='Frozen';document.getElementById('str-cascade').textContent='Frozen (yesterday)';
+    document.getElementById('str-exhaust').textContent='Not computed';document.getElementById('str-signal').textContent='No new structural data';
+    // Behavior — price only as ticker
+    const nChgLive=lH.nifty?(niftyLive-lH.nifty):0;
+    document.getElementById('beh-state').textContent='Not interpreted';
+    document.getElementById('beh-sub').textContent=`Live Nifty: ${nChgLive>0?'+':''}${Math.round(nChgLive)} pts vs last close. Not interpreted until flow arrives.`;
+    document.getElementById('beh-accept').textContent='Not computed';document.getElementById('beh-accept-sub').textContent='Enter OHLC to compute';document.getElementById('beh-bn').textContent='—';
+    const bnote=document.getElementById('beh-note');bnote.style.display='none';
+    // Confidence — NONE
+    document.getElementById('uc-label').textContent='NONE';document.getElementById('uc-label').style.color='var(--muted)';
+    document.getElementById('uc-tag').textContent='NONE — carry-forward';document.getElementById('uc-tag').className='uc-tag uc-none';
+    document.getElementById('uc-reason').textContent='System refuses to interpret absence of data. Enter FII/DII flows to resume computation.';
+    document.getElementById('uc-penalty').style.display='none';
+    document.getElementById('auth-bias').textContent='Enter today\'s data to generate bias';
+    document.getElementById('auth-triggers').innerHTML='<span style="font-size:10px;color:var(--muted)">Awaiting data</span>';
+    // Freeze all diagnostic layers
+    ['l1-card','l2-card','l3-card','l4-card','elast-card','cascade-card','abs-card'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('frozen');});
+    document.getElementById('layers-frozen-tag').style.display='inline';
     document.getElementById('last-upd').textContent='Carry-forward — '+new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'});
-    toast('🔒 Carry-forward mode — last confirmed state displayed. Enter data to resume.');
-    return; // STOP — no further computation
+    renderH();toast('🔒 Carry-forward. Showing last confirmed state.');return;
   }
 
-  // ── UNFROZEN — restore cards ──
-  ['l1-card','l2-card','l3-card','l4-card','accept-card','elast-card','cascade-card','abs-card'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.classList.remove('frozen');
-  });
+  // ── UNFROZEN ──
+  ['l1-card','l2-card','l3-card','l4-card','elast-card','cascade-card','abs-card'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('frozen');});
   document.getElementById('layers-frozen-tag').style.display='none';
 
   // ── EXTRACT VALUES ──
-  // Pre-flow uses yesterday's flow data for state, today's OHLC for acceptance
   const fii=flowMissing?(lastH.fii||0):fiiRaw;
   const dii=flowMissing?(lastH.dii||0):diiRaw;
   const ls=lsRaw||(lastH.ls||0.40);
   const nifty=niftyRaw||(lastH.nifty||23000);
   const prev=prevRaw||nifty;
-  const bnifty=gv('in-bnifty');const pbn=gv('in-pbn');
-  const in10y=gv('in-in10y')||6.70;
-  const dd=gv('in-dd');const fh=gv('in-fh');
+  const bnifty=gv('in-bnifty'),pbn=gv('in-pbn');
+  const in10y=gv('in-in10y')||6.70,dd=gv('in-dd'),fh=gv('in-fh');
   const vix=gv('in-vix')||FD.vix||(lastH.vix||16);
   const struct=document.getElementById('in-struct').value;
-  const us10y=FD.us10y||4.31;const inr=FD.inr||84.5;const brent=FD.brent||84.0;
+  const us10y=FD.us10y||4.31,inr=FD.inr||84.5,brent=FD.brent||84.0;
   const nChg=nifty-prev,nPct=prev>0?(nChg/prev*100):0;
   const bnChg=bnifty-pbn,bnPct=pbn>0?(bnChg/pbn*100):0;
-  // Absorption: only compute in full mode
   const absR=MODE==='full'&&fii<0?Math.min(100,Math.round((dii/Math.abs(fii))*100)):(lastH.absRatio||50);
   const cumOut=H.reduce((a,h)=>a+(h.fii<0?Math.abs(h.fii):0),0)+(MODE==='full'&&fii<0?Math.abs(fii):0);
   const vixH=H.map(h=>h.vix).filter(Boolean);
   const bearish=ls<0.50&&fii<0;
 
-  // ── COMPUTATIONS (full or partial based on mode) ──
+  // ── COMPUTE ALL ──
   const lsZ=getLSZ(ls);
   const macro=getMacro(in10y,us10y,inr,brent);
   const elast=calcElast(H,fii,nChg,MODE!=='full',lastH.fii);
@@ -944,212 +940,195 @@ async function analyse(){
   const absGT=elast.trend.includes('↑')?'rapid':elast.trend.includes('↓')?'improving':'stable';
   const absGrad=calcAbsGrad(H,absR,MODE!=='full');
   const term=checkTerminal(MODE==='full'?fii:lastH.fii,absR,nChg,vix,H);
-  const accept=classifyAcceptance(nifty,openRaw||0,highRaw||0,prev,nifty,vix);
+  const accept=classifyAcceptance(nifty,openRaw||0,highRaw||0,nifty,vix);
   const flowGate=checkFlowGate(MODE==='full'?fii:lastH.fii,H);
   const bnDiv=calcBNDiv(nPct,bnPct,bearish);
 
-  // ── STATE CONVICTION (never penalised) ──
-  const stateConv=calcStateConviction(ls,fii,nChg,absR,macro.risk,struct,bnChg,pdiD.pdi,absGT,elast.regIdx);
-  _lastConv=stateConv.score;
+  // Price conflict flag (never reduces SC — annotates BEHAVIOR only)
+  const priceConflict=ls<0.50&&nChg>60;
 
-  // ── UPDATE CONFIDENCE (penalised) ──
-  const updConf=calcUpdateConfidence(MODE,accept,flowGate,elast.tag,null);
+  // SC (full mode only — no penalties ever)
+  let scScore,scRegime,scRsub;
+  if(MODE==='full'){
+    const sc=calcSC(ls,fii,nChg,absR,macro.risk,struct,bnChg,pdiD.pdi,absGT,elast.isConfirmed,elast.regIdx,term.bearStr);
+    scScore=sc.score;scRegime=sc.regime;scRsub=sc.rsub;
+    // Update l1-l5 bars (diagnostic)
+    const bc=v=>v>65?'#c0392b':v>45?'#d97706':'#22c55e';
+    // (no separate bar UI in v8 — SC is shown in auth panel only)
+  }else{
+    // Preserve yesterday's SC — no recomputation, no penalty
+    scScore=lastH.conviction||70;scRegime='Preserved from '+lastH.date;scRsub='SC not penalised in '+MODE+' mode';
+  }
 
-  // Update tickers
+  const uc=calcUC(MODE,accept,flowGate,elast.tag,priceConflict,term.bearStr);
+  const auth=buildAuthOutput(phase,scScore,term,elast,absGrad,exhaust,cascade,accept,flowGate,bnDiv,MODE,priceConflict,nChg,fii,ls,lastH);
+
+  // ── UPDATE TICKERS ──
   if(!FD.nifty&&nifty){document.getElementById('t-nifty').textContent='₹'+Math.round(nifty).toLocaleString('en-IN');const el=document.getElementById('tc-nifty');el.textContent=(nChg>=0?'+':'')+Math.round(nChg)+'pts';el.className='tch '+(nChg>=0?'up':'dn');}
   if(!FD.bnifty&&bnifty){document.getElementById('t-bnifty').textContent='₹'+Math.round(bnifty).toLocaleString('en-IN');const el=document.getElementById('tc-bnifty');el.textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+'pts';el.className='tch '+(bnChg>=0?'up':'dn');}
+  if(MODE==='preflow'){const ps=nChg>80?`+${Math.round(nChg)} — counter-trend (not interpreted)`:nChg<-80?`${Math.round(nChg)} — confirming yesterday's state`:'Flat';document.getElementById('pf-price-sig').textContent='Price: '+ps;}
 
-  // Pre-flow price signal
-  if(MODE==='preflow'){const ps=nChg>80?`+${Math.round(nChg)} pts — diverging from yesterday's regime`:nChg<-80?`${Math.round(nChg)} pts — confirming yesterday's regime`:'Flat — regime persisting';document.getElementById('pf-price-sig').textContent='Price: '+ps;}
-
-  // ── REGIME BANNER ──
-  document.getElementById('rb').style.background=phase.bg;
-  document.getElementById('rb-phase').textContent=MODE==='preflow'?phase.phase+' (phase locked)':phase.phase;
-  document.getElementById('rb-desc').textContent=phase.desc;
+  // ── REGIME HEADER ──
+  document.getElementById('rh').style.background=phase.bg;
+  document.getElementById('rh-phase').textContent=MODE==='preflow'?phase.phase+' (locked)':phase.phase;
+  document.getElementById('rh-desc').textContent=phase.desc;
   document.getElementById('mode-lbl').textContent=MODE==='full'?'Full Mode':'Pre-Flow Mode';
+  document.getElementById('mode-chip').textContent=MODE==='full'?'Full Mode':'Pre-Flow';
   document.getElementById('pdi-inline').textContent=pdiD.lbl;
-  document.getElementById('rdcount').textContent=`Day ${dd||H.length} · PDI ${pdiD.pdi} · ${MODE==='preflow'?'State preserved':'Live'}`;
-  const bc=document.getElementById('bchip');
-  const pt=phase.phase.toLowerCase();
-  if(MODE==='preflow'&&nChg>60){bc.textContent='Counter-trend — await flow';bc.className='bchip bc-counter';}
-  else{bc.textContent=phase.next.split(' —')[0];bc.className='bchip '+(pt.includes('accum')?'bc-bull':pdiD.pdi>65?'bc-exhaust':'bc-bear');}
+  document.getElementById('rdcount').textContent=`Day ${dd||H.length} · PDI ${pdiD.pdi} · ${pdiD.ctx}`;
   document.getElementById('pdi-fill').style.width=pdiD.pdi+'%';document.getElementById('pdi-fill').style.background=pdiD.col;
   document.getElementById('pdi-val').textContent=pdiD.pdi+'/100 — '+pdiD.lbl;
-  document.getElementById('pdi-ctx').textContent=pdiD.ctx;document.getElementById('pdi-ctx').style.color=pdiD.col;
-  document.getElementById('time-ctx').textContent=timeInterp(dd);
-  const exEl=document.getElementById('exhaust-val');exEl.textContent=exhaust.label;
-  exEl.style.color=exhaust.signal?'#4ade80':exhaust.cls==='amb'?'#fbbf24':'#ff9090';
-  document.getElementById('price-state-meta').textContent=MODE==='preflow'?(nChg>60?'Counter-trend (unconfirmed)':nChg<-60?'Confirming trend':'Flat'):'Live';
-  document.getElementById('price-state-meta').style.color=nChg>60?'#fbbf24':'rgba(255,255,255,.6)';
 
-  // Narrative
-  const fDesc=MODE==='preflow'?`<strong>Pre-flow</strong> — yesterday FII ₹${Math.abs(Math.round(lastH.fii||0)).toLocaleString('en-IN')} Cr`:fii<0?`<strong>FIIs sold ₹${Math.abs(Math.round(fii)).toLocaleString('en-IN')} Cr</strong>`:`<strong>FIIs bought ₹${Math.round(fii).toLocaleString('en-IN')} Cr</strong>`;
-  const aDesc=MODE==='full'&&fii<0?` DII covered ${absR}% (${MODE==='preflow'?'yesterday':'today'}).`:'';
-  const lDesc=` L/S ${ls.toFixed(2)} = <strong>${lsZ.lbl}</strong>.`;
-  const mDesc=nChg>60?` Nifty +${Math.round(nChg)} — ${MODE==='preflow'?'counter-trend, unconfirmed':'divergence from FII view'}.`:nChg<-60?` Nifty ${Math.round(nChg)} — ${MODE==='preflow'?'confirming yesterday regime':'aligning with FII'}.`:` Nifty flat.`;
-  const eDesc=elast.days>=3?` Elasticity ${elast.tag} — ${elast.dec.toLowerCase()}.`:'';
-  const exDesc=exhaust.signal?` <strong>Flow exhaustion detected.</strong>`:'';
-  const modeNote=MODE==='preflow'?` <strong>State conviction preserved. Update confidence ${updConf.label}.</strong>`:'';
-  document.getElementById('rb-narr').innerHTML=fDesc+aDesc+lDesc+mDesc+eDesc+exDesc+modeNote+` Bottom line: <strong>${phase.next}.</strong>`;
+  // ── AUTHORITATIVE PANEL ──
+  document.getElementById('auth-mode-tag').textContent=MODE==='full'?'FULL MODE — SC UPDATED':'PRE-FLOW — SC PRESERVED';
+  document.getElementById('auth-mode-tag').style.background=MODE==='full'?'var(--gbg)':'var(--abg)';
+  document.getElementById('auth-mode-tag').style.color=MODE==='full'?'var(--green)':'var(--amber)';
 
-  // Triggers
+  // STATE
+  document.getElementById('st-phase').textContent=phase.phase;document.getElementById('st-phase').style.color=scScore>=70?'var(--red)':scScore>=50?'var(--amber)':'var(--green)';
+  document.getElementById('st-phase-sub').textContent=scRegime+' — '+scRsub;
+  document.getElementById('sc-num').textContent=scScore;document.getElementById('sc-num').style.color=scScore>=70?'var(--red)':scScore>=50?'var(--amber)':'var(--green)';
+  document.getElementById('sc-tag').textContent=MODE==='full'?'LIVE — confirmed data':'PRESERVED — '+lastH.date;
+  document.getElementById('sc-tag').className='state-sc-tag '+(MODE==='full'?'sc-tag-live':'sc-tag-preserved');
+  document.getElementById('ts-pct').textContent=term.bearStr+'%';document.getElementById('ts-pct').style.color=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
+  document.getElementById('ts-bar').style.width=term.bearStr+'%';document.getElementById('ts-bar').style.background=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
+  document.getElementById('ts-verdict').textContent=term.verdict;document.getElementById('ts-verdict').style.color=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
+
+  // STRUCTURE
+  document.getElementById('str-elast').textContent=elast.tag==='Confirmed'?elast.regime+' (confirmed)':elast.regime+' ('+elast.tag.toLowerCase()+')';
+  document.getElementById('str-elast').className='struct-val '+(elast.tag==='Confirmed'?(elast.regIdx>=2?'dn':'up'):'neu');
+  document.getElementById('str-absorb').textContent=absR>=80?'Strong ('+absR+'%)':absR>=60?'Partial ('+absR+'%)':'Weak ('+absR+'%)';
+  document.getElementById('str-absorb').className='struct-val '+(absR>=80?'up':absR>=60?'amb':'dn');
+  document.getElementById('str-gradient').textContent=absGrad.lbl+(MODE!=='full'?' (frozen)':'');
+  document.getElementById('str-gradient').className='struct-val '+(absGrad.lbl.includes('↑')?'up':absGrad.lbl.includes('↓')&&!absGrad.lbl.includes('Frozen')?'dn':'neu');
+  document.getElementById('str-cascade').textContent=cascade.type+(MODE!=='full'?' (yesterday)':'');
+  document.getElementById('str-cascade').className='struct-val '+(cascade.met>=4?'dn':cascade.met>=2?'amb':'up');
+  document.getElementById('str-exhaust').textContent=exhaust.signal?'SIGNAL ACTIVE':'No signal';
+  document.getElementById('str-exhaust').className='struct-val '+(exhaust.signal?'up':'neu');
+  document.getElementById('str-signal').textContent=auth.strSignal;
+  document.getElementById('str-signal').className='struct-val '+auth.strClass;
+
+  // BEHAVIOR
+  document.getElementById('beh-state').textContent=auth.behavState;document.getElementById('beh-state').className='behav-state '+(auth.behavClass==='dn'?'dn':auth.behavClass==='up'?'up':'amb');
+  document.getElementById('beh-sub').textContent=auth.behavSub;
+  const bnote=document.getElementById('beh-note');
+  if(auth.behavNote){bnote.style.display='';bnote.textContent=auth.behavNote;bnote.style.background=accept.state==='accepted'&&flowGate.passes?'var(--gbg)':'var(--abg)';bnote.style.color=accept.state==='accepted'&&flowGate.passes?'var(--green)':'var(--amber)';}
+  else bnote.style.display='none';
+  const acceptColors={accepted:'var(--green)',rejected:'var(--red)',neutral:'var(--amber)',invalid:'var(--muted)',distorted:'var(--amber)',unknown:'var(--muted)'};
+  let acceptLabel;
+  if(accept.state==='accepted'&&flowGate.passes)acceptLabel='Accepted (confirmed)';
+  else if(accept.state==='accepted')acceptLabel='Accepted (provisional)';
+  else if(accept.state==='rejected')acceptLabel='Rejected';
+  else if(accept.state==='invalid')acceptLabel='Invalid (range too narrow)';
+  else if(accept.state==='distorted')acceptLabel='Distorted (gap-driven)';
+  else acceptLabel='Unknown — enter High+Open';
+  document.getElementById('beh-accept').textContent=acceptLabel;document.getElementById('beh-accept').style.color=acceptColors[accept.state]||'var(--muted)';
+  document.getElementById('beh-accept-sub').textContent=accept.reason||'';
+  document.getElementById('beh-bn').textContent=bnDiv.meaningful?bnDiv.signal:bnDiv.div+'% — <0.5%, ignored';
+  document.getElementById('beh-bn').className=bnDiv.meaningful?bnDiv.cls:'neu';
+
+  // CONFIDENCE
+  document.getElementById('uc-label').textContent=uc.label;document.getElementById('uc-label').style.color=uc.label==='HIGH'?'var(--green)':uc.label==='MED'?'var(--amber)':uc.label==='LOW'?'var(--red)':'var(--muted)';
+  document.getElementById('uc-tag').textContent=uc.label+(uc.label!=='NONE'?' — '+MODE:'');document.getElementById('uc-tag').className='uc-tag '+uc.tag;
+  document.getElementById('uc-reason').textContent=uc.reason;
+  const upen=document.getElementById('uc-penalty');
+  if(uc.penalty){upen.style.display='';upen.textContent=uc.penalty;}else upen.style.display='none';
+
+  // BIAS + TRIGGERS
+  document.getElementById('auth-bias').textContent=auth.bias;
   const trgs=[];
-  if(MODE==='preflow'&&nChg>60)trgs.push({t:'Counter-trend — state locked until flow confirms',c:'to'});
-  if(ls<0.50&&nChg<-60)trgs.push({t:`Continue if Nifty breaks ${Math.round(nifty-150)}`,c:'tr'});
-  if(exhaust.signal)trgs.push({t:'Flow exhaustion — reversal watch',c:'tg'});
-  if(cascade.met>=3)trgs.push({t:'Cascade conditions active',c:'tr'});
-  if(pdiD.pdi>=75)trgs.push({t:'PDI late-stage — reversal window',c:'tp'});
-  if(term.bearStr<=40)trgs.push({t:`Terminal: ${term.bearStr}% bearish strength`,c:'tg'});
-  if(accept.state==='accepted'&&flowGate.passes)trgs.push({t:'Acceptance confirmed — flow gate open',c:'tg'});
-  document.getElementById('trigs').innerHTML=trgs.map(t=>`<span class="trig ${t.c}"><span class="tdot"></span>${t.t}</span>`).join('');
+  if(priceConflict)trgs.push({t:'Counter-trend — phase locked',c:'to'});
+  if(exhaust.signal)trgs.push({t:'Flow exhaustion',c:'tg'});
+  if(cascade.met>=3)trgs.push({t:'Cascade conditions',c:'tr'});
+  if(pdiD.pdi>=75)trgs.push({t:'PDI late-stage',c:'tp'});
+  if(term.bearStr<=40)trgs.push({t:term.bearStr+'% bearish strength',c:'tg'});
+  if(accept.state==='accepted'&&flowGate.passes)trgs.push({t:'Stabilisation confirmed',c:'tg'});
+  const tcolors={to:'color:#fdba74;border-color:rgba(249,115,22,.3)',tr:'color:#fca5a5;border-color:rgba(255,100,100,.3)',tg:'color:#86efac;border-color:rgba(74,222,128,.3)',tp:'color:#c4b5fd;border-color:rgba(167,139,250,.3)'};
+  document.getElementById('auth-triggers').innerHTML=trgs.map(t=>`<span style="font-size:10px;padding:3px 9px;border-radius:4px;border:1px solid rgba(255,255,255,.1);${tcolors[t.c]||''};display:flex;align-items:center;gap:4px"><span style="width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0"></span>${t.t}</span>`).join('');
 
+  // ── DIAGNOSTIC LAYERS ──
   // L1
-  document.getElementById('l1-cash').textContent=(fii>=0?'+':'')+'₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE==='preflow'?' (yesterday)':'');
+  document.getElementById('l1-cash').textContent=(fii>=0?'+':'')+'₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' (yesterday)':'');
   document.getElementById('l1-cash').className='dv '+(fii>=0?'up':'dn');
   document.getElementById('l1-ls').textContent=ls.toFixed(2)+' → '+lsZ.lbl;document.getElementById('l1-ls').style.color=lsZ.col;
   document.getElementById('l1-stance').textContent=fii<0?'Selling (exiting India)':'Buying';document.getElementById('l1-stance').className='dv '+(fii>=0?'up':'dn');
-  // Selling type tagged stale in pre-flow
-  document.getElementById('l1-stype').textContent=cascade.type.split(' —')[0]+(MODE==='preflow'?' (yesterday — frozen)':'');
+  document.getElementById('l1-stype').textContent=cascade.type.split(' —')[0]+(MODE!=='full'?' — Frozen (yesterday)':'');
   document.getElementById('l1-stype').className='dv '+(cascade.met>=4?'dn':cascade.met>=2?'amb':'up');
   document.getElementById('ls-fill').style.width=Math.round(ls*100)+'%';document.getElementById('ls-fill').style.background=lsZ.bc;
   document.getElementById('l1-st').textContent=lsZ.lbl;document.getElementById('l1-st').className='cst '+lsZ.cls;
-  document.getElementById('l1-exp').textContent=lsZ.exp;document.getElementById('l1-plain').className='plain '+(ls<0.35?'pr':ls<0.50?'pa':ls<0.65?'pn':'pg');
+  document.getElementById('l1-plain').textContent=lsZ.exp;
 
   // L2
   document.getElementById('l2-nifty').textContent=(nChg>=0?'+':'')+Math.round(nChg)+' pts ('+(nChg>=0?'+':'')+nPct.toFixed(2)+'%)';document.getElementById('l2-nifty').className='dv '+(nChg>=0?'up':'dn');
   document.getElementById('l2-bn').textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+' pts ('+(bnChg>=0?'+':'')+bnPct.toFixed(2)+'%)';document.getElementById('l2-bn').className='dv '+(bnChg>=0?'up':'dn');
   document.getElementById('l2-bndiv').textContent=`${bnDiv.div}% — ${bnDiv.signal}`;document.getElementById('l2-bndiv').className='dv '+(bnDiv.meaningful?bnDiv.cls:'neu');
-  const fS=ls<0.50,mU=nChg>60,mD=nChg<-60;
-  let pStateLabel,l2e,l2c,l2st;
-  if(MODE==='preflow'&&mU){pStateLabel='Counter-trend (unconfirmed — pre-flow)';l2c='pa';l2st='sa';l2e=`Price rising while FII was selling yesterday. Phase locked — this move is unconfirmed. State conviction preserved at ${stateConv.score}.`;}
-  else if(fS&&mD){pStateLabel='Full Alignment — Bearish';l2c='pr';l2st='sr';l2e=pdiD.pdi>=75?'Late-stage alignment — capitulation setup possible.':'Both FII and price pointing down. No divergence.';}
-  else if(!fS&&mU){pStateLabel='Full Alignment — Bullish';l2c='pg';l2st='sg';l2e='FIIs bullish AND market rising. Trustworthy signal.';}
-  else if(MODE==='preflow'&&mD){pStateLabel='Trend continuing (unconfirmed)';l2c='pr';l2st='sr';l2e='Price falling, consistent with yesterday\'s regime. Not confirmed until flow arrives.';}
-  else{pStateLabel='Flat / No signal';l2c='pn';l2st='sn';l2e='No clear agreement. Wait for clarity.';}
-  document.getElementById('l2-pstate').textContent=pStateLabel;document.getElementById('l2-pstate').className='dv '+(l2st==='sr'?'dn':l2st==='sg'?'up':'amb');
-  document.getElementById('l2-pdi-ctx').textContent=`PDI ${pdiD.pdi}: ${pdiD.ctx}`;
-  document.getElementById('l2-exp').textContent=l2e;document.getElementById('l2-plain').className='plain '+l2c;
-  document.getElementById('l2-st').textContent=pStateLabel.split(' (')[0].split(' —')[0];document.getElementById('l2-st').className='cst '+l2st;
+  let pStateLbl;
+  if(priceConflict)pStateLbl='Counter-trend (flag only — SC unaffected)';
+  else if(nChg<-60&&ls<0.50)pStateLbl='Trend confirming — bearish';
+  else if(nChg>60&&ls>=0.50)pStateLbl='Trend confirming — bullish';
+  else pStateLbl='Flat / No signal';
+  document.getElementById('l2-pstate').textContent=pStateLbl;document.getElementById('l2-pstate').className='dv '+(priceConflict?'amb':nChg<-60?'dn':nChg>60?'up':'neu');
+  document.getElementById('l2-st').textContent=priceConflict?'Counter-trend':nChg<-60&&ls<0.50?'Aligned bearish':'—';
+  document.getElementById('l2-plain').textContent='Lowest authority layer. Price annotates only. Does not affect SC or regime.';
 
   // L3
-  document.getElementById('l3-fii').textContent='₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE==='preflow'?' (yesterday)':'');
-  document.getElementById('l3-dii').textContent='₹'+Math.round(dii).toLocaleString('en-IN')+' Cr'+(MODE==='preflow'?' (yesterday)':'');
-  document.getElementById('l3-ratio').textContent=fii<0?absR+'% covered'+(MODE==='preflow'?' (yesterday)':''):'Flows aligned';
-  const absWk=absR<75&&!mU&&fii<0;
-  let l3e,l3c,l3st,l3q;
-  if(fii>=0){l3e='FIIs buying — flows aligned.';l3c='pg';l3st='sg';l3q='Constructive';}
-  else if(absR>=90){l3e='DIIs absorbing almost all FII selling. Market cushioned.';l3c='pg';l3st='sg';l3q='Strong cover';}
-  else if(absWk){l3e='DIIs buying but market not rising. Absorption weakening signal.';l3c='pr';l3st='sr';l3q='Absorption failing';}
-  else if(absR>=70){l3e=`DIIs absorbing ${absR}% of selling. Slowing fall, not stopping it.`;l3c='pa';l3st='sa';l3q='Partial cover';}
-  else{l3e=`Only ${absR}% covered. Market exposed to more downside.`;l3c='pr';l3st='sr';l3q='Weak cover';}
-  document.getElementById('l3-qual').textContent=l3q+(MODE==='preflow'?' (yesterday)':'');document.getElementById('l3-qual').className='dv '+(l3st==='sr'?'dn':l3st==='sg'?'up':'amb');
-  document.getElementById('l3-exp').textContent=l3e+(MODE==='preflow'?' — based on yesterday\'s flows.':'');document.getElementById('l3-plain').className='plain '+l3c;
+  document.getElementById('l3-fii').textContent='₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' (yesterday)':'');
+  document.getElementById('l3-dii').textContent='₹'+Math.round(dii).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' (yesterday)':'');
+  document.getElementById('l3-ratio').textContent=fii<0?absR+'% covered'+(MODE!=='full'?' (yesterday)':''):'Flows aligned';
+  let l3q,l3st;
+  if(fii>=0){l3q='Constructive';l3st='sg';}else if(absR>=90){l3q='Strong cover';l3st='sg';}else if(absR>=70){l3q='Partial cover';l3st='sa';}else{l3q='Weak cover';l3st='sr';}
+  document.getElementById('l3-qual').textContent=l3q;document.getElementById('l3-qual').className='dv '+(l3st==='sr'?'dn':l3st==='sg'?'up':'amb');
   document.getElementById('l3-st').textContent=l3q;document.getElementById('l3-st').className='cst '+l3st;
+  document.getElementById('l3-plain').textContent=`Coverage ${absR}%. ${absR>=80?'Market cushioned.':absR>=60?'Partial buffer.':'Selling pressure high.'}`;
 
   // L4 Macro
   macro.sigs.forEach((s,i)=>{const ks=['in10y','us10y','inr','brent'];document.getElementById('m-'+ks[i]).textContent=s.v;const se=document.getElementById('ms-'+ks[i]);se.textContent=s.s;se.className='ms '+(s.c==='dn'?'dn':s.c==='up'?'up':'neu');document.getElementById('mw-'+ks[i]).textContent=s.w;});
   document.getElementById('l4-st').textContent=macro.lbl;document.getElementById('l4-st').className='cst '+macro.cls;
 
-  // ACCEPTANCE
-  const accColors={accepted:'var(--green)',rejected:'var(--red)',neutral:'var(--amber)',invalid:'var(--muted)',distorted:'var(--amber)',unknown:'var(--muted)'};
-  document.getElementById('accept-state').textContent=accept.state.toUpperCase();
-  document.getElementById('accept-state').style.color=accColors[accept.state];
-  document.getElementById('accept-reason').textContent=accept.reason;
-  document.getElementById('range-thr').textContent=accept.thr?accept.thr+'pts':'—';
-  document.getElementById('range-act').textContent=accept.range?`Actual: ${accept.range}pts`:'Enter High+Open';
-  document.getElementById('accept-ratio').textContent=accept.ratio||'—';
-  document.getElementById('flow-gate-val').textContent=flowGate.passes?'OPEN':'CLOSED';
-  document.getElementById('flow-gate-val').className='accept-val '+(flowGate.passes?'up':'dn');
-  document.getElementById('flow-gate-sub').textContent=flowGate.reason;
-  document.getElementById('distort-val').textContent=accept.distorted?'DISTORTED':accept.invalid?'INVALID':'Clean';
-  document.getElementById('distort-val').className='accept-val '+(accept.distorted||accept.invalid?'dn':'up');
-  document.getElementById('distort-sub').textContent=accept.distorted?'Gap-driven — trend only':'Range check passed';
-  document.getElementById('bn-div-val').textContent=bnDiv.meaningful?bnDiv.signal:bnDiv.div+'%';
-  document.getElementById('bn-div-val').className='accept-val '+(bnDiv.meaningful?bnDiv.cls:'neu');
-  document.getElementById('bn-div-sub').textContent=bnDiv.meaningful?'Meaningful divergence':'<0.5% — ignored';
-  let pcLabel,pcSub;
-  if(accept.state==='accepted'&&flowGate.passes){pcLabel='Accepted (confirmed)';pcSub='Flow gate + acceptance both satisfied';}
-  else if(accept.state==='accepted'){pcLabel='Accepted (provisional)';pcSub='Flow gate not satisfied — not a phase signal';}
-  else if(accept.state==='rejected'){pcLabel='Rejected — distribution';pcSub='Rally faded';}
-  else if(accept.state==='invalid'){pcLabel='Invalid — trend only';pcSub='Range too narrow';}
-  else if(accept.state==='distorted'){pcLabel='Distorted — gap-driven';pcSub='Trend logic only';}
-  else{pcLabel='Unknown — enter OHLC';pcSub='High of Day + Open needed';}
-  document.getElementById('price-class').textContent=pcLabel;
-  document.getElementById('price-class').className='accept-val '+(flowGate.passes&&accept.state==='accepted'?'up':accept.state==='rejected'?'dn':'amb');
-  document.getElementById('price-class-sub').textContent=pcSub;
-
-  // ELASTICITY
+  // ELASTICITY DIAGNOSTIC
   document.getElementById('elast-today').textContent=MODE!=='full'?'Provisional':elast.today+' pts';
-  document.getElementById('elast-rlbl').textContent=MODE!=='full'?'Provisional (non-full mode)':elast.regime;
-  document.getElementById('elast-rlbl').className=elast.decCls;
+  document.getElementById('elast-rlbl').textContent=elast.regime+(MODE!=='full'?' (provisional)':'');
   document.getElementById('elast-cbadge').textContent='Confidence: '+elast.confLabel+(MODE!=='full'?' (provisional)':'');
-  document.getElementById('elast-cbadge').style.color=elast.confColor;
-  document.getElementById('elast-cbadge').style.background=`${elast.confColor}18`;
-  document.getElementById('elast-cbadge').style.border=`1px solid ${elast.confColor}40`;
-  ['ez1','ez2','ez3','ez4'].forEach((id,i)=>{const el=document.getElementById(id);el.style.borderWidth='2px';el.style.borderStyle=i===elast.regIdx&&MODE==='full'?'solid':'dashed';el.style.opacity=i===elast.regIdx||MODE!=='full'?'1':'0.5';});
-  document.getElementById('elast-avg').textContent=elast.avg;
-  document.getElementById('elast-trend').textContent=MODE!=='full'?'Provisional':elast.trend;
-  document.getElementById('elast-tsub').textContent=MODE!=='full'?'Using last known flow — untrusted':elast.tsub;
-  document.getElementById('elast-tag').textContent=elast.tag;
-  document.getElementById('elast-tag').className='eiv '+(elast.tag==='Confirmed'?'up':elast.tag==='Provisional'?'amb':'dn');
+  document.getElementById('elast-cbadge').style.color=elast.confColor;document.getElementById('elast-cbadge').style.background=`${elast.confColor}18`;document.getElementById('elast-cbadge').style.border=`1px solid ${elast.confColor}40`;
+  ['ez1','ez2','ez3','ez4'].forEach((id,i)=>{const el=document.getElementById(id);el.style.borderWidth='2px';el.style.borderStyle=i===elast.regIdx&&MODE==='full'?'solid':'dashed';el.style.opacity=i===elast.regIdx?'1':'0.5';});
+  document.getElementById('elast-avg').textContent=elast.avg;document.getElementById('elast-trend').textContent=elast.trend;document.getElementById('elast-tsub').textContent=elast.tsub;
+  document.getElementById('elast-tag').textContent=elast.tag;document.getElementById('elast-tag').className='eiv '+(elast.tag==='Confirmed'?'up':elast.tag==='Provisional'?'amb':'dn');
   document.getElementById('elast-tag-sub').textContent=elast.tagSub;
-  document.getElementById('elast-dec').textContent=elast.dec+(MODE!=='full'?' — provisional':'');
-  document.getElementById('elast-dec').className='eiv '+(MODE!=='full'?'neu':elast.decCls);
+  document.getElementById('elast-influence').textContent=elast.influence;document.getElementById('elast-influence').className='eiv '+(elast.isConfirmed&&elast.trend.includes('↓')?'up':elast.isConfirmed&&elast.trend.includes('↑')?'dn':'neu');
 
-  // CASCADE — tagged stale in preflow
-  document.getElementById('casc-conds').innerHTML=cascade.conds.map(c=>`<div class="cond-row"><span class="cond-n">${c.n}${MODE==='preflow'?' ❄':''}</span><div style="display:flex;align-items:center;gap:8px"><span class="cond-v">${c.v}</span><span class="${c.met?'cm':'cu'}">${c.met?'✓':'○'}</span></div></div>`).join('');
+  // CASCADE DIAGNOSTIC
+  document.getElementById('casc-conds').innerHTML=cascade.conds.map(c=>`<div class="cond-row"><span class="cond-n">${c.n}${MODE!=='full'?' ❄':''}</span><div style="display:flex;align-items:center;gap:8px"><span class="cond-v">${c.v}</span><span class="${c.met?'cm':'cu'}">${c.met?'✓':'○'}</span></div></div>`).join('');
   document.getElementById('casc-chip').setAttribute('style',cascade.typeStyle+';font-size:11px;padding:4px 12px;border-radius:6px');
-  document.getElementById('casc-chip').textContent=cascade.met+'/5 — '+cascade.type+(MODE==='preflow'?' (yesterday)':'');
-  document.getElementById('casc-verdict').textContent=cascade.verdict+(MODE==='preflow'?' Based on yesterday\'s confirmed data.':'');
+  document.getElementById('casc-chip').textContent=cascade.met+'/5 — '+cascade.type+(MODE!=='full'?' (yesterday)':'');
+  document.getElementById('casc-verdict').textContent=cascade.verdict+(MODE!=='full'?' Based on yesterday\'s data.':'');
   document.getElementById('casc-verdict').style.background=cascade.met>=4?'rgba(239,68,68,.08)':cascade.met>=2?'rgba(249,115,22,.06)':'rgba(74,222,128,.06)';
   document.getElementById('casc-verdict').style.color=cascade.met>=4?'#fca5a5':cascade.met>=2?'#fdba74':'#86efac';
 
-  // ABSORPTION GRADIENT
+  // ABSORPTION GRADIENT DIAGNOSTIC
   if(MODE!=='full')document.getElementById('abs-card').classList.add('frozen');else document.getElementById('abs-card').classList.remove('frozen');
-  document.getElementById('absgrad-lbl').textContent=absGrad.lbl;document.getElementById('absgrad-lbl').className=absGrad.lbl.includes('↑')?'up':absGrad.lbl.includes('↓')?'dn':'neu';
+  document.getElementById('absgrad-lbl').textContent=absGrad.lbl;document.getElementById('absgrad-lbl').className=absGrad.lbl.includes('↑')?'up':absGrad.lbl.includes('↓')&&!absGrad.lbl.includes('Frozen')?'dn':'neu';
   const aMax=Math.max(...absGrad.pts.map(p=>p.ratio),100);
   document.getElementById('abs-bars').innerHTML=absGrad.pts.map((p,i)=>{const nx=absGrad.pts[i+1];const arr=nx?(p.ratio>nx.ratio?'↓':p.ratio<nx.ratio?'↑':'→'):'';const bc=p.ratio>=80?'#22c55e':p.ratio>=60?'#f59e0b':'#ef4444';return`<div class="abr"><span class="abd-lbl">${p.date}${p.frozen?' ❄':''}</span><div class="abt"><div class="abf" style="width:${(p.ratio/aMax*100).toFixed(0)}%;background:${bc}"></div></div><span class="abv ${p.ratio>=80?'up':p.ratio>=60?'amb':'dn'}">${p.ratio}%</span><span class="aba ${arr==='↓'?'dn':arr==='↑'?'up':'neu'}">${arr}</span></div>`;}).join('');
-  document.getElementById('abs-verdict').innerHTML=`<div class="pl">Gradient${MODE!=='full'?' — frozen':''}</div>${absGrad.verdict}`;
-  document.getElementById('abs-verdict').className='plain '+absGrad.cls;
+  document.getElementById('abs-verdict').textContent=absGrad.verdict+(MODE!=='full'?' (frozen)':'');
 
-  // TWO-AXIS CONVICTION
-  document.getElementById('state-conv').textContent=stateConv.score;
-  document.getElementById('state-conv').style.color=stateConv.score>=70?'var(--red)':stateConv.score>=50?'var(--amber)':'var(--green)';
-  document.getElementById('state-conv-sub').textContent=stateConv.regime+' — '+stateConv.rsub;
-  document.getElementById('state-conv-tag').textContent=MODE==='full'?'LIVE — confirmed data':'PRESERVED — not degraded by pre-flow';
-  document.getElementById('state-conv-tag').className='conv-axis-tag '+(MODE==='full'?'tag-state':'tag-state');
-  document.getElementById('upd-conf').textContent=updConf.label;
-  document.getElementById('upd-conf').style.color=updConf.label==='HIGH'?'var(--green)':updConf.label==='MED'?'var(--amber)':updConf.label==='LOW'?'var(--red)':'var(--muted)';
-  document.getElementById('upd-conf-sub').textContent=updConf.sub;
-  document.getElementById('upd-conf-tag').textContent=MODE==='full'?'FULL DATA':'REDUCED — '+MODE;
-  document.getElementById('upd-conf-tag').className='conv-axis-tag '+(updConf.label==='HIGH'?'tag-high':updConf.label==='MED'?'tag-med':updConf.label==='LOW'?'tag-low':'tag-cf');
-  const cw=document.getElementById('conv-warn');if(stateConv.warn){cw.style.display='';cw.textContent=stateConv.warn;}else cw.style.display='none';
-  const bc2=v=>v>65?'#c0392b':v>45?'#d97706':'#22c55e';
-  [stateConv.s1,stateConv.s2,stateConv.s3,stateConv.s4,stateConv.s5].forEach((v,i)=>{document.getElementById('lb'+(i+1)).style.width=v+'%';document.getElementById('lb'+(i+1)).style.background=bc2(v);document.getElementById('lv'+(i+1)).textContent=v;});
-
-  // TERMINAL
-  document.getElementById('ts-pct').textContent=term.bearStr+'%';document.getElementById('ts-pct').style.color=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
-  document.getElementById('ts-bar').style.width=term.bearStr+'%';document.getElementById('ts-bar').style.background=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
+  // TERMINAL GRID
   const tcg=document.getElementById('tc-grid').children;
   term.conds.forEach((c,i)=>{tcg[i].className='tci '+(c.met?'tc-met':c.partial?'tc-partial':'tc-unmet');tcg[i].children[0].textContent=c.met?'✓':c.partial?'◑':'○';document.getElementById(c.id).textContent=c.sub;});
-  document.getElementById('tc-verdict').textContent=term.verdict;document.getElementById('tc-verdict').className='tc-verdict '+(term.vcls==='pg'?'pg':term.vcls==='pa'?'pa':'pr');
 
-  // SAVE — only in full mode
+  // SAVE (full mode only)
   if(MODE==='full'){
     try{
       const tradingDate=document.getElementById('in-date').value||undefined;
-      const sr=await fetch('/api/saveday',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:tradingDate,nifty,niftyChg:nChg,fii,dii,ls,absRatio:absR,vix,phase:phase.phase,pdi:pdiD.pdi,conviction:stateConv.score,downDays:dd,fromHigh:fh})});
+      const sr=await fetch('/api/saveday',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:tradingDate,nifty,niftyChg:nChg,fii,dii,ls,absRatio:absR,vix,phase:phase.phase,pdi:pdiD.pdi,conviction:scScore,downDays:dd,fromHigh:fh})});
       const sj=await sr.json();
-      if(sj.history){const sD=new Set(sj.history.map(h=>h.date));const sX=SEED.filter(s=>!sD.has(s.date));H=[...sj.history,...sX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);}
-      renderH();
+      if(sj.history){const sD=new Set(sj.history.map(h=>h.date));const sX=SEED.filter(s=>!sD.has(s.date));H=[...sj.history,...sX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);}renderH();
     }catch(e){console.log('Save failed:',e);}
   }
   renderH();
   document.getElementById('last-upd').textContent=new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'})+` (${MODE})`;
-  toast(MODE==='full'?'✓ Full analysis complete — saved':MODE==='preflow'?'⏳ Pre-flow: state preserved, update confidence '+updConf.label:'—');
+  toast(MODE==='full'?'✓ Full mode — SC updated & saved':MODE==='preflow'?`⏳ Pre-flow — SC preserved (${scScore}), UC: ${uc.label}`:'—');
 }
 
-// INIT
 window.addEventListener('DOMContentLoaded',async()=>{
   const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
   ist.setDate(ist.getDate()-1);
