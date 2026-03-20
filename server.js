@@ -34,7 +34,9 @@ function saveHistory(history) {
 
 function addToHistory(entry) {
   const history = loadHistory();
-  const today = new Date().toISOString().split('T')[0];
+  // Use client-supplied date if provided, otherwise today
+  const today = entry.date || new Date().toISOString().split('T')[0];
+  delete entry.date; // remove from entry object before storing
   const existing = history.findIndex(h => h.date === today);
   if (existing >= 0) history[existing] = { date: today, ...entry };
   else history.push({ date: today, ...entry });
