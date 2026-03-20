@@ -464,6 +464,7 @@ select{font-family:var(--sans);}
     </div>
     <div class="ig"><label class="il">Consecutive Down Days</label><input type="number" id="in-dd" value="3" min="0" max="30" step="1"></div>
     <div class="ig"><label class="il">% Below Recent High <span>Nifty vs 52w high</span></label><input type="number" id="in-fh" value="8" step="0.1" min="0" max="50"></div>
+    <div class="ig" style="grid-column:span 2"><label class="il">Trading Date <span>date this data belongs to — change if entering yesterday's data today</span></label><input type="date" id="in-date" style="font-family:var(--sans);font-size:12px;" value=""></div>
   </div>
   <button class="abtn" onclick="analyse()">
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="white" stroke-width="1.5"/><path d="M7 4v3l2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -970,7 +971,7 @@ async function analyse(){
   // SAVE (only if not pre-flow)
   if(!preFlow){
     try{
-      const sr=await fetch('/api/saveday',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nifty,niftyChg:nChg,fii,dii,ls,absRatio:absR,vix,phase:phase.phase,pdi:pdiD.pdi,downDays:dd,fromHigh:fh})});
+      const sr=await fetch('/api/saveday',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:document.getElementById('in-date').value||undefined,nifty,niftyChg:nChg,fii,dii,ls,absRatio:absR,vix,phase:phase.phase,pdi:pdiD.pdi,downDays:dd,fromHigh:fh})});
       const sj=await sr.json();
       if(sj.history){const srvDates=new Set(sj.history.map(h=>h.date));const seedX=SEED.filter(s=>!srvDates.has(s.date));H=[...sj.history,...seedX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);renderH();}
     }catch(e){console.log('Save failed:',e);}
@@ -981,7 +982,14 @@ async function analyse(){
   toast(preFlow?'⏳ Pre-flow mode — yesterday\'s regime active, conviction −15%':'✓ Analysis complete — saved to history');
 }
 
-window.addEventListener('DOMContentLoaded',async()=>{renderH();await loadH();fetchAll();});
+window.addEventListener('DOMContentLoaded',async()=>{
+  // Default trading date = yesterday in IST (since NSE data is always for previous trading day)
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  ist.setDate(ist.getDate()-1);
+  const dd=ist.getFullYear()+'-'+(String(ist.getMonth()+1).padStart(2,'0'))+'-'+(String(ist.getDate()).padStart(2,'0'));
+  document.getElementById('in-date').value=dd;
+  renderH();await loadH();fetchAll();
+});
 </script>
 </body>
 </html>
