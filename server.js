@@ -20,32 +20,25 @@ app.get('/', (req, res) => {
   else res.send('index.html not found.');
 });
 
-// ── History store (last 10 days) ──
+// ── History ──
 function loadHistory() {
-  try {
-    if (fs.existsSync(DATA_FILE)) return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  } catch(e) {}
+  try { if (fs.existsSync(DATA_FILE)) return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); } catch(e) {}
   return [];
 }
-
-function saveHistory(history) {
-  try { fs.writeFileSync(DATA_FILE, JSON.stringify(history, null, 2)); } catch(e) {}
-}
-
+function saveHistory(h) { try { fs.writeFileSync(DATA_FILE, JSON.stringify(h, null, 2)); } catch(e) {} }
 function addToHistory(entry) {
   const history = loadHistory();
-  // Use client-supplied date if provided, otherwise today
   const today = entry.date || new Date().toISOString().split('T')[0];
-  delete entry.date; // remove from entry object before storing
+  delete entry.date;
   const existing = history.findIndex(h => h.date === today);
   if (existing >= 0) history[existing] = { date: today, ...entry };
   else history.push({ date: today, ...entry });
-  const sorted = history.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+  const sorted = history.sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0, 10);
   saveHistory(sorted);
   return sorted;
 }
 
-// ── Market data fetchers ──
+// ── Stooq fetcher (primary) ──
 async function fetchStooq(symbol) {
   try {
     const res = await axios.get(`https://stooq.com/q/d/l/?s=${symbol}&i=d`, {
@@ -54,13 +47,14 @@ async function fetchStooq(symbol) {
     const lines = res.data.trim().split('\n').filter(l => l && !l.startsWith('Date'));
     if (lines.length < 2) throw new Error('Not enough rows');
     const parse = l => parseFloat(l.split(',')[4] || l.split(',')[1]);
-    const cur = parse(lines[lines.length - 1]);
-    const prev = parse(lines[lines.length - 2]);
+    const cur = parse(lines[lines.length-1]);
+    const prev = parse(lines[lines.length-2]);
     if (!cur || isNaN(cur) || cur === 0) throw new Error('Zero or NaN');
     return { cur: +cur.toFixed(2), prev: +prev.toFixed(2), chg: +(cur-prev).toFixed(2), pct: +((cur-prev)/prev*100).toFixed(2) };
   } catch(e) { console.log(`Stooq [${symbol}]: ${e.message}`); return null; }
 }
 
+// ── Yahoo fetcher (fallback) ──
 async function fetchYahoo(symbol) {
   try {
     const res = await axios.get(`https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=5d`, {
@@ -88,31 +82,81 @@ async function fetch2(stooqSym, yahooSym, label) {
   console.log(`✗ ${label}: all failed`); return null;
 }
 
+// ── Fix yields (Yahoo TNX quotes as e.g. 43.1 = 4.31%) ──
 const fixYield = d => {
-  if (d && d.cur > 20) { d.cur = +(d.cur/10).toFixed(2); d.prev = +(d.prev/10).toFixed(2); d.chg = +(d.chg/10).toFixed(3); }
+  if (d && d.cur > 20) {
+    d.cur = +(d.cur/10).toFixed(2);
+    d.prev = +(d.prev/10).toFixed(2);
+    d.chg = +(d.chg/10).toFixed(3);
+  }
   return d;
 };
 
-// ── Market data API ──
+// ── Fix INR (should be ~75-100 INR per USD) ──
+function fixINR(inr) {
+  if (!inr) return null;
+  // If < 5: inverted (USD per INR), flip it
+  if (inr.cur < 5) {
+    inr.cur  = +(1/inr.cur).toFixed(2);
+    inr.prev = +(1/inr.prev).toFixed(2);
+    inr.chg  = +(inr.cur - inr.prev).toFixed(2);
+    inr.pct  = +((inr.chg/inr.prev)*100).toFixed(2);
+  }
+  // If > 150: probably paise (stooq sometimes), divide by 100
+  if (inr.cur > 150) {
+    inr.cur  = +(inr.cur/100).toFixed(2);
+    inr.prev = +(inr.prev/100).toFixed(2);
+    inr.chg  = +(inr.cur - inr.prev).toFixed(2);
+  }
+  return inr;
+}
+
+// ── Sanity validation — reject out-of-range values ──
+function validate(obj, min, max, label) {
+  if (!obj) return null;
+  if (obj.cur < min || obj.cur > max) {
+    console.log(`⚠ REJECTED ${label}: ${obj.cur} — out of range [${min}, ${max}]`);
+    return null;
+  }
+  return obj;
+}
+
+// ── Market data endpoint ──
 app.get('/api/marketdata', async (req, res) => {
   console.log(`\n[${new Date().toISOString()}] Fetching...`);
-  const [nifty, bnifty, inr, brent, us10y, in10y, vix] = await Promise.all([
-    fetch2('^nf.in',  '^NSEI',      'Nifty'),
-    fetch2('^nfbn.in','^NSEBANK',   'BankNifty'),
-    fetch2('usdinr',  'INR=X',      'USD/INR'),
-    fetch2('cb.f',    'BZ=F',       'Brent'),
-    fetch2('10usy.b', '^TNX',       'US10Y'),
-    fetch2('10iny.b', '^IN10YT=RR', 'IN10Y'),
-    fetch2(null,      '^INDIAVIX',  'VIX'),
+
+  const [nifty, bnifty, inrRaw, brent, us10yRaw, in10yRaw, vix] = await Promise.all([
+    fetch2('^nf.in',   '^NSEI',       'Nifty'),
+    fetch2('^nfbn.in', '^NSEBANK',    'BankNifty'),
+    fetch2('usdinr',   'INR=X',       'USD/INR'),
+    fetch2('cb.f',     'BZ=F',        'Brent'),
+    fetch2('10usy.b',  '^TNX',        'US10Y'),
+    fetch2('10iny.b',  '^IN10YT=RR',  'IN10Y'),
+    fetch2(null,       '^INDIAVIX',   'VIX'),
   ]);
-  if (inr && inr.cur < 5) { inr.cur = +(1/inr.cur).toFixed(2); inr.prev = +(1/inr.prev).toFixed(2); }
-  res.json({ success: true, timestamp: new Date().toISOString(), data: { nifty, bnifty, inr, vix, brent, us10y: fixYield(us10y), in10y: fixYield(in10y) } });
+
+  const inr    = fixINR(inrRaw);
+  const us10y  = fixYield(us10yRaw);
+  const in10y  = fixYield(in10yRaw);
+
+  res.json({
+    success: true,
+    timestamp: new Date().toISOString(),
+    data: {
+      nifty:  validate(nifty,  15000, 35000, 'Nifty'),
+      bnifty: validate(bnifty, 30000, 80000, 'BankNifty'),
+      inr:    validate(inr,    70,    105,   'INR'),
+      vix:    validate(vix,    4,     80,    'VIX'),
+      brent:  validate(brent,  30,    200,   'Brent'),
+      us10y:  validate(us10y,  1,     9,     'US10Y'),
+      in10y:  validate(in10y,  4,     9,     'IN10Y'),
+    }
+  });
 });
 
-// ── Save daily entry + get history ──
+// ── Save + history ──
 app.post('/api/saveday', (req, res) => {
-  const entry = req.body;
-  const history = addToHistory(entry);
+  const history = addToHistory(req.body);
   res.json({ success: true, history });
 });
 
@@ -122,4 +166,4 @@ app.get('/api/history', (req, res) => {
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 
-app.listen(PORT, () => console.log(`FII Dashboard on port ${PORT}`));
+app.listen(PORT, () => console.log(`FII Dashboard v6 on port ${PORT}`));
