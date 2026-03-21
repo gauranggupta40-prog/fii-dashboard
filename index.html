@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FII Dashboard v8</title>
+<title>FII Dashboard v9</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -12,12 +12,12 @@
   --red:#c0392b;--rbg:#fdf0ee;--rbd:#f0c0bb;
   --amber:#b45309;--abg:#fef8ec;--abd:#f5d98a;
   --purple:#6d28d9;--pbg:#f3f0ff;--pbd:#c4b5fd;
+  --blue:#1d4ed8;
   --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;}
 
-/* TOPBAR */
 .topbar{background:var(--text);color:#fff;padding:11px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .logo{font-size:14px;font-weight:600;}
 .logo-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:1px;}
@@ -27,28 +27,24 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .fbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-family:var(--sans);font-size:12px;padding:5px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;}
 .fbtn:hover{background:rgba(255,255,255,.18);}
 
-/* MODE BANNER */
-.mode-banner{border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.mb-cf{background:#f1f0ec;border:1px solid var(--border);}
-.mb-pf{background:var(--abg);border:1px solid var(--abd);}
-.mb-title{font-size:12px;font-weight:600;}
-.mb-sub{font-size:11px;opacity:.75;margin-top:1px;}
-.mb-cf .mb-title,.mb-cf .mb-sub,.mb-cf .mb-right{color:var(--muted);}
-.mb-pf .mb-title,.mb-pf .mb-sub,.mb-pf .mb-right{color:var(--amber);}
-.mb-right{font-size:11px;text-align:right;flex-shrink:0;}
+/* MODE STRIP */
+.mode-strip{border-radius:7px;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;}
+.ms-cf{background:var(--bg);border:1px solid var(--border);color:var(--muted);}
+.ms-pf{background:var(--abg);border:1px solid var(--abd);color:var(--amber);}
+.ms-lbl{font-weight:600;}
+.ms-sub{opacity:.8;margin-left:8px;}
 
-/* PAGE */
 .page{max-width:1140px;margin:0 auto;padding:14px 16px 50px;display:flex;flex-direction:column;gap:10px;}
 
 /* REGIME HEADER */
-.regime-header{border-radius:12px;padding:16px 20px;color:#fff;}
+.rh{border-radius:12px;padding:16px 20px;color:#fff;}
 .rh-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
 .rh-lbl{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;}
 .rh-phase{font-size:18px;font-weight:600;letter-spacing:-.02em;}
-.rh-desc{font-size:12px;color:rgba(255,255,255,.5);margin-top:3px;}
-.rh-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:14px;}
-.modechip{font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);}
-.pdi-bar{background:rgba(255,255,255,.06);border-radius:7px;padding:8px 12px;margin-top:8px;}
+.rh-desc{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;}
+.rh-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;margin-left:14px;}
+.mode-chip{font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);}
+.pdi-bar{background:rgba(255,255,255,.06);border-radius:6px;padding:8px 12px;margin-top:8px;}
 .pdi-lbl{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
 .pdi-zones{display:flex;gap:2px;margin-bottom:3px;}
 .pdi-z{height:3px;border-radius:2px;flex:1;}
@@ -56,66 +52,97 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .pdi-fill{height:100%;border-radius:3px;transition:width .8s ease;}
 .pdi-marks{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.25);margin-top:2px;}
 
-/* ═══ AUTHORITATIVE OUTPUT PANEL ═══ */
-.auth-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.auth-panel-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.auth-panel-title{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
-.auth-panel-tag{font-size:10px;padding:2px 8px;border-radius:4px;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
-.auth-sections{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);}
-.auth-section{padding:16px 18px;border-right:1px solid var(--border);}
-.auth-section:last-child{border-right:none;}
-.as-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.as-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.as-dot-state{background:var(--text);}
-.as-dot-struct{background:var(--blue,#1d4ed8);}
-.as-dot-behav{background:var(--amber);}
-.as-dot-conf{background:var(--purple);}
-.as-label-state{color:var(--text);}
-.as-label-struct{color:#1d4ed8;}
-.as-label-behav{color:var(--amber);}
-.as-label-conf{color:var(--purple);}
+/* ═══ PRIMARY OUTPUT PANEL ═══ */
+.primary-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.pp-header{padding:11px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);}
+.pp-title{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.pp-mode-tag{font-size:10px;font-weight:600;padding:2px 9px;border-radius:4px;}
+.tag-full{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.tag-pf{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.tag-cf{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
 
-/* STATE section */
-.state-phase{font-size:14px;font-weight:600;margin-bottom:6px;}
-.state-sc-wrap{display:flex;align-items:baseline;gap:6px;margin-top:8px;}
-.state-sc-num{font-size:32px;font-weight:600;font-family:var(--mono);letter-spacing:-.03em;}
-.state-sc-lbl{font-size:11px;color:var(--muted);}
-.state-sc-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;margin-top:4px;display:inline-block;letter-spacing:.06em;}
-.sc-tag-live{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
-.sc-tag-preserved{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
-.sc-tag-cf{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
-.state-terminal{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
-.st-lbl{font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
-.st-bar-wrap{display:flex;align-items:center;gap:8px;}
-.st-bar{flex:1;height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);overflow:hidden;}
-.st-bar-fill{height:100%;border-radius:2px;transition:width .7s ease;}
-.st-pct{font-size:12px;font-weight:600;font-family:var(--mono);min-width:36px;text-align:right;}
-.st-verdict{font-size:11px;color:var(--muted);margin-top:4px;}
+.pp-sections{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;}
 
-/* STRUCTURE section */
-.struct-row{display:flex;align-items:flex-start;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);}
-.struct-row:last-of-type{border-bottom:none;}
-.struct-key{font-size:11px;color:var(--muted);}
-.struct-val{font-size:11px;font-weight:500;text-align:right;max-width:55%;}
+.pp-sec{padding:16px 16px;border-right:1px solid var(--border);}
+.pp-sec:last-child{border-right:none;}
+.pp-sec-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:11px;display:flex;align-items:center;gap:6px;}
+.sec-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
-/* BEHAVIOR section */
-.behav-state{font-size:13px;font-weight:600;margin-bottom:6px;}
-.behav-sub{font-size:11px;color:var(--muted);line-height:1.5;}
-.behav-note{font-size:11px;padding:7px 10px;border-radius:6px;margin-top:8px;line-height:1.5;}
+/* STATE */
+.s-phase{font-size:14px;font-weight:600;margin-bottom:3px;line-height:1.3;}
+.s-phase-sub{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.s-sc-row{display:flex;align-items:baseline;gap:5px;margin-bottom:3px;}
+.s-sc-num{font-size:30px;font-weight:600;font-family:var(--mono);letter-spacing:-.03em;}
+.s-sc-lbl{font-size:11px;color:var(--muted);}
+.s-sc-mode{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;display:inline-block;letter-spacing:.06em;margin-bottom:8px;}
+.scm-live{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.scm-prev{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.scm-cf{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.s-term{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.s-term-lbl{font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+.s-term-bar{display:flex;align-items:center;gap:7px;}
+.s-term-track{flex:1;height:5px;background:var(--bg);border-radius:3px;border:1px solid var(--border);overflow:hidden;}
+.s-term-fill{height:100%;border-radius:2px;transition:width .7s ease;}
+.s-term-pct{font-size:12px;font-weight:600;font-family:var(--mono);min-width:34px;text-align:right;}
+.s-term-sub{font-size:10px;color:var(--muted);margin-top:3px;}
 
-/* CONFIDENCE section */
-.conf-uc-wrap{display:flex;align-items:baseline;gap:6px;margin-bottom:6px;}
-.conf-uc-num{font-size:22px;font-weight:600;font-family:var(--mono);}
-.conf-uc-lbl{font-size:11px;color:var(--muted);}
-.uc-tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:4px;display:inline-block;letter-spacing:.06em;margin-bottom:8px;}
-.uc-high{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
-.uc-med{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
-.uc-low{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
-.uc-none{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
-.conf-reason{font-size:11px;color:var(--muted);line-height:1.5;}
-.conf-penalty{font-size:10px;padding:5px 9px;border-radius:5px;margin-top:8px;line-height:1.5;background:var(--pbg);color:var(--purple);border:1px solid var(--pbd);}
+/* STRUCTURE */
+.str-row{display:flex;align-items:flex-start;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);}
+.str-row:last-of-type{border-bottom:none;}
+.str-key{font-size:11px;color:var(--muted);}
+.str-val{font-size:11px;font-weight:500;text-align:right;max-width:58%;}
+.str-stale{font-size:9px;color:var(--dim);font-weight:400;}
 
-/* TICKERS */
+/* BEHAVIOR */
+.beh-price-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);}
+.beh-price-row:last-of-type{border-bottom:none;}
+.beh-key{font-size:11px;color:var(--muted);}
+.beh-val{font-size:12px;font-weight:500;font-family:var(--mono);}
+.beh-classify{margin-top:9px;padding:8px 10px;border-radius:6px;font-size:11px;line-height:1.5;}
+.beh-provisional{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.beh-counter{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.beh-confirm{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.beh-neutral{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.beh-live{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+
+/* CONFIDENCE */
+.conf-uc{font-size:22px;font-weight:600;font-family:var(--mono);margin-bottom:3px;}
+.conf-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;letter-spacing:.06em;margin-bottom:7px;}
+.ct-high{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.ct-med{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.ct-low{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
+.ct-none{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.conf-reason{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+.conf-penalty{font-size:10px;padding:5px 8px;border-radius:5px;line-height:1.5;background:var(--pbg);color:var(--purple);border:1px solid var(--pbd);}
+
+/* INTERPRETATION BLOCK */
+.interp-block{padding:14px 18px;border-top:1px solid var(--border);}
+.interp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.interp-lbl{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.interp-tag{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:600;letter-spacing:.06em;}
+.it-live{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
+.it-pf{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
+.it-cf{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.interp-text{font-size:13px;line-height:1.75;color:var(--text);}
+.interp-text strong{font-weight:600;}
+.interp-qs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+.interp-q{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 11px;}
+.iq-lbl{font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;}
+.iq-ans{font-size:12px;font-weight:500;line-height:1.4;}
+
+/* BIAS ROW */
+.bias-row{padding:11px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.bias-lbl{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
+.bias-val{font-size:13px;font-weight:600;}
+.trigs{display:flex;gap:6px;flex-wrap:wrap;}
+.trig{font-size:10px;padding:3px 9px;border-radius:4px;border:1px solid;display:flex;align-items:center;gap:4px;}
+.tdot{width:4px;height:4px;border-radius:50%;background:currentColor;}
+.tr{color:var(--red);border-color:rgba(192,57,43,.3);background:var(--rbg);}
+.tg{color:var(--green);border-color:rgba(26,122,74,.3);background:var(--gbg);}
+.ta{color:var(--amber);border-color:rgba(180,83,9,.3);background:var(--abg);}
+.tp{color:var(--purple);border-color:rgba(109,40,217,.3);background:var(--pbg);}
+
+/* LIVE PRICES */
 .tg5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
 .tc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 13px;}
 .tn{font-size:10px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
@@ -123,23 +150,21 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .tch{font-size:11px;margin-top:2px;font-family:var(--mono);}
 .up{color:var(--green);}.dn{color:var(--red);}.neu{color:var(--muted);}.amb{color:var(--amber);}
 
-/* SECTION */
 .sh{display:flex;align-items:center;gap:10px;margin:2px 0 6px;}
-.st-lbl2{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;}
+.stl{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;}
 .sl{flex:1;height:1px;background:var(--border);}
-.diag-note{font-size:10px;color:var(--dim);padding:4px 10px;background:var(--bg);border-radius:4px;border:1px solid var(--border);}
+.diag-pill{font-size:9px;padding:2px 8px;border-radius:4px;background:var(--bg);border:1px solid var(--border);color:var(--dim);letter-spacing:.04em;}
 
 /* DIAGNOSTIC CARDS */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;}
-.card.frozen{opacity:.6;border-style:dashed;position:relative;}
-.card.frozen::after{content:'DIAGNOSTIC — FROZEN';position:absolute;top:8px;right:10px;font-size:8px;font-weight:600;letter-spacing:.08em;color:var(--dim);background:var(--bg);padding:1px 5px;border-radius:3px;border:1px solid var(--border);}
-.diag-badge{font-size:8px;font-weight:600;letter-spacing:.08em;color:var(--dim);background:var(--bg);padding:1px 6px;border-radius:3px;border:1px solid var(--border);margin-left:6px;}
-.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.diag-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;position:relative;}
+.diag-card::before{content:'DIAGNOSTIC';position:absolute;top:10px;right:12px;font-size:8px;font-weight:700;letter-spacing:.1em;color:var(--dim);background:var(--bg);padding:1px 6px;border-radius:3px;border:1px solid var(--border);}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
 .ctit{display:flex;align-items:center;gap:7px;}
-.cnum{width:19px;height:19px;border-radius:4px;background:var(--bg);border:1px solid var(--border);font-size:9px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;}
+.cnum{width:18px;height:18px;border-radius:4px;background:var(--bg);border:1px solid var(--border);font-size:9px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;}
 .clbl{font-size:13px;font-weight:600;}
-.cst{font-size:10px;font-weight:500;padding:2px 8px;border-radius:5px;}
+.cst{font-size:10px;font-weight:500;padding:2px 7px;border-radius:5px;}
 .sr{background:var(--rbg);color:var(--red);border:1px solid var(--rbd);}
 .sg{background:var(--gbg);color:var(--green);border:1px solid var(--gbd);}
 .sa{background:var(--abg);color:var(--amber);border:1px solid var(--abd);}
@@ -148,8 +173,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .dr:last-of-type{border-bottom:none;}
 .dk{font-size:11px;color:var(--muted);}
 .dv{font-size:12px;font-weight:500;font-family:var(--mono);}
-.plain{margin-top:9px;padding:8px 10px;border-radius:6px;font-size:11px;line-height:1.6;color:var(--muted);background:var(--bg);border:1px solid var(--border);}
-.ls-wrap{margin:8px 0 3px;}
+.ls-wrap{margin:7px 0 3px;}
 .ls-track{height:6px;background:var(--bg);border-radius:3px;border:1px solid var(--border);overflow:hidden;}
 .ls-fill{height:100%;border-radius:2px;transition:width .7s ease;}
 .ls-zones{display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-top:3px;}
@@ -158,53 +182,41 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14
 .mn{font-size:9px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
 .mv{font-size:14px;font-weight:600;font-family:var(--mono);}
 .ms{font-size:10px;margin-top:1px;}.mw{font-size:10px;color:var(--muted);}
-
-/* ELASTICITY */
-.er-zones{display:flex;gap:6px;margin:8px 0 6px;}
-.erz{flex:1;padding:7px 9px;border-radius:6px;border:2px solid transparent;text-align:center;min-width:60px;}
+.er-zones{display:flex;gap:5px;margin:7px 0 5px;}
+.erz{flex:1;padding:6px 8px;border-radius:5px;border:2px solid transparent;text-align:center;min-width:55px;}
 .er-l{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1px;}
 .er-r{font-size:9px;opacity:.7;}
-.eg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px;}
-.ei{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:8px 10px;}
+.eg{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:7px;}
+.ei{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;}
 .eilbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
 .eiv{font-size:14px;font-weight:600;font-family:var(--mono);}
-.eisub{font-size:10px;color:var(--muted);margin-top:2px;}
-
-/* CASCADE */
+.eisub{font-size:10px;color:var(--muted);margin-top:1px;}
 .ccd{border-radius:10px;padding:13px 15px;}
-.cond-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.cond-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.07);}
 .cond-row:last-of-type{border-bottom:none;}
 .cond-n{font-size:11px;color:rgba(255,255,255,.65);}
 .cond-v{font-size:11px;font-weight:500;font-family:var(--mono);}
 .cm{color:#4ade80;}.cu{color:rgba(255,255,255,.3);}
-
-/* ABSORPTION BARS */
-.abs-bars{display:flex;flex-direction:column;gap:5px;margin-top:8px;}
+.abs-bars{display:flex;flex-direction:column;gap:5px;margin-top:7px;}
 .abr{display:flex;align-items:center;gap:8px;}
-.abd-lbl{font-size:10px;color:var(--muted);width:44px;flex-shrink:0;}
-.abt{flex:1;height:9px;background:var(--bg);border-radius:4px;border:1px solid var(--border);}
+.abd-lbl{font-size:10px;color:var(--muted);width:42px;flex-shrink:0;}
+.abt{flex:1;height:8px;background:var(--bg);border-radius:4px;border:1px solid var(--border);}
 .abf{height:100%;border-radius:3px;transition:width .6s ease;}
-.abv{font-size:10px;font-family:var(--mono);width:34px;text-align:right;flex-shrink:0;}
+.abv{font-size:10px;font-family:var(--mono);width:32px;text-align:right;flex-shrink:0;}
 .aba{font-size:11px;width:14px;flex-shrink:0;}
-
-/* TERMINAL GRID */
-.tc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px;}
-.tci{padding:9px 11px;border-radius:7px;border:1px solid var(--border);}
-.tc-check{font-size:14px;margin-bottom:3px;}
+.tc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px;}
+.tci{padding:8px 10px;border-radius:6px;border:1px solid var(--border);}
+.tc-check{font-size:13px;margin-bottom:2px;}
 .tc-lbl{font-size:11px;font-weight:500;margin-bottom:2px;}
 .tc-sub{font-size:10px;color:var(--muted);}
 .tc-met{background:var(--gbg);border-color:var(--gbd);}
 .tc-partial{background:var(--abg);border-color:var(--abd);}
 .tc-unmet{background:var(--bg);}
-
-/* HISTORY */
 .ht{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px;}
 .ht th{text-align:left;font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-bottom:1px solid var(--border);}
 .ht td{padding:5px 8px;border-bottom:1px solid var(--border);font-family:var(--mono);}
 .ht tr:last-child td{border-bottom:none;}
 .ht tr.today-row td{background:rgba(26,122,74,.05);font-weight:500;}
-
-/* INPUTS */
 .ig4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
 .ig{display:flex;flex-direction:column;gap:3px;}
 .il{font-size:10px;color:var(--muted);font-weight:500;}
@@ -227,17 +239,17 @@ select{font-family:var(--sans);}
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;font-size:12px;padding:9px 15px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .25s;z-index:300;max-width:300px;line-height:1.4;}
 .toast.show{opacity:1;transform:translateY(0);}
-@media(max-width:700px){.tg5,.g2,.eg,.tc-grid,.ig4,.auth-sections{grid-template-columns:1fr 1fr;}}
+@media(max-width:700px){.tg5,.g2,.eg,.tc-grid,.ig4,.pp-sections,.interp-qs{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
-<div class="lov" id="lov"><div class="lbox"><div class="spin"></div><div style="font-size:13px;font-weight:500">Loading v8…</div><div style="font-size:11px;color:var(--muted);margin-top:3px" id="lsub">Connecting</div></div></div>
+<div class="lov" id="lov"><div class="lbox"><div class="spin"></div><div style="font-size:13px;font-weight:500">Loading v9…</div><div style="font-size:11px;color:var(--muted);margin-top:3px" id="lsub">Connecting</div></div></div>
 <div class="toast" id="toast"></div>
 
 <div class="topbar">
   <div>
-    <div class="logo">FII Market Dashboard <span style="font-size:10px;opacity:.3;font-weight:400;margin-left:6px">v8.0 · SC/UC Separated · Three-Mode · Signal Hierarchy Enforced</span></div>
-    <div class="logo-sub">State Conviction never penalised · Price annotates only · Flow governs · Terminal governs decay</div>
+    <div class="logo">FII Market Dashboard <span style="font-size:10px;opacity:.3;font-weight:400;margin-left:6px">v9.0 · Always Explaining · SC/UC Separated · Signal Hierarchy</span></div>
+    <div class="logo-sub">The system never stops explaining — it only stops updating the explanation</div>
   </div>
   <div class="tbr">
     <span><span class="ld"></span><span style="font-size:10px;color:rgba(255,255,255,.5)" id="clock">—</span></span>
@@ -247,19 +259,19 @@ select{font-family:var(--sans);}
 
 <div class="page">
 
-<!-- MODE BANNER -->
-<div id="mode-banner" style="display:none"></div>
+<!-- MODE STRIP -->
+<div id="mode-strip" style="display:none"></div>
 
-<!-- REGIME HEADER (phase + PDI only) -->
-<div class="regime-header" id="rh" style="background:#1a1a1a">
+<!-- REGIME HEADER -->
+<div class="rh" id="rh" style="background:#1a1a1a">
   <div class="rh-top">
     <div>
-      <div class="rh-lbl">Market Phase · PDI: <span id="pdi-inline">—</span> · <span id="mode-lbl">Full Mode</span></div>
+      <div class="rh-lbl">Market Phase · <span id="mode-lbl">—</span> · PDI: <span id="pdi-inline">—</span></div>
       <div class="rh-phase" id="rh-phase">Loading…</div>
-      <div class="rh-desc" id="rh-desc">Enter data and analyse</div>
+      <div class="rh-desc" id="rh-desc">—</div>
     </div>
     <div class="rh-right">
-      <span class="modechip" id="mode-chip">—</span>
+      <span class="mode-chip" id="mode-chip">—</span>
       <span style="font-size:10px;color:rgba(255,255,255,.3)" id="rdcount">—</span>
     </div>
   </div>
@@ -271,88 +283,97 @@ select{font-family:var(--sans);}
   </div>
 </div>
 
-<!-- ═══ AUTHORITATIVE OUTPUT PANEL ═══ -->
-<div class="auth-panel">
-  <div class="auth-panel-header">
-    <span class="auth-panel-title">Authoritative Output — Only valid interpretation in this system</span>
-    <span class="auth-panel-tag" id="auth-mode-tag">—</span>
+<!-- ═══ PRIMARY OUTPUT PANEL ═══ -->
+<div class="primary-panel">
+  <div class="pp-header">
+    <span class="pp-title">Primary Output — Authoritative interpretation</span>
+    <span class="pp-mode-tag tag-cf" id="pp-mode-tag">—</span>
   </div>
-  <div class="auth-sections">
+
+  <div class="pp-sections">
 
     <!-- STATE -->
-    <div class="auth-section">
-      <div class="as-label as-label-state"><span class="as-dot as-dot-state"></span>STATE</div>
-      <div class="state-phase" id="st-phase">—</div>
-      <div style="font-size:11px;color:var(--muted)" id="st-phase-sub">—</div>
-      <div class="state-sc-wrap">
-        <div class="state-sc-num" id="sc-num" style="color:var(--muted)">—</div>
-        <div class="state-sc-lbl">State Conviction</div>
+    <div class="pp-sec">
+      <div class="pp-sec-lbl" style="color:var(--text)"><span class="sec-dot" style="background:var(--text)"></span>STATE</div>
+      <div class="s-phase" id="s-phase">—</div>
+      <div class="s-phase-sub" id="s-phase-sub">—</div>
+      <div class="s-sc-row">
+        <div class="s-sc-num" id="sc-num" style="color:var(--muted)">—</div>
+        <div class="s-sc-lbl">State Conviction</div>
       </div>
-      <div class="state-sc-tag sc-tag-cf" id="sc-tag">—</div>
-      <div class="state-terminal">
-        <div class="st-lbl">Bearish Strength</div>
-        <div class="st-bar-wrap">
-          <div class="st-bar"><div class="st-bar-fill" id="ts-bar" style="width:0%;background:var(--red)"></div></div>
-          <div class="st-pct" id="ts-pct" style="color:var(--red)">—%</div>
+      <div class="s-sc-mode scm-cf" id="sc-mode-tag">—</div>
+      <div class="s-term">
+        <div class="s-term-lbl">Bearish Strength (Terminal)</div>
+        <div class="s-term-bar">
+          <div class="s-term-track"><div class="s-term-fill" id="ts-fill" style="width:0%;background:var(--red)"></div></div>
+          <div class="s-term-pct" id="ts-pct" style="color:var(--red)">—%</div>
         </div>
-        <div class="st-verdict" id="ts-verdict">—</div>
+        <div class="s-term-sub" id="ts-sub">—</div>
       </div>
     </div>
 
     <!-- STRUCTURE -->
-    <div class="auth-section">
-      <div class="as-label as-label-struct"><span class="as-dot as-dot-struct"></span>STRUCTURE</div>
-      <div class="struct-row"><span class="struct-key">Elasticity</span><span class="struct-val" id="str-elast">—</span></div>
-      <div class="struct-row"><span class="struct-key">Absorption</span><span class="struct-val" id="str-absorb">—</span></div>
-      <div class="struct-row"><span class="struct-key">Gradient</span><span class="struct-val" id="str-gradient">—</span></div>
-      <div class="struct-row"><span class="struct-key">Cascade type</span><span class="struct-val" id="str-cascade">—</span></div>
-      <div class="struct-row"><span class="struct-key">Flow exhaustion</span><span class="struct-val" id="str-exhaust">—</span></div>
-      <div class="struct-row"><span class="struct-key">Structural signal</span><span class="struct-val" id="str-signal">—</span></div>
+    <div class="pp-sec">
+      <div class="pp-sec-lbl" style="color:var(--blue)"><span class="sec-dot" style="background:var(--blue)"></span>STRUCTURE <span style="font-size:9px;color:var(--dim);font-weight:400;margin-left:4px" id="str-mode-note">—</span></div>
+      <div class="str-row"><span class="str-key">Elasticity</span><span class="str-val" id="str-elast">—</span></div>
+      <div class="str-row"><span class="str-key">Absorption</span><span class="str-val" id="str-absorb">—</span></div>
+      <div class="str-row"><span class="str-key">Gradient</span><span class="str-val" id="str-grad">—</span></div>
+      <div class="str-row"><span class="str-key">Selling type</span><span class="str-val" id="str-cascade">—</span></div>
+      <div class="str-row"><span class="str-key">Flow exhaustion</span><span class="str-val" id="str-exhaust">—</span></div>
+      <div class="str-row" style="border-bottom:none"><span class="str-key">Structural signal</span><span class="str-val" id="str-signal" style="font-weight:600">—</span></div>
     </div>
 
     <!-- BEHAVIOR -->
-    <div class="auth-section">
-      <div class="as-label as-label-behav"><span class="as-dot as-dot-behav"></span>BEHAVIOR</div>
-      <div class="behav-state" id="beh-state">—</div>
-      <div class="behav-sub" id="beh-sub">—</div>
-      <div class="behav-note" id="beh-note" style="display:none"></div>
-      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-        <div style="font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Acceptance</div>
-        <div style="font-size:12px;font-weight:500" id="beh-accept">—</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:2px" id="beh-accept-sub">—</div>
-        <div style="margin-top:6px;font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">BN Divergence</div>
-        <div style="font-size:12px;font-weight:500" id="beh-bn">—</div>
-      </div>
+    <div class="pp-sec">
+      <div class="pp-sec-lbl" style="color:var(--amber)"><span class="sec-dot" style="background:var(--amber)"></span>BEHAVIOR <span style="font-size:9px;color:var(--dim);font-weight:400;margin-left:4px">(price only)</span></div>
+      <div class="beh-price-row"><span class="beh-key">Nifty change</span><span class="beh-val" id="beh-nifty">—</span></div>
+      <div class="beh-price-row"><span class="beh-key">Bank Nifty</span><span class="beh-val" id="beh-bn">—</span></div>
+      <div class="beh-price-row"><span class="beh-key">BN divergence</span><span class="beh-val" id="beh-bndiv">—</span></div>
+      <div class="beh-price-row"><span class="beh-key">Acceptance</span><span class="beh-val" id="beh-accept">—</span></div>
+      <div id="beh-classify" class="beh-classify beh-neutral" style="margin-top:8px">—</div>
     </div>
 
     <!-- CONFIDENCE -->
-    <div class="auth-section">
-      <div class="as-label as-label-conf"><span class="as-dot as-dot-conf"></span>CONFIDENCE</div>
-      <div class="conf-uc-wrap">
-        <div class="conf-uc-num" id="uc-label" style="color:var(--muted)">—</div>
-        <div class="conf-uc-lbl">Update Confidence</div>
-      </div>
-      <div class="uc-tag uc-none" id="uc-tag">—</div>
+    <div class="pp-sec">
+      <div class="pp-sec-lbl" style="color:var(--purple)"><span class="sec-dot" style="background:var(--purple)"></span>CONFIDENCE</div>
+      <div class="conf-uc" id="uc-val" style="color:var(--muted)">—</div>
+      <div class="conf-tag ct-none" id="uc-tag">Update Confidence</div>
       <div class="conf-reason" id="uc-reason">—</div>
-      <div class="conf-penalty" id="uc-penalty" style="display:none"></div>
+      <div class="conf-penalty" id="uc-penalty" style="display:none">—</div>
     </div>
 
   </div>
-  <!-- BOTTOM: next-day bias -->
-  <div style="padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px">
-    <div>
-      <div style="font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px">Next-Day Bias</div>
-      <div style="font-size:13px;font-weight:600" id="auth-bias">—</div>
+
+  <!-- ACTIVE INTERPRETATION -->
+  <div class="interp-block">
+    <div class="interp-header">
+      <span class="interp-lbl">Active Interpretation</span>
+      <span class="interp-tag it-cf" id="interp-tag">—</span>
     </div>
-    <div style="text-align:right">
-      <div style="font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px">Trigger Conditions</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end" id="auth-triggers"></div>
+    <div class="interp-text" id="interp-text">—</div>
+    <div class="interp-qs">
+      <div class="interp-q"><div class="iq-lbl">Current regime?</div><div class="iq-ans" id="iq-1">—</div></div>
+      <div class="interp-q"><div class="iq-lbl">Strengthening or weakening?</div><div class="iq-ans" id="iq-2">—</div></div>
+      <div class="interp-q"><div class="iq-lbl">Structural picture?</div><div class="iq-ans" id="iq-3">—</div></div>
+      <div class="interp-q"><div class="iq-lbl">Trust current price?</div><div class="iq-ans" id="iq-4">—</div></div>
+    </div>
+  </div>
+
+  <!-- BIAS ROW -->
+  <div class="bias-row">
+    <div>
+      <div class="bias-lbl">Next-Day Bias</div>
+      <div class="bias-val" id="auth-bias">—</div>
+    </div>
+    <div>
+      <div class="bias-lbl" style="text-align:right;margin-bottom:3px">Active Triggers</div>
+      <div class="trigs" id="trigs"></div>
     </div>
   </div>
 </div>
 
 <!-- LIVE PRICES -->
-<div class="sh"><span class="st-lbl2">Live Prices</span><div class="sl"></div><div class="sb" id="src-row"><span class="sbadge"><span class="sdot smanual"></span>Manual mode</span></div></div>
+<div class="sh"><span class="stl">Live Prices</span><div class="sl"></div><div class="sb" id="src-row"><span class="sbadge"><span class="sdot smanual"></span>Manual mode</span></div></div>
 <div class="tg5">
   <div class="tc"><div class="tn">Nifty 50</div><div class="tv" id="t-nifty">—</div><div class="tch" id="tc-nifty">—</div></div>
   <div class="tc"><div class="tn">Bank Nifty</div><div class="tv" id="t-bnifty">—</div><div class="tch" id="tc-bnifty">—</div></div>
@@ -362,39 +383,32 @@ select{font-family:var(--sans);}
 </div>
 
 <!-- DIAGNOSTIC LAYERS -->
-<div class="sh">
-  <span class="st-lbl2">Diagnostic Layers</span><div class="sl"></div>
-  <span class="diag-note">Informational only — no interpretation authority</span>
-  <span id="layers-frozen-tag" style="font-size:10px;color:var(--dim);margin-left:8px;display:none">ALL FROZEN</span>
-</div>
+<div class="sh"><span class="stl">Diagnostic Layers</span><div class="sl"></div><span class="diag-pill">Raw data only — no interpretation authority</span></div>
 <div class="g2">
-  <div class="card" id="l1-card">
-    <div class="ch"><div class="ctit"><div class="cnum">1</div><div class="clbl">FII Positioning</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l1-st">—</span></div>
+  <div class="diag-card">
+    <div class="ch"><div class="ctit"><div class="cnum">1</div><div class="clbl">FII Positioning</div></div><span class="cst sn" id="l1-st">—</span></div>
     <div class="dr"><span class="dk">Cash flow</span><span class="dv" id="l1-cash">—</span></div>
-    <div class="dr"><span class="dk">Futures L/S</span><span class="dv" id="l1-ls">—</span></div>
+    <div class="dr"><span class="dk">L/S ratio</span><span class="dv" id="l1-ls">—</span></div>
     <div class="dr"><span class="dk">Stance</span><span class="dv" id="l1-stance">—</span></div>
     <div class="dr"><span class="dk">Selling type</span><span class="dv" id="l1-stype">—</span></div>
     <div class="ls-wrap"><div class="ls-track"><div class="ls-fill" id="ls-fill" style="width:0%"></div></div><div class="ls-zones"><span>Very Bearish</span><span>Bearish</span><span>Cautious</span><span>Bullish</span></div></div>
-    <div class="plain" id="l1-plain">—</div>
   </div>
-  <div class="card" id="l2-card">
-    <div class="ch"><div class="ctit"><div class="cnum">2</div><div class="clbl">Price vs Positioning</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l2-st">—</span></div>
+  <div class="diag-card">
+    <div class="ch"><div class="ctit"><div class="cnum">2</div><div class="clbl">Price vs Positioning</div></div><span class="cst sn" id="l2-st">—</span></div>
     <div class="dr"><span class="dk">Nifty</span><span class="dv" id="l2-nifty">—</span></div>
     <div class="dr"><span class="dk">Bank Nifty</span><span class="dv" id="l2-bn">—</span></div>
     <div class="dr"><span class="dk">BN divergence</span><span class="dv" id="l2-bndiv">—</span></div>
     <div class="dr"><span class="dk">Price state</span><span class="dv" id="l2-pstate">—</span></div>
-    <div class="plain" id="l2-plain">—</div>
   </div>
-  <div class="card" id="l3-card">
-    <div class="ch"><div class="ctit"><div class="cnum">3</div><div class="clbl">Liquidity Flow</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l3-st">—</span></div>
+  <div class="diag-card">
+    <div class="ch"><div class="ctit"><div class="cnum">3</div><div class="clbl">Liquidity Flow</div></div><span class="cst sn" id="l3-st">—</span></div>
     <div class="dr"><span class="dk">FII</span><span class="dv dn" id="l3-fii">—</span></div>
     <div class="dr"><span class="dk">DII</span><span class="dv up" id="l3-dii">—</span></div>
     <div class="dr"><span class="dk">Coverage</span><span class="dv" id="l3-ratio">—</span></div>
     <div class="dr"><span class="dk">Absorption</span><span class="dv" id="l3-qual">—</span></div>
-    <div class="plain" id="l3-plain">—</div>
   </div>
-  <div class="card" id="l4-card">
-    <div class="ch"><div class="ctit"><div class="cnum">4</div><div class="clbl">Macro Context</div><span class="diag-badge">DIAGNOSTIC</span></div><span class="cst sn" id="l4-st">—</span></div>
+  <div class="diag-card">
+    <div class="ch"><div class="ctit"><div class="cnum">4</div><div class="clbl">Macro Context</div></div><span class="cst sn" id="l4-st">—</span></div>
     <div class="mg">
       <div class="mi"><div class="mn">India 10Y</div><div class="mv" id="m-in10y">—</div><div class="ms" id="ms-in10y">—</div><div class="mw" id="mw-in10y">—</div></div>
       <div class="mi"><div class="mn">US 10Y</div><div class="mv" id="m-us10y">—</div><div class="ms" id="ms-us10y">—</div><div class="mw" id="mw-us10y">—</div></div>
@@ -404,17 +418,16 @@ select{font-family:var(--sans);}
   </div>
 </div>
 
-<!-- ELASTICITY DIAGNOSTIC -->
-<div class="sh"><span class="st-lbl2">Elasticity</span><div class="sl"></div><span class="diag-note">Structural signal only — confirmed tag required for regime influence</span></div>
-<div class="card" id="elast-card">
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+<!-- ELASTICITY -->
+<div class="sh"><span class="stl">Elasticity</span><div class="sl"></div><span class="diag-pill">Confirmed tag required for structural influence</span></div>
+<div class="diag-card">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
     <div><div style="font-size:12px;font-weight:600;margin-bottom:2px">Nifty pts per ₹1000 Cr FII selling</div>
-    <div style="font-size:11px;color:var(--muted)">Only "Confirmed" tag (3+ days persistent) influences structure. Unconfirmed/Provisional = diagnostic display only.</div></div>
+    <div style="font-size:11px;color:var(--muted)">Only Confirmed tag (3+ days) influences structure. Unconfirmed = diagnostic display only.</div></div>
     <div style="text-align:right;flex-shrink:0">
-      <div style="font-size:10px;color:var(--muted);margin-bottom:1px">Today</div>
-      <div style="font-size:22px;font-weight:600;font-family:var(--mono)" id="elast-today">—</div>
-      <div style="font-size:11px;margin-top:2px" id="elast-rlbl">—</div>
-      <div style="font-size:10px;margin-top:2px;padding:2px 8px;border-radius:4px;display:inline-block" id="elast-cbadge">—</div>
+      <div style="font-size:10px;color:var(--muted)">Today</div>
+      <div style="font-size:20px;font-weight:600;font-family:var(--mono)" id="elast-today">—</div>
+      <div style="font-size:10px;margin-top:1px;padding:2px 7px;border-radius:3px;display:inline-block" id="elast-cbadge">—</div>
     </div>
   </div>
   <div class="er-zones">
@@ -427,37 +440,37 @@ select{font-family:var(--sans);}
     <div class="ei"><div class="eilbl">3-Day Avg</div><div class="eiv" id="elast-avg">—</div><div class="eisub">pts/₹1000Cr</div></div>
     <div class="ei"><div class="eilbl">Trend</div><div class="eiv" id="elast-trend">—</div><div class="eisub" id="elast-tsub">—</div></div>
     <div class="ei"><div class="eilbl">Tag</div><div class="eiv" id="elast-tag" style="font-size:12px">—</div><div class="eisub" id="elast-tag-sub">—</div></div>
-    <div class="ei"><div class="eilbl">Structural influence</div><div class="eiv" id="elast-influence" style="font-size:11px;line-height:1.3">—</div></div>
+    <div class="ei"><div class="eilbl">Influence</div><div class="eiv" id="elast-inf" style="font-size:11px;line-height:1.3">—</div></div>
   </div>
 </div>
 
-<!-- CASCADE DIAGNOSTIC -->
-<div class="sh"><span class="st-lbl2">Cascade / Selling Type</span><div class="sl"></div><span class="diag-note">Frozen in non-full modes</span></div>
-<div class="ccd card" id="cascade-card" style="background:#1a1a1a;border-color:rgba(255,255,255,.1)">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-    <div><div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:2px">Selling Type</div>
+<!-- CASCADE -->
+<div class="sh"><span class="stl">Cascade / Selling Type</span><div class="sl"></div></div>
+<div class="ccd diag-card" style="background:#1a1a1a;border-color:rgba(255,255,255,.1)">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+    <div><div style="font-size:12px;font-weight:600;color:#fff;margin-bottom:1px">Selling Type Classification</div>
     <div style="font-size:11px;color:rgba(255,255,255,.4)">Controlled = institutional. Forced = margin calls.</div></div>
-    <span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:6px;flex-shrink:0;margin-left:14px" id="casc-chip">—</span>
+    <span style="font-size:11px;font-weight:600;padding:4px 11px;border-radius:6px;flex-shrink:0;margin-left:12px" id="casc-chip">—</span>
   </div>
   <div id="casc-conds"></div>
-  <div style="margin-top:8px;padding:8px 11px;border-radius:6px;font-size:11px;line-height:1.5" id="casc-verdict">—</div>
+  <div style="margin-top:8px;padding:7px 10px;border-radius:5px;font-size:11px;line-height:1.5" id="casc-verdict">—</div>
 </div>
 
-<!-- ABSORPTION GRADIENT -->
-<div class="sh"><span class="st-lbl2">Absorption Gradient</span><div class="sl"></div><span class="diag-note">Frozen in non-full modes</span></div>
-<div class="card" id="abs-card">
+<!-- ABSORPTION -->
+<div class="sh"><span class="stl">Absorption Gradient</span><div class="sl"></div></div>
+<div class="diag-card">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-    <div><div style="font-size:12px;font-weight:600;margin-bottom:2px">DII Coverage Over Time</div></div>
+    <div style="font-size:12px;font-weight:600">DII Coverage Over Time</div>
     <div style="font-size:12px;font-weight:600" id="absgrad-lbl">—</div>
   </div>
-  <div class="abs-bars" id="abs-bars"><div style="font-size:11px;color:var(--muted);padding:6px 0">Building…</div></div>
-  <div class="plain" id="abs-verdict" style="margin-top:8px">—</div>
+  <div class="abs-bars" id="abs-bars">—</div>
+  <div style="font-size:11px;color:var(--muted);margin-top:7px;padding:7px 10px;background:var(--bg);border-radius:5px;border:1px solid var(--border)" id="abs-verdict">—</div>
 </div>
 
-<!-- TERMINAL DETAIL -->
-<div class="sh"><span class="st-lbl2">Terminal Conditions</span><div class="sl"></div><span class="diag-note">Governs phase decay — dominant over all other signals</span></div>
-<div class="card">
-  <div style="font-size:11px;color:var(--muted);margin-bottom:8px">All 4 conditions weighted. Phase exits bearish when strength below 30%.</div>
+<!-- TERMINAL -->
+<div class="sh"><span class="stl">Terminal Conditions</span><div class="sl"></div><span class="diag-pill">Dominant — governs phase decay</span></div>
+<div class="diag-card">
+  <div style="font-size:11px;color:var(--muted);margin-bottom:7px">Phase exits bearish when strength below 30%.</div>
   <div class="tc-grid" id="tc-grid">
     <div class="tci tc-unmet"><div class="tc-check">○</div><div class="tc-lbl">FII Selling Reduced</div><div class="tc-sub" id="tc1">—</div></div>
     <div class="tci tc-unmet"><div class="tc-check">○</div><div class="tc-lbl">DII Coverage &gt;80%</div><div class="tc-sub" id="tc2">—</div></div>
@@ -467,17 +480,21 @@ select{font-family:var(--sans);}
 </div>
 
 <!-- HISTORY -->
-<div class="sh"><span class="st-lbl2">10-Day Memory</span><div class="sl"></div></div>
+<div class="sh"><span class="stl">10-Day Memory</span><div class="sl"></div></div>
 <div class="card">
-  <div style="font-size:11px;color:var(--muted);margin-bottom:4px">SC saved with each full-mode analysis. Carry-forward uses stored SC — no recomputation.</div>
+  <div style="font-size:11px;color:var(--muted);margin-bottom:4px">SC and interpretation saved each full-mode session. Carry-forward uses stored values directly.</div>
   <table class="ht"><thead><tr><th>Date</th><th>Nifty</th><th>Chg</th><th>FII</th><th>DII</th><th>Cover%</th><th>L/S</th><th>VIX</th><th>PDI</th><th>SC</th><th>Phase</th></tr></thead>
   <tbody id="hist-body"></tbody></table>
 </div>
 
 <!-- INPUTS -->
-<div class="sh"><span class="st-lbl2">Enter Today's Data</span><div class="sl"></div></div>
+<div class="sh"><span class="stl">Enter Today's Data</span><div class="sl"></div></div>
 <div class="card">
-  <div style="font-size:12px;color:var(--muted);margin-bottom:11px"><strong>Full:</strong> All fields → full computation, SC updated. <strong>Pre-Flow:</strong> FII/DII blank + High/Open entered → SC preserved, UC computed. <strong>Carry-Forward:</strong> FII/DII + High/Open all blank → last state shown, nothing computed.</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:11px">
+    <strong>Full:</strong> FII+DII+OHLC → SC updated, fresh interpretation.
+    <strong>Pre-Flow:</strong> OHLC only → SC preserved, cautious interpretation.
+    <strong>Carry-Forward:</strong> Nothing → last interpretation shown, not recomputed.
+  </div>
   <div class="ig4">
     <div class="ig"><label class="il">FII Cash (₹ Cr) <span>blank = pre-flow/CF</span></label><input type="number" id="in-fii" placeholder="blank = pre-flow" step="100"></div>
     <div class="ig"><label class="il">DII Cash (₹ Cr) <span>NSE</span></label><input type="number" id="in-dii" placeholder="blank = pre-flow" step="100"></div>
@@ -509,20 +526,27 @@ select{font-family:var(--sans);}
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="white" stroke-width="1.5"/><path d="M7 4v3l2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
     Analyse & Save
   </button>
-  <div class="sbar"><span>Last:</span><span id="last-upd" style="color:var(--text);font-weight:500">Not yet</span><span style="margin-left:auto;color:var(--dim)">v8 · SC never penalised · Price annotates only</span></div>
+  <div class="sbar"><span>Last:</span><span id="last-upd" style="color:var(--text);font-weight:500">Not yet</span><span style="margin-left:auto;color:var(--dim)">v9 · Always explaining · SC never penalised</span></div>
 </div>
 </div>
 
 <script>
-// ═══ SEED DATA ═══
+// ═══ SEED DATA — includes interpretation text ═══
 const SEED=[
-  {date:'2026-03-20',nifty:23114,niftyChg:112,fii:-5340,dii:5334,absRatio:100,ls:0.40,vix:20.1,pdi:35,conviction:65,downDays:0,fromHigh:12.0,phase:'Distribution (Unstable Rally)'},
-  {date:'2026-03-19',nifty:23002,niftyChg:-776,fii:-7207,dii:3410,absRatio:47,ls:0.38,vix:22.8,pdi:43,conviction:72,downDays:1,fromHigh:12.8,phase:'Panic — Continuation'},
-  {date:'2026-03-18',nifty:23778,niftyChg:197,fii:-2714,dii:3253,absRatio:120,ls:0.42,vix:17.8,pdi:38,conviction:68,downDays:2,fromHigh:9.5,phase:'Distribution'},
-  {date:'2026-03-17',nifty:23581,niftyChg:-312,fii:-4890,dii:3100,absRatio:63,ls:0.38,vix:19.2,pdi:52,conviction:75,downDays:3,fromHigh:10.2,phase:'Distribution → Breakdown'},
-  {date:'2026-03-14',nifty:23893,niftyChg:-180,fii:-3210,dii:2800,absRatio:87,ls:0.41,vix:16.5,pdi:34,conviction:65,downDays:2,fromHigh:9.0,phase:'Distribution'},
-  {date:'2026-03-13',nifty:24073,niftyChg:-290,fii:-5100,dii:3450,absRatio:68,ls:0.35,vix:18.1,pdi:44,conviction:73,downDays:3,fromHigh:8.4,phase:'Distribution → Breakdown'},
-  {date:'2026-03-12',nifty:24363,niftyChg:-420,fii:-6800,dii:3900,absRatio:57,ls:0.28,vix:21.4,pdi:61,conviction:80,downDays:4,fromHigh:7.3,phase:'Breakdown'},
+  {date:'2026-03-20',nifty:23114,niftyChg:112,fii:-5340,dii:5334,absRatio:100,ls:0.40,vix:20.1,pdi:35,conviction:65,downDays:0,fromHigh:12.0,phase:'Distribution (Unstable Rally)',
+   interpretation:'Bearish regime persisting but absorption improving significantly. FIIs sold ₹5,340 Cr but DIIs absorbed 100%, preventing price from falling. Rally appears counter-trend — FIIs still net sellers. Regime weakening from peak stress. Watch for L/S to cross 0.50 as confirmation of genuine shift.'},
+  {date:'2026-03-19',nifty:23002,niftyChg:-776,fii:-7207,dii:3410,absRatio:47,ls:0.38,vix:22.8,pdi:43,conviction:72,downDays:1,fromHigh:12.8,phase:'Panic — Continuation',
+   interpretation:'Heavy FII selling ₹7,207 Cr with only 47% DII absorption. Market falling in alignment with FII positioning. Cascade conditions emerging. Elasticity elevated. Bearish regime fully active — do not attempt reversal trades without flow exhaustion signal.'},
+  {date:'2026-03-18',nifty:23778,niftyChg:197,fii:-2714,dii:3253,absRatio:120,ls:0.42,vix:17.8,pdi:38,conviction:68,downDays:2,fromHigh:9.5,phase:'Distribution',
+   interpretation:'FIIs selling but DII absorption strong (120%). Nifty up — classic unstable rally in distribution phase. L/S at 0.42 indicates cautiously bearish positioning. Phase intact — rally not confirmed until L/S crosses 0.50 and FII cash turns positive.'},
+  {date:'2026-03-17',nifty:23581,niftyChg:-312,fii:-4890,dii:3100,absRatio:63,ls:0.38,vix:19.2,pdi:52,conviction:75,downDays:3,fromHigh:10.2,phase:'Distribution → Breakdown',
+   interpretation:'Transition to breakdown confirmed. FII selling accelerating, DII absorption declining to 63%. BN underperforming. PDI mid-panic zone. Three consecutive down days. System in high-alignment bearish regime.'},
+  {date:'2026-03-14',nifty:23893,niftyChg:-180,fii:-3210,dii:2800,absRatio:87,ls:0.41,vix:16.5,pdi:34,conviction:65,downDays:2,fromHigh:9.0,phase:'Distribution',
+   interpretation:'Controlled distribution ongoing. FII selling moderate, DII absorbing 87%. PDI early stage. Market holding but supply building. Watch for absorption ratio to deteriorate as signal of breakdown approach.'},
+  {date:'2026-03-13',nifty:24073,niftyChg:-290,fii:-5100,dii:3450,absRatio:68,ls:0.35,vix:18.1,pdi:44,conviction:73,downDays:3,fromHigh:8.4,phase:'Distribution → Breakdown',
+   interpretation:'Breakdown conditions building. Heavy FII selling, absorption weakening. L/S at 0.35 confirms directional bearish positioning. Three down days. Structural deterioration underway.'},
+  {date:'2026-03-12',nifty:24363,niftyChg:-420,fii:-6800,dii:3900,absRatio:57,ls:0.28,vix:21.4,pdi:61,conviction:80,downDays:4,fromHigh:7.3,phase:'Breakdown',
+   interpretation:'Full breakdown. FII selling ₹6,800 Cr with only 57% absorption. L/S at extreme 0.28. VIX elevated. Four consecutive down days. High-alignment bearish regime. No reversal signal present.'},
 ];
 
 // ═══ UTILITIES ═══
@@ -535,7 +559,7 @@ function g(id){const v=document.getElementById(id).value;return v===''?null:pars
 function gv(id){return parseFloat(document.getElementById(id).value)||0;}
 let FD={},H=[...SEED];
 
-// ═══ AUTO-FETCH ═══
+// ═══ FETCH ═══
 async function fetchAll(){
   showL('Fetching…');
   try{
@@ -571,13 +595,13 @@ function renderH(){
   tb.innerHTML=H.map(h=>`<tr class="${h.date===today?'today-row':''}"><td>${h.date}${h.date===today?' ★':''}</td><td>${h.nifty?Math.round(h.nifty):'—'}</td><td class="${(h.niftyChg||0)>=0?'up':'dn'}">${h.niftyChg?(h.niftyChg>0?'+':'')+Math.round(h.niftyChg):'—'}</td><td class="${(h.fii||0)<0?'dn':'up'}">${h.fii?(h.fii>0?'+':'')+Math.round(h.fii):'—'}</td><td class="${(h.dii||0)>=0?'up':'dn'}">${h.dii?(h.dii>0?'+':'')+Math.round(h.dii):'—'}</td><td>${h.absRatio!=null?h.absRatio+'%':'—'}</td><td>${h.ls||'—'}</td><td>${h.vix||'—'}</td><td>${h.pdi!=null?h.pdi:'—'}</td><td style="font-weight:600">${h.conviction!=null?h.conviction:'—'}</td><td style="font-size:10px;font-family:var(--sans)">${(h.phase||'—').slice(0,22)}</td></tr>`).join('');
 }
 
-// ═══ CALCULATION ENGINE ═══
+// ═══ CALCULATION FUNCTIONS ═══
 function getLSZ(ls){
-  if(ls<0.20)return{lbl:'Extremely Bearish',col:'#c0392b',bc:'#e74c3c',exp:'Massive shorts. Extreme bearish — squeeze risk real.',cls:'sr'};
-  if(ls<0.35)return{lbl:'Bearish',col:'#c0392b',bc:'#e74c3c',exp:'Directional bearish positioning — not just caution.',cls:'sr'};
-  if(ls<0.50)return{lbl:'Cautiously Bearish',col:'#b45309',bc:'#f59e0b',exp:'Leaning bearish. Reducing risk.',cls:'sa'};
-  if(ls<0.65)return{lbl:'Neutral to Bullish',col:'#1d4ed8',bc:'#3b82f6',exp:'Covering shorts, shifting toward long.',cls:'sn'};
-  return{lbl:'Bullish',col:'#1a7a4a',bc:'#22c55e',exp:'Net long — institutional backing.',cls:'sg'};
+  if(ls<0.20)return{lbl:'Extremely Bearish',col:'#c0392b',bc:'#e74c3c',cls:'sr'};
+  if(ls<0.35)return{lbl:'Bearish',col:'#c0392b',bc:'#e74c3c',cls:'sr'};
+  if(ls<0.50)return{lbl:'Cautiously Bearish',col:'#b45309',bc:'#f59e0b',cls:'sa'};
+  if(ls<0.65)return{lbl:'Neutral to Bullish',col:'#1d4ed8',bc:'#3b82f6',cls:'sn'};
+  return{lbl:'Bullish',col:'#1a7a4a',bc:'#22c55e',cls:'sg'};
 }
 function getMacro(in10y,us10y,inr,brent){
   let risk=0,sigs=[];
@@ -597,41 +621,35 @@ function getMacro(in10y,us10y,inr,brent){
   return{lbl,cls,risk,sigs};
 }
 function classifyAcceptance(nifty,open,high,close,vix){
-  if(!high||!open||!close)return{state:'unknown',reason:'Missing OHLC — enter High and Open',invalid:true};
-  const low=Math.min(open,close);
-  const range=high-low;
-  const thr=Math.max(nifty*0.01,0.5*(vix/100)*nifty);
-  if(range<thr)return{state:'invalid',reason:`Range ${Math.round(range)}pts < VIX-adj threshold ${Math.round(thr)}pts`,invalid:true,thr:Math.round(thr),range:Math.round(range)};
+  if(!high||!open||!close)return{state:'unknown',reason:'Enter High + Open for acceptance'};
+  const low=Math.min(open,close),range=high-low,thr=Math.max(nifty*0.01,0.5*(vix/100)*nifty);
+  if(range<thr)return{state:'invalid',reason:`Range ${Math.round(range)}pts < threshold ${Math.round(thr)}pts`};
   const gapSize=high-open;
-  if(gapSize<0.3*range)return{state:'distorted',reason:'Gap-driven: opening dominated range',distorted:true,thr:Math.round(thr),range:Math.round(range)};
+  if(gapSize<0.3*range)return{state:'distorted',reason:'Gap-driven: opening dominated range'};
   const ratio=(close-open)/gapSize;
-  let state,reason;
-  if(ratio>0.60){state='accepted';reason='Close in top 40% — market accepted higher prices';}
-  else if(ratio<0.40){state='rejected';reason='Close in bottom 40% — rally rejected';}
-  else{state='neutral';reason='Inconclusive close position';}
-  return{state,reason,ratio:ratio.toFixed(2),invalid:false,distorted:false,thr:Math.round(thr),range:Math.round(range)};
+  if(ratio>0.60)return{state:'accepted',reason:'Close in top 40% — market accepted higher prices',ratio:ratio.toFixed(2)};
+  if(ratio<0.40)return{state:'rejected',reason:'Close in bottom 40% — rally rejected',ratio:ratio.toFixed(2)};
+  return{state:'neutral',reason:'Inconclusive close position',ratio:ratio.toFixed(2)};
 }
 function checkFlowGate(fii,hist){
-  if(fii>=0)return{passes:false,reason:'FII buying — gate N/A'};
+  if(fii>=0)return{passes:false,reason:'FII buying'};
   const r=hist.filter(h=>h.fii<0).slice(0,3).map(h=>Math.abs(h.fii));
   if(r.length<2)return{passes:false,reason:'Need 2+ selling days'};
-  const avg=r.reduce((a,b)=>a+b,0)/r.length;
-  const abs=Math.abs(fii),pct=(1-abs/avg)*100;
+  const avg=r.reduce((a,b)=>a+b,0)/r.length,abs=Math.abs(fii),pct=(1-abs/avg)*100;
   if(pct>40&&abs<4000)return{passes:true,reason:`${pct.toFixed(0)}% reduction + ₹${Math.round(abs)}Cr <4000`};
-  if(pct>40)return{passes:false,reason:`${pct.toFixed(0)}% reduction but ₹${Math.round(abs)}Cr too heavy`};
-  return{passes:false,reason:`Only ${pct.toFixed(0)}% reduction (need >40%)`};
+  return{passes:false,reason:`${pct.toFixed(0)}% reduction, ₹${Math.round(abs)}Cr`};
 }
 function calcBNDiv(nPct,bnPct,bearish){
   const div=bnPct-nPct;
-  if(Math.abs(div)<=0.5)return{div:div.toFixed(2),meaningful:false,signal:'<0.5% — ignored',cls:'neu'};
+  if(Math.abs(div)<=0.5)return{div:div.toFixed(2),meaningful:false,signal:'<0.5% — not significant',cls:'neu'};
   if(bearish&&div<-0.5)return{div:div.toFixed(2),meaningful:true,signal:'BN lagging — financial weakness',cls:'dn'};
-  if(!bearish&&div>0.5)return{div:div.toFixed(2),meaningful:true,signal:'BN leading — strength',cls:'up'};
+  if(!bearish&&div>0.5)return{div:div.toFixed(2),meaningful:true,signal:'BN leading — institutional strength',cls:'up'};
   return{div:div.toFixed(2),meaningful:false,signal:'Present but regime-neutral',cls:'neu'};
 }
 function calcElast(hist,fii,nChg,frozen,prevFII){
   const pts=[];
-  if(!frozen&&Math.abs(fii)>100&&nChg!==0)pts.push({e:Math.abs(nChg)/(Math.abs(fii)/1000),flow:Math.abs(fii)});
-  hist.slice(0,5).forEach(h=>{if(h.fii&&h.niftyChg&&Math.abs(h.fii)>100)pts.push({e:Math.abs(h.niftyChg)/(Math.abs(h.fii)/1000),flow:Math.abs(h.fii)});});
+  if(!frozen&&Math.abs(fii)>100&&nChg!==0)pts.push({e:Math.abs(nChg)/(Math.abs(fii)/1000)});
+  hist.slice(0,5).forEach(h=>{if(h.fii&&h.niftyChg&&Math.abs(h.fii)>100)pts.push({e:Math.abs(h.niftyChg)/(Math.abs(h.fii)/1000)});});
   const today=pts[0]?.e||0,avg3=pts.length>0?pts.slice(0,Math.min(3,pts.length)).reduce((a,b)=>a+b.e,0)/Math.min(3,pts.length):0;
   const flowForConf=frozen?Math.abs(prevFII||0):Math.abs(fii||0);
   const baseConf=flowForConf>5000?0.70:flowForConf>3000?0.85:1.00;
@@ -640,30 +658,15 @@ function calcElast(hist,fii,nChg,frozen,prevFII){
   const confLabel=effConf>=0.90?'HIGH':effConf>=0.75?'MED':'LOW';
   const confColor=effConf>=0.90?'var(--green)':effConf>=0.75?'var(--amber)':'var(--red)';
   let regime,regIdx;
-  if(today<60){regime='Strong Absorption';regIdx=0;}
-  else if(today<100){regime='Neutral';regIdx=1;}
-  else if(today<140){regime='Weakening';regIdx=2;}
-  else{regime='Cascade Risk';regIdx=3;}
+  if(today<60){regime='Strong Absorption';regIdx=0;}else if(today<100){regime='Neutral';regIdx=1;}else if(today<140){regime='Weakening';regIdx=2;}else{regime='Cascade Risk';regIdx=3;}
   let tag,tagSub;
-  if(frozen){tag='Unconfirmed';tagSub='Non-full mode';}
-  else if(pts.length<2){tag='Unconfirmed';tagSub='Single data point';}
-  else if(pts.length<3){tag='Provisional';tagSub='2 days — not persistent';}
-  else{tag='Confirmed';tagSub='3+ days persistent';}
-  // Only confirmed elasticity gets structural influence
+  if(frozen){tag='Unconfirmed';tagSub='Last known flow — not updated';}else if(pts.length<2){tag='Unconfirmed';tagSub='Single data point';}else if(pts.length<3){tag='Provisional';tagSub='2 days';}else{tag='Confirmed';tagSub='3+ days persistent';}
   const isConfirmed=tag==='Confirmed';
   let trend='—',tsub='Need more data',influence='No influence ('+tag+')';
   if(pts.length>=3){
     const sl=pts[0].e-pts[pts.length-1].e;
-    if(sl>15){trend='↑ Rising (persistent)';tsub='Confirmed weakening';}
-    else if(sl>5){trend='↑ Rising';tsub='Weakening trend';}
-    else if(sl<-15){trend='↓ Falling (persistent)';tsub='Confirmed absorption';}
-    else if(sl<-5){trend='↓ Falling';tsub='Improving';}
-    else{trend='→ Stable';tsub='Consistent';}
-    if(isConfirmed){
-      if(trend.includes('↓'))influence='Structural: absorption improving';
-      else if(trend.includes('↑'))influence='Structural: weakening confirmed';
-      else influence='Structural: regime stable';
-    }
+    if(sl>15){trend='↑ Rising (persistent)';tsub='Confirmed weakening';}else if(sl>5){trend='↑ Rising';tsub='Weakening';}else if(sl<-15){trend='↓ Falling (persistent)';tsub='Confirmed absorption';}else if(sl<-5){trend='↓ Falling';tsub='Improving';}else{trend='→ Stable';tsub='Consistent';}
+    if(isConfirmed){if(trend.includes('↓'))influence='Structural: absorption improving';else if(trend.includes('↑'))influence='Structural: weakening confirmed';else influence='Structural: regime stable';}
   }
   return{today:today.toFixed(1),avg3:avg3.toFixed(1),trend,tsub,regime,regIdx,tag,tagSub,confLabel,confColor,effConf,days:pts.length,influence,isConfirmed};
 }
@@ -673,17 +676,14 @@ function calcPDI(dd,cumOut,vix,fh,vixH,absR,aligned,elastVal){
   const aS=absR<50?20:absR<70?10:0,alS=aligned?10:0,eS=elastVal>140?15:elastVal>100?7:0;
   const pdi=Math.min(100,Math.round(dS*.20+fS*.20+vS*.15+hS*.15+vA*.10+aS*.10+alS*.05+eS*.05));
   let lbl,col,ctx;
-  if(pdi<25){lbl='Neutral';col='#4ade80';ctx='Normal conditions';}
-  else if(pdi<50){lbl='Early Panic';col='#fbbf24';ctx='Initiation — expansion likely';}
-  else if(pdi<75){lbl='Mid Panic';col='#f97316';ctx='Continuation — check elasticity';}
-  else{lbl='Late Panic/Exhaustion';col='#a78bfa';ctx='Reversal risk rising';}
+  if(pdi<25){lbl='Neutral';col='#4ade80';ctx='Normal conditions';}else if(pdi<50){lbl='Early Panic';col='#fbbf24';ctx='Initiation — expansion likely';}else if(pdi<75){lbl='Mid Panic';col='#f97316';ctx='Continuation';}else{lbl='Late Panic/Exhaustion';col='#a78bfa';ctx='Reversal risk rising';}
   return{pdi,lbl,col,ctx};
 }
 function calcExhaustion(fii,hist){
   const r=hist.filter(h=>h.fii<0).slice(0,3).map(h=>Math.abs(h.fii));
   if(r.length<2||fii>=0)return{label:'—',signal:false};
   const avg=r.reduce((a,b)=>a+b,0)/r.length,ratio=Math.abs(fii)/avg;
-  if(ratio<0.60)return{label:`${(ratio*100).toFixed(0)}% of 3-day avg — EXHAUSTION SIGNAL`,signal:true};
+  if(ratio<0.60)return{label:`${(ratio*100).toFixed(0)}% of avg — EXHAUSTION`,signal:true};
   if(ratio<0.80)return{label:`${(ratio*100).toFixed(0)}% of avg — reducing`,signal:false};
   return{label:`${(ratio*100).toFixed(0)}% of avg — sustained`,signal:false};
 }
@@ -695,7 +695,7 @@ function calcCascade(absR,elast,dd,vix,vixH,fii,hist){
   let type,typeStyle,verdict;
   if(met>=4){type='FORCED — CASCADE';typeStyle='background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)';verdict='Forced selling. Non-linear moves possible.';}
   else if(met>=2){type='TRANSITIONING';typeStyle='background:rgba(249,115,22,.12);color:#fdba74;border:1px solid rgba(249,115,22,.25)';verdict='Forced elements emerging. Monitor elasticity.';}
-  else{type='CONTROLLED';typeStyle='background:rgba(74,222,128,.1);color:#86efac;border:1px solid rgba(74,222,128,.2)';verdict='Orderly institutional exit. Distribution, not cascade.';}
+  else{type='CONTROLLED';typeStyle='background:rgba(74,222,128,.1);color:#86efac;border:1px solid rgba(74,222,128,.2)';verdict='Orderly institutional exit.';}
   const conds=[
     {n:'Absorption <50%',met:c1,v:absR+'%'},{n:'Elasticity weakening/cascade',met:c2,v:elast.regime},
     {n:'Consecutive down ≥3',met:c3,v:dd+' days'},{n:'VIX accelerating >+3',met:c4,v:vA>0?'+'+vA.toFixed(1):vA.toFixed(1)},
@@ -710,11 +710,11 @@ function calcAbsGrad(hist,todayR,frozen){
   const diffs=[];for(let i=0;i<pts.length-1;i++)diffs.push(pts[i].ratio-pts[i+1].ratio);
   const avg=diffs.reduce((a,b)=>a+b,0)/diffs.length;
   let verdict,cls,lbl;
-  if(frozen){verdict='Frozen.';cls='pn';lbl='Frozen';}
+  if(frozen){verdict='Last known values from prior session. Gradient direction held until fresh flow arrives.';cls='pn';lbl='Last known';}
   else if(avg>15){verdict=`Rapidly deteriorating (avg ${avg.toFixed(0)}%/day).`;cls='pr';lbl='↓ Rapid';}
   else if(avg>5){verdict=`Gradually weakening (avg ${avg.toFixed(0)}%/day).`;cls='pa';lbl='↓ Gradual';}
   else if(avg<-5){verdict=`Improving (avg ${Math.abs(avg).toFixed(0)}%/day).`;cls='pg';lbl='↑ Improving';}
-  else{verdict='Stable.';cls:'pn';lbl='→ Stable';}
+  else{verdict='Stable.';cls='pn';lbl='→ Stable';}
   return{pts,verdict,cls,lbl};
 }
 function checkTerminal(fii,absR,nChg,vix,hist){
@@ -727,113 +727,127 @@ function checkTerminal(fii,absR,nChg,vix,hist){
     {met:c3,partial:false,lbl:'Price Stops Falling',sub:nChg>=0?`+${Math.round(nChg)} ✓`:`${Math.round(nChg)}`,id:'tc3'},
     {met:c4,partial:false,lbl:'VIX Stops Expanding',sub:pV?`${pV}→${vix.toFixed(1)}`:`${vix.toFixed(1)}`,id:'tc4'},
   ];
-  let verdict,vcls;
-  if(bearStr<=30){verdict=`Bearish thesis near expiry (${bearStr}%). Reversal confirmation watch.`;vcls='pg';}
-  else if(bearStr<=60){verdict=`Bearish weakening (${bearStr}%). Regime active but losing strength.`;vcls='pa';}
-  else{verdict=`Bearish thesis active (${bearStr}%).`;vcls='pr';}
-  return{conds,bearStr,verdict,vcls};
+  let verdict;
+  if(bearStr<=30)verdict=`Late Stage / Weakening (${bearStr}%) — reversal window open`;
+  else if(bearStr<=60)verdict=`Bearish weakening (${bearStr}%)`;
+  else verdict=`Bearish thesis active (${bearStr}%)`;
+  return{conds,bearStr,verdict};
 }
 function getPhase(fii,ls,nChg,bnChg,struct,vix,absR,pdi,dd){
-  const sell=fii<0,short=ls<0.50,up=nChg>60,dn=nChg<-60,bnWk=bnChg<nChg-80,vixSp=vix>20,gapDn=struct==='gap_dn';
+  const sell=fii<0,short=ls<0.50,dn=nChg<-60,up=nChg>60,bnWk=bnChg<nChg-80,vixSp=vix>20,gapDn=struct==='gap_dn';
   if(vixSp&&sell&&absR<60){
-    if(pdi>=75)return{phase:'Panic — Late Stage',bg:'#4c1d95',desc:'PDI governs: exhaustion zone. Reversal risk rising.',next:'Reversal window opening'};
-    if(dd<=2||pdi<35)return{phase:'Panic — Initiation',bg:'#7c3aed',desc:'PDI governs: early stage, expansion likely.',next:'Do not fade initiation'};
-    return{phase:'Panic — Continuation',bg:'#6d28d9',desc:'Mid-panic. Check structural signals daily.',next:'Wait for flow exhaustion'};
+    if(pdi>=75)return{phase:'Panic — Late Stage',bg:'#4c1d95',desc:'PDI exhaustion zone. Reversal risk rising alongside continuation.'};
+    if(dd<=2||pdi<35)return{phase:'Panic — Initiation',bg:'#7c3aed',desc:'First breakdown. Expansion phase likely.'};
+    return{phase:'Panic — Continuation',bg:'#6d28d9',desc:'Mid-panic. Structural checks daily.'};
   }
   if(sell&&short&&(dn||gapDn||struct==='lower_highs')){
-    if(bnWk||gapDn)return{phase:'Distribution → Breakdown',bg:'#991b1b',desc:'Trend activation. FII + price + BN aligned.',next:'Bearish continuation'};
-    return{phase:'Breakdown',bg:'#b91c1c',desc:'Full alignment. FII and price pointing down.',next:'Downside continuation'};
+    if(bnWk||gapDn)return{phase:'Distribution → Breakdown',bg:'#991b1b',desc:'Trend activation. FII + price + BN aligned.'};
+    return{phase:'Breakdown',bg:'#b91c1c',desc:'Full alignment. FII and price down.'};
   }
-  if(sell&&short&&up)return{phase:'Distribution (Unstable Rally)',bg:'#92400e',desc:'FIIs selling while price rises. Structural conflict.',next:'Counter-trend — await flow'};
-  if(!sell&&ls>=0.50)return{phase:'Accumulation',bg:'#065f46',desc:'FIIs buying + bullish positioning.',next:'Bullish — dips are entries'};
-  return{phase:'Distribution',bg:'#7f1d1d',desc:'FIIs selling, market holding. Supply building.',next:'Bearish bias — watch for breakdown'};
+  if(sell&&short&&up)return{phase:'Distribution (Unstable Rally)',bg:'#92400e',desc:'FIIs selling while price rises. Structural conflict.'};
+  if(!sell&&ls>=0.50)return{phase:'Accumulation',bg:'#065f46',desc:'FIIs buying + bullish positioning.'};
+  return{phase:'Distribution',bg:'#7f1d1d',desc:'FIIs selling, market holding. Supply building.'};
 }
 
-// ═══ STATE CONVICTION — FULL MODE ONLY, NO PENALTIES ═══
-function calcSC(ls,fii,nChg,absR,macroR,struct,bnChg,pdi,absGradType,elastIsConfirmed,elastRegIdx,termBearStr){
+// ═══ STATE CONVICTION (full mode only — ZERO penalties) ═══
+function calcSC(ls,fii,nChg,absR,macroR,struct,bnChg,pdi,absGT,elastIsConfirmed,elastRegIdx,termBearStr){
   const short=ls<0.50,mDn=nChg<-60,mUp=nChg>60,bnWk=bnChg<nChg-80;
   let s1=ls<0.20?90:ls<0.35?75:ls<0.50?60:ls<0.65?55:80;
   if(mDn&&short)s1=Math.min(100,s1+15);
   let s2=short&&mUp?55:short&&mDn?85:!short&&mUp?82:40;
-  // No SC penalty for price — price state only annotates, never reduces
   let s3=fii>=0?65:absR>=90?25:absR>=70?55:78;
-  if(absGradType==='rapid')s3=Math.min(100,s3+15);
-  else if(absGradType==='improving')s3=Math.max(20,s3-20);
+  if(absGT==='rapid')s3=Math.min(100,s3+15);
+  else if(absGT==='improving')s3=Math.max(20,s3-20);
   let s4=macroR>=5?85:macroR>=3?65:macroR>=1?45:22;
   let s5=struct==='gap_dn'?90:struct==='lower_highs'?82:struct==='hh_no_follow'?68:struct==='gap_up_fade'?62:struct==='higher_highs'&&!short?80:50;
   if(bnWk)s5=Math.min(100,s5+10);
   let raw=Math.round(s1*.30+s2*.25+s3*.15+s4*.10+s5*.20);
-  // PDI late-stage governs: same signals = different meaning
   if(pdi>=75)raw=Math.round(raw*0.85);
-  // Elasticity: only if confirmed, only as structural signal
   if(elastIsConfirmed&&elastRegIdx>=3)raw=Math.min(100,raw+8);
-  // Terminal override: if bearish strength < 35%, suppress heavy bearish signals
-  if(termBearStr<35){raw=Math.min(raw,65);} // Cap SC when terminal says regime weakening
-  // Panic floor (mid-range only)
+  if(termBearStr<35)raw=Math.min(raw,65);
   if(pdi>=25&&pdi<75)raw=Math.max(raw,50);
-  let regime,rsub;
-  if(raw>=75){regime='High-Alignment Regime';rsub='Strong regime — monitor exhaustion';}
-  else if(raw>=60){regime='Clear Signal';rsub='Direction confirmed';}
-  else if(raw>=45){regime='Mild Signal';rsub='Some alignment';}
-  else{regime='Low / Mixed';rsub='Wait for clarity';}
-  if(pdi>=75&&raw>=60){regime='High-Alignment + Exhaustion Risk';rsub='Late-stage — reversal window opening';}
-  return{s1,s2,s3,s4,s5,score:raw,regime,rsub};
+  return raw;
 }
 
-// ═══ UPDATE CONFIDENCE — ALL MODES, PENALTIES ONLY HERE ═══
-function calcUC(mode,accept,flowGate,elastTag,priceConflict,termBearStr){
+// ═══ UPDATE CONFIDENCE (all modes — penalties only here) ═══
+function calcUC(mode,accept,flowGate,elastTag,priceConflict){
   if(mode==='full'){
-    let label,tag,reason,penalty=null,score;
-    if(flowGate?.passes&&accept?.state==='accepted'&&elastTag==='Confirmed'){label='HIGH';tag='uc-high';reason='Flow confirmed + acceptance validated + elasticity confirmed';score=95;}
-    else if(elastTag==='Confirmed'){label='HIGH';tag='uc-high';reason='Flow confirmed. Elasticity confirmed.';score=85;}
-    else if(priceConflict){
-      label='MED';tag='uc-med';reason='Flow confirmed but price contradicts positioning.';score=65;
-      penalty='Price conflict flag active — counter-trend move detected. SC unaffected.';
-    }
-    else{label='MED';tag='uc-med';reason='Flow present. Partial signal confirmation.';score=70;}
-    return{label,tag,reason,penalty,score};
+    if(flowGate?.passes&&accept?.state==='accepted'&&elastTag==='Confirmed')return{label:'HIGH',tag:'ct-high',reason:'Flow confirmed + acceptance validated + elasticity confirmed.',penalty:null};
+    if(elastTag==='Confirmed')return{label:'HIGH',tag:'ct-high',reason:'Flow confirmed. Elasticity confirmed.',penalty:null};
+    if(priceConflict)return{label:'MED',tag:'ct-med',reason:'Flow confirmed but price conflicts with positioning.',penalty:'Price conflict flag — counter-trend move detected. SC unaffected.'};
+    return{label:'MED',tag:'ct-med',reason:'Flow present. Partial signal confirmation.',penalty:null};
   }
   if(mode==='preflow'){
-    if(accept?.state==='accepted'||accept?.state==='rejected')return{label:'MED',tag:'uc-med',reason:'OHLC present + acceptance classified. Flow pending.',score:55,penalty:'Pre-flow: UC reduced. SC preserved unchanged.'};
-    if(accept?.state==='invalid'||accept?.state==='distorted')return{label:'LOW',tag:'uc-low',reason:'OHLC present but acceptance invalid. Flow pending.',score:35,penalty:'Pre-flow + invalid range: UC low. SC preserved.'};
-    return{label:'LOW',tag:'uc-low',reason:'Flow pending. Limited new information today.',score:30,penalty:'Pre-flow: UC reduced. SC preserved unchanged.'};
+    if(accept?.state==='accepted'||accept?.state==='rejected')return{label:'MED',tag:'ct-med',reason:'OHLC classified. Flow awaited.',penalty:'Pre-flow mode — UC reduced, SC preserved unchanged.'};
+    if(accept?.state==='invalid'||accept?.state==='distorted')return{label:'LOW',tag:'ct-low',reason:'OHLC present but acceptance invalid. Flow awaited.',penalty:'Pre-flow + invalid range — UC low, SC preserved.'};
+    return{label:'LOW',tag:'ct-low',reason:'Flow awaited. Limited new information.',penalty:'Pre-flow — UC reduced, SC preserved unchanged.'};
   }
-  return{label:'NONE',tag:'uc-none',reason:'No new data. System refuses to interpret absence.',score:0,penalty:null};
+  return{label:'NONE',tag:'ct-none',reason:'No new data today. State and interpretation carried forward from last confirmed session. Structure and conviction unchanged.',penalty:null};
 }
 
-// ═══ AUTHORITATIVE PANEL SYNTHESIS ═══
-function buildAuthOutput(phase,sc,term,elast,absGrad,exhaust,cascade,accept,flowGate,bnDiv,mode,priceConflict,nChg,fii,ls,lastH){
-  // STRUCTURE signal (governed by confirmed elasticity + absorption)
-  let strSignal,strClass;
-  if(term.bearStr<35){strSignal='Regime weakening — stabilisation signals permitted to dominate';strClass='up';}
-  else if(elast.isConfirmed&&elast.trend.includes('↓')&&absGrad.lbl.includes('↑')){strSignal='Confirmed stabilisation — elasticity + absorption both improving';strClass='up';}
-  else if(elast.isConfirmed&&elast.trend.includes('↑')){strSignal='Confirmed deterioration — acceleration risk';strClass='dn';}
-  else if(exhaust.signal){strSignal='Flow exhaustion detected — selling intensity reducing';strClass='amb';}
-  else{strSignal='No confirmed structural shift';strClass='neu';}
+// ═══ GENERATE INTERPRETATION (STATE + STRUCTURE + TERMINAL — never price alone) ═══
+function generateInterpretation(phase,scScore,term,elast,absGrad,exhaust,cascade,absR,fii,ls,dii,mode,lastH){
+  const short=ls<0.50,sell=fii<0;
 
-  // BEHAVIOR (price annotates only — lowest authority)
-  let behavState,behavSub,behavNote=null,behavClass;
-  const mU=nChg>60,mD=nChg<-60;
-  if(mode==='carryforward'){behavState='Not interpreted';behavSub='No price data in carry-forward mode';behavClass='neu';}
-  else if(priceConflict&&mU){
-    behavState='Counter-trend rally';
-    behavSub='Price rising while FII bearish. Flag only — does not affect SC or regime.';
-    behavNote=accept.state==='accepted'&&flowGate.passes?'Accepted (confirmed) — stabilisation signal':'accept.state'==='accepted'?'Accepted (provisional) — flow gate not satisfied':null;
-    behavClass='amb';
-  }else if(!priceConflict&&mD){behavState='Trend confirming';behavSub='Price aligning with FII positioning.';behavClass='dn';}
-  else if(!priceConflict&&mU){behavState='Trend confirming (bullish)';behavSub='Price aligning with FII positioning.';behavClass='up';}
-  else{behavState='Flat';behavSub='No meaningful price signal today.';behavClass='neu';}
+  // Terminal governs
+  if(term.bearStr<=30){
+    return `Bearish regime weakening significantly — terminal strength at ${term.bearStr}%. ${elast.isConfirmed&&elast.trend.includes('↓')?'Elasticity confirms structural stabilisation. ':''} ${absR>=80?'DII absorption strong — selling pressure contained. ':''} Downside momentum limited unless fresh selling emerges. Rallies remain provisional until flow confirms sustained buying.`;
+  }
+  if(term.bearStr<=60){
+    return `Bearish regime active but conditions showing early weakness (${term.bearStr}% strength). ${exhaust.signal?'Flow exhaustion signal present — selling intensity reducing. ':''}${absGrad.lbl.includes('↑')?'Absorption improving. ':''}${elast.isConfirmed&&elast.trend.includes('↓')?'Elasticity structurally improving. ':''}Watch terminal conditions — regime exit possible on 2+ triggers meeting.`;
+  }
+  // Panic phases
+  if(phase.phase.includes('Panic — Late')){
+    return `Late-stage panic — PDI in exhaustion zone. Same structural signals that confirmed breakdown are now ambiguous. ${elast.isConfirmed?'Elasticity '+elast.trend.toLowerCase()+'. ':''}Reversal risk and continuation risk both elevated. Flow data critical — do not take directional position without fresh FII data.`;
+  }
+  if(phase.phase.includes('Panic')){
+    return `Panic phase active. FII selling ${sell?'ongoing':'paused'}. ${absR<50?'Absorption failing — selling pressure overwhelming DII.':'Absorption at '+absR+'%.'}${cascade.met>=3?' Cascade conditions met — forced selling elements present.':''} ${exhaust.signal?'Flow exhaustion signal detected — monitor closely.':''}Phase change requires flow exhaustion + VIX stabilisation together.`;
+  }
+  if(phase.phase.includes('Unstable Rally')||phase.phase.includes('Distribution')){
+    const absText=absR>=80?`DII absorption strong at ${absR}% — market cushioned.`:absR>=60?`DII absorbing ${absR}% of selling — partial buffer.`:`Absorption weak at ${absR}% — selling pressure elevated.`;
+    return `Distribution phase. FIIs net sellers with L/S at ${ls.toFixed(2)} (${ls<0.35?'directional bearish':'cautiously bearish'}). ${absText} ${phase.phase.includes('Unstable')?'Price rising counter to positioning — structural conflict. Rally not confirmed until FII cash turns positive + L/S crosses 0.50.':'Supply building. Watch for absorption deterioration as breakdown signal.'}`;
+  }
+  if(phase.phase.includes('Accumulation')){
+    return `Accumulation phase. FIIs net buyers — institutional support building. L/S at ${ls.toFixed(2)} confirms bullish positioning. ${absR>=80?'DII also active — dual-sided buying. ':''}Dips are potential entries while FII cash stays positive and L/S holds above 0.50.`;
+  }
+  return `Regime: ${phase.phase}. SC: ${scScore}. Terminal: ${term.bearStr}%. State driven by FII positioning (L/S ${ls.toFixed(2)}) and structural signals.`;
+}
 
-  // NEXT-DAY BIAS (terminal governs → structural → behavior)
-  let bias;
-  if(term.bearStr<35)bias='Reversal attempt possible — terminal conditions weakening';
-  else if(term.bearStr<60&&elast.isConfirmed&&elast.trend.includes('↓'))bias='Bearish weakening — watch for stabilisation confirmation';
-  else if(exhaust.signal)bias='Flow exhaustion signal — monitor next session FII data';
-  else if(priceConflict&&mU)bias='Counter-trend — phase locked, await flow confirmation';
-  else if(phase.phase.includes('Breakdown')||phase.phase.includes('Panic'))bias='Bearish continuation — high-alignment regime';
-  else bias=phase.next;
+// ═══ DAILY FOUR QUESTIONS — always answered, never blank ═══
+function answerFourQuestions(phase,scScore,term,elast,absR,priceConflict,nChg,mode,lH,ls){
+  // Q1: Current regime — always answerable from phase + terminal
+  const regimeSuffix=term.bearStr<=35?' — Late Stage / Weakening':term.bearStr<=60?' — Active, softening':' — Active';
+  const q1=phase.phase+regimeSuffix;
 
-  return{strSignal,strClass,behavState,behavSub,behavNote,behavClass,bias};
+  // Q2: Strengthening or weakening — terminal governs, then structural
+  let q2;
+  if(term.bearStr<=30)q2='Weakening significantly — phase exit conditions building';
+  else if(term.bearStr<=50)q2='Softening — some terminal conditions met';
+  else if(elast.isConfirmed&&elast.trend.includes('↓'))q2='Structurally softening — elasticity improving (confirmed)';
+  else if(elast.isConfirmed&&elast.trend.includes('↑'))q2='Strengthening — elasticity deteriorating (confirmed)';
+  else if(mode==='carryforward')q2=`Unchanged since ${lH.date||'last session'} — no new data to assess`;
+  else q2='Active — no confirmed structural shift yet';
+
+  // Q3: Structural picture — always show last known, never empty
+  let q3;
+  if(elast.isConfirmed)q3=`Elasticity ${elast.trend.toLowerCase()}. Absorption ${absR>=80?'strong':absR>=60?'partial':'weak'} (${absR}%).`;
+  else if(mode==='carryforward')q3=`Last known: Absorption ${lH.absRatio||absR}%. Elasticity tag: ${elast.tag}. Structure held from ${lH.date||'prior session'}.`;
+  else q3=`Absorption ${absR>=80?'strong':absR>=60?'partial':'weak'} (${absR}%). Elasticity ${elast.tag.toLowerCase()}.`;
+
+  // Q4: Trust current price — always answered
+  let q4;
+  if(mode==='carryforward'){
+    const cf=lH.conviction||scScore;
+    const ph=lH.phase||phase.phase;
+    if(ph.includes('Panic')||ph.includes('Break'))q4='Treat cautiously — prior regime bearish. Price move unconfirmed without flow data.';
+    else if(ph.includes('Accum'))q4='Provisionally — prior regime bullish. Confirm with next flow session.';
+    else q4='Provisionally — prior regime active. Enter FII/DII to classify today's price.';
+  }else if(priceConflict&&nChg>60)q4='No — counter-trend rally. Price conflicts with FII positioning. Await flow.';
+  else if(!priceConflict&&nChg<-60&&ls<0.50)q4='Yes — price confirming FII bearish direction.';
+  else if(!priceConflict&&nChg>60&&ls>=0.50)q4='Yes — price confirming FII bullish positioning.';
+  else q4='Inconclusive — price flat or regime mixed.';
+
+  return[q1,q2,q3,q4];
 }
 
 // ═══ MAIN ANALYSE ═══
@@ -842,76 +856,22 @@ async function analyse(){
   const niftyRaw=g('in-nifty'),prevRaw=g('in-prev'),highRaw=g('in-high'),openRaw=g('in-open');
   const lastH=H[0]||{};
 
-  // ── MODE DETERMINATION ──
+  // MODE
   const flowMissing=fiiRaw===null||diiRaw===null;
   const ohlcMissing=!highRaw||!openRaw;
   const MODE=!flowMissing?'full':!ohlcMissing?'preflow':'carryforward';
 
-  // ── MODE BANNER ──
-  const banner=document.getElementById('mode-banner');
+  // MODE STRIP
+  const strip=document.getElementById('mode-strip');
   if(MODE==='carryforward'){
-    banner.style.display='flex';banner.className='mode-banner mb-cf';
-    banner.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">🔒</span><div><div class="mb-title">Carry-Forward Mode</div><div class="mb-sub">No new data. Displaying last confirmed state from ${lastH.date||'—'}. No recomputation.</div></div></div><div class="mb-right">Enter FII/DII + High/Open to resume</div>`;
+    strip.style.display='flex';strip.className='mode-strip ms-cf';
+    strip.innerHTML=`<div><span class="ms-lbl">Carry-Forward Mode</span><span class="ms-sub">State carried from ${lastH.date||'last session'}. Interpretation shown from last confirmed session. Enter FII/DII to update.</span></div><div style="font-size:11px;color:var(--muted)">Awaiting new data</div>`;
   }else if(MODE==='preflow'){
-    banner.style.display='flex';banner.className='mode-banner mb-pf';
-    banner.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⏳</span><div><div class="mb-title">Pre-Flow Mode — Flow pending</div><div class="mb-sub">SC preserved from last session. UC computed from OHLC. SC not penalised.</div></div></div><div class="mb-right" id="pf-price-sig">—</div>`;
-  }else{banner.style.display='none';}
+    strip.style.display='flex';strip.className='mode-strip ms-pf';
+    strip.innerHTML=`<div><span class="ms-lbl">Pre-Flow Mode</span><span class="ms-sub">SC preserved. UC computed from OHLC. Interpretation updated with caution.</span></div><div style="font-size:11px;color:var(--amber)" id="pf-price-sig">—</div>`;
+  }else{strip.style.display='none';}
 
-  // ── CARRY-FORWARD: zero computation ──
-  if(MODE==='carryforward'){
-    const lH=lastH;
-    const niftyLive=niftyRaw||(FD.nifty?.cur)||lH.nifty||23000;
-    document.getElementById('rh').style.background=lH.phase?.includes('Panic')?'#6d28d9':lH.phase?.includes('Break')?'#991b1b':'#7f1d1d';
-    document.getElementById('rh-phase').textContent=(lH.phase||'Unknown')+' (last confirmed)';
-    document.getElementById('rh-desc').textContent='Last confirmed: '+lH.date+' — system refuses to interpret absence of data';
-    document.getElementById('mode-lbl').textContent='Carry-Forward';
-    document.getElementById('mode-chip').textContent='No new data';
-    document.getElementById('pdi-inline').textContent=lH.pdi||'—';
-    document.getElementById('rdcount').textContent=`Last session: ${lH.date}`;
-    document.getElementById('pdi-fill').style.width=(lH.pdi||0)+'%';document.getElementById('pdi-fill').style.background='#a78bfa';
-    document.getElementById('pdi-val').textContent=(lH.pdi||'—')+' — last session';
-    document.getElementById('auth-mode-tag').textContent='CARRY-FORWARD — NO NEW DATA';
-    document.getElementById('auth-mode-tag').style.background='var(--bg)';document.getElementById('auth-mode-tag').style.color='var(--muted)';
-    // State section — yesterday's SC, unchanged
-    document.getElementById('st-phase').textContent=lH.phase||'—';
-    document.getElementById('st-phase-sub').textContent='Last confirmed — not recomputed';
-    document.getElementById('sc-num').textContent=lH.conviction||'—';
-    document.getElementById('sc-num').style.color=lH.conviction>=70?'var(--red)':lH.conviction>=50?'var(--amber)':'var(--green)';
-    document.getElementById('sc-tag').textContent='CARRIED — unchanged';document.getElementById('sc-tag').className='state-sc-tag sc-tag-cf';
-    // Terminal — from history
-    const bearStr=lH.absRatio>=80&&lH.niftyChg>=0?30:75;
-    document.getElementById('ts-pct').textContent=bearStr+'%';document.getElementById('ts-pct').style.color=bearStr<=30?'var(--green)':bearStr<=60?'var(--amber)':'var(--red)';
-    document.getElementById('ts-bar').style.width=bearStr+'%';document.getElementById('ts-bar').style.background=bearStr<=30?'var(--green)':bearStr<=60?'var(--amber)':'var(--red)';
-    document.getElementById('ts-verdict').textContent='Carried from last session';
-    // Structure — frozen
-    document.getElementById('str-elast').textContent='Frozen';document.getElementById('str-absorb').textContent='Frozen';
-    document.getElementById('str-gradient').textContent='Frozen';document.getElementById('str-cascade').textContent='Frozen (yesterday)';
-    document.getElementById('str-exhaust').textContent='Not computed';document.getElementById('str-signal').textContent='No new structural data';
-    // Behavior — price only as ticker
-    const nChgLive=lH.nifty?(niftyLive-lH.nifty):0;
-    document.getElementById('beh-state').textContent='Not interpreted';
-    document.getElementById('beh-sub').textContent=`Live Nifty: ${nChgLive>0?'+':''}${Math.round(nChgLive)} pts vs last close. Not interpreted until flow arrives.`;
-    document.getElementById('beh-accept').textContent='Not computed';document.getElementById('beh-accept-sub').textContent='Enter OHLC to compute';document.getElementById('beh-bn').textContent='—';
-    const bnote=document.getElementById('beh-note');bnote.style.display='none';
-    // Confidence — NONE
-    document.getElementById('uc-label').textContent='NONE';document.getElementById('uc-label').style.color='var(--muted)';
-    document.getElementById('uc-tag').textContent='NONE — carry-forward';document.getElementById('uc-tag').className='uc-tag uc-none';
-    document.getElementById('uc-reason').textContent='System refuses to interpret absence of data. Enter FII/DII flows to resume computation.';
-    document.getElementById('uc-penalty').style.display='none';
-    document.getElementById('auth-bias').textContent='Enter today\'s data to generate bias';
-    document.getElementById('auth-triggers').innerHTML='<span style="font-size:10px;color:var(--muted)">Awaiting data</span>';
-    // Freeze all diagnostic layers
-    ['l1-card','l2-card','l3-card','l4-card','elast-card','cascade-card','abs-card'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('frozen');});
-    document.getElementById('layers-frozen-tag').style.display='inline';
-    document.getElementById('last-upd').textContent='Carry-forward — '+new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'});
-    renderH();toast('🔒 Carry-forward. Showing last confirmed state.');return;
-  }
-
-  // ── UNFROZEN ──
-  ['l1-card','l2-card','l3-card','l4-card','elast-card','cascade-card','abs-card'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('frozen');});
-  document.getElementById('layers-frozen-tag').style.display='none';
-
-  // ── EXTRACT VALUES ──
+  // EXTRACT (pre-flow uses last known flow for structure display, not SC computation)
   const fii=flowMissing?(lastH.fii||0):fiiRaw;
   const dii=flowMissing?(lastH.dii||0):diiRaw;
   const ls=lsRaw||(lastH.ls||0.40);
@@ -928,8 +888,9 @@ async function analyse(){
   const cumOut=H.reduce((a,h)=>a+(h.fii<0?Math.abs(h.fii):0),0)+(MODE==='full'&&fii<0?Math.abs(fii):0);
   const vixH=H.map(h=>h.vix).filter(Boolean);
   const bearish=ls<0.50&&fii<0;
+  const priceConflict=ls<0.50&&nChg>60;
 
-  // ── COMPUTE ALL ──
+  // COMPUTE
   const lsZ=getLSZ(ls);
   const macro=getMacro(in10y,us10y,inr,brent);
   const elast=calcElast(H,fii,nChg,MODE!=='full',lastH.fii);
@@ -944,189 +905,195 @@ async function analyse(){
   const flowGate=checkFlowGate(MODE==='full'?fii:lastH.fii,H);
   const bnDiv=calcBNDiv(nPct,bnPct,bearish);
 
-  // Price conflict flag (never reduces SC — annotates BEHAVIOR only)
-  const priceConflict=ls<0.50&&nChg>60;
-
-  // SC (full mode only — no penalties ever)
-  let scScore,scRegime,scRsub;
+  // SC: only computed in full mode, otherwise carried
+  let scScore;
   if(MODE==='full'){
-    const sc=calcSC(ls,fii,nChg,absR,macro.risk,struct,bnChg,pdiD.pdi,absGT,elast.isConfirmed,elast.regIdx,term.bearStr);
-    scScore=sc.score;scRegime=sc.regime;scRsub=sc.rsub;
-    // Update l1-l5 bars (diagnostic)
-    const bc=v=>v>65?'#c0392b':v>45?'#d97706':'#22c55e';
-    // (no separate bar UI in v8 — SC is shown in auth panel only)
+    scScore=calcSC(ls,fii,nChg,absR,macro.risk,struct,bnChg,pdiD.pdi,absGT,elast.isConfirmed,elast.regIdx,term.bearStr);
   }else{
-    // Preserve yesterday's SC — no recomputation, no penalty
-    scScore=lastH.conviction||70;scRegime='Preserved from '+lastH.date;scRsub='SC not penalised in '+MODE+' mode';
+    scScore=lastH.conviction||70; // carry unchanged
   }
 
-  const uc=calcUC(MODE,accept,flowGate,elast.tag,priceConflict,term.bearStr);
-  const auth=buildAuthOutput(phase,scScore,term,elast,absGrad,exhaust,cascade,accept,flowGate,bnDiv,MODE,priceConflict,nChg,fii,ls,lastH);
+  const uc=calcUC(MODE,accept,flowGate,elast.tag,priceConflict);
 
-  // ── UPDATE TICKERS ──
+  // INTERPRETATION
+  let interpText,interpTag,interpTagClass;
+  if(MODE==='full'){
+    interpText=generateInterpretation(phase,scScore,term,elast,absGrad,exhaust,cascade,absR,fii,ls,dii,MODE,lastH);
+    interpTag='Freshly computed';interpTagClass='it-live';
+  }else if(MODE==='preflow'){
+    // Cautious interpretation from last state + current price observation
+    const lastInterp=lastH.interpretation||generateInterpretation(phase,scScore,term,elast,absGrad,exhaust,cascade,absR,fii,ls,dii,MODE,lastH);
+    const priceNote=nChg>60?` Today's price showing +${Math.round(nChg)} pts — not yet confirmed against flow.`:nChg<-60?` Today's price showing ${Math.round(nChg)} pts — consistent with prior regime.`:' Price flat intraday.';
+    interpText=lastInterp+priceNote+' Awaiting FII flow data for updated interpretation.';
+    interpTag='Updated with caution';interpTagClass='it-pf';
+  }else{
+    // Carry-forward: show last saved interpretation verbatim
+    interpText=lastH.interpretation||generateInterpretation({phase:lastH.phase||'Distribution',bg:'#7f1d1d',desc:''},lastH.conviction||70,{bearStr:75,verdict:'Active'},elast,absGrad,exhaust,cascade,lastH.absRatio||60,lastH.fii||0,lastH.ls||0.40,lastH.dii||0,MODE,{});
+    interpTag='Carried forward from '+lastH.date;interpTagClass='it-cf';
+  }
+
+  const [q1,q2,q3,q4]=answerFourQuestions(phase,scScore,term,elast,absR,priceConflict,nChg,MODE,lastH,ls);
+
+  // TICKERS
   if(!FD.nifty&&nifty){document.getElementById('t-nifty').textContent='₹'+Math.round(nifty).toLocaleString('en-IN');const el=document.getElementById('tc-nifty');el.textContent=(nChg>=0?'+':'')+Math.round(nChg)+'pts';el.className='tch '+(nChg>=0?'up':'dn');}
   if(!FD.bnifty&&bnifty){document.getElementById('t-bnifty').textContent='₹'+Math.round(bnifty).toLocaleString('en-IN');const el=document.getElementById('tc-bnifty');el.textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+'pts';el.className='tch '+(bnChg>=0?'up':'dn');}
-  if(MODE==='preflow'){const ps=nChg>80?`+${Math.round(nChg)} — counter-trend (not interpreted)`:nChg<-80?`${Math.round(nChg)} — confirming yesterday's state`:'Flat';document.getElementById('pf-price-sig').textContent='Price: '+ps;}
+  if(MODE==='preflow'){const ps=nChg>80?`+${Math.round(nChg)} pts (counter-trend)`:nChg<-80?`${Math.round(nChg)} pts (confirming)`:' Flat';document.getElementById('pf-price-sig').textContent='Price today:'+ps;}
 
-  // ── REGIME HEADER ──
+  // REGIME HEADER
   document.getElementById('rh').style.background=phase.bg;
   document.getElementById('rh-phase').textContent=MODE==='preflow'?phase.phase+' (locked)':phase.phase;
-  document.getElementById('rh-desc').textContent=phase.desc;
-  document.getElementById('mode-lbl').textContent=MODE==='full'?'Full Mode':'Pre-Flow Mode';
-  document.getElementById('mode-chip').textContent=MODE==='full'?'Full Mode':'Pre-Flow';
+  document.getElementById('rh-desc').textContent=phase.desc+(MODE!=='full'?' — '+MODE+' mode':' — Full Mode');
+  document.getElementById('mode-lbl').textContent=MODE==='full'?'Full Mode':MODE==='preflow'?'Pre-Flow':'Carry-Forward';
+  document.getElementById('mode-chip').textContent=MODE==='full'?'SC Updated':MODE==='preflow'?'SC Preserved':'SC Carried';
   document.getElementById('pdi-inline').textContent=pdiD.lbl;
   document.getElementById('rdcount').textContent=`Day ${dd||H.length} · PDI ${pdiD.pdi} · ${pdiD.ctx}`;
   document.getElementById('pdi-fill').style.width=pdiD.pdi+'%';document.getElementById('pdi-fill').style.background=pdiD.col;
   document.getElementById('pdi-val').textContent=pdiD.pdi+'/100 — '+pdiD.lbl;
 
-  // ── AUTHORITATIVE PANEL ──
-  document.getElementById('auth-mode-tag').textContent=MODE==='full'?'FULL MODE — SC UPDATED':'PRE-FLOW — SC PRESERVED';
-  document.getElementById('auth-mode-tag').style.background=MODE==='full'?'var(--gbg)':'var(--abg)';
-  document.getElementById('auth-mode-tag').style.color=MODE==='full'?'var(--green)':'var(--amber)';
+  // PRIMARY PANEL MODE TAG
+  const modeTagEl=document.getElementById('pp-mode-tag');
+  modeTagEl.textContent=MODE==='full'?'Full Mode — SC updated':MODE==='preflow'?'Pre-Flow — SC preserved':'Carry-Forward — Last interpretation shown';
+  modeTagEl.className='pp-mode-tag '+(MODE==='full'?'tag-full':MODE==='preflow'?'tag-pf':'tag-cf');
 
-  // STATE
-  document.getElementById('st-phase').textContent=phase.phase;document.getElementById('st-phase').style.color=scScore>=70?'var(--red)':scScore>=50?'var(--amber)':'var(--green)';
-  document.getElementById('st-phase-sub').textContent=scRegime+' — '+scRsub;
+  // STATE SECTION
+  const phaseLabel=term.bearStr<=35?phase.phase+' (Late Stage / Weakening)':phase.phase;
+  document.getElementById('s-phase').textContent=phaseLabel;document.getElementById('s-phase').style.color=scScore>=70?'var(--red)':scScore>=50?'var(--amber)':'var(--green)';
+  document.getElementById('s-phase-sub').textContent=MODE==='full'?`SC: ${scScore} — updated from today's confirmed data`:`SC: ${scScore} — preserved from ${lastH.date||'last session'}`;
   document.getElementById('sc-num').textContent=scScore;document.getElementById('sc-num').style.color=scScore>=70?'var(--red)':scScore>=50?'var(--amber)':'var(--green)';
-  document.getElementById('sc-tag').textContent=MODE==='full'?'LIVE — confirmed data':'PRESERVED — '+lastH.date;
-  document.getElementById('sc-tag').className='state-sc-tag '+(MODE==='full'?'sc-tag-live':'sc-tag-preserved');
+  document.getElementById('sc-mode-tag').textContent=MODE==='full'?'LIVE — confirmed data':MODE==='preflow'?'PRESERVED — SC not penalised':'CARRIED — from '+lastH.date;
+  document.getElementById('sc-mode-tag').className='s-sc-mode '+(MODE==='full'?'scm-live':MODE==='preflow'?'scm-prev':'scm-cf');
+  document.getElementById('ts-fill').style.width=term.bearStr+'%';document.getElementById('ts-fill').style.background=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
   document.getElementById('ts-pct').textContent=term.bearStr+'%';document.getElementById('ts-pct').style.color=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
-  document.getElementById('ts-bar').style.width=term.bearStr+'%';document.getElementById('ts-bar').style.background=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
-  document.getElementById('ts-verdict').textContent=term.verdict;document.getElementById('ts-verdict').style.color=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
+  document.getElementById('ts-sub').textContent=term.verdict;document.getElementById('ts-sub').style.color=term.bearStr<=30?'var(--green)':term.bearStr<=60?'var(--amber)':'var(--red)';
 
-  // STRUCTURE
-  document.getElementById('str-elast').textContent=elast.tag==='Confirmed'?elast.regime+' (confirmed)':elast.regime+' ('+elast.tag.toLowerCase()+')';
-  document.getElementById('str-elast').className='struct-val '+(elast.tag==='Confirmed'?(elast.regIdx>=2?'dn':'up'):'neu');
-  document.getElementById('str-absorb').textContent=absR>=80?'Strong ('+absR+'%)':absR>=60?'Partial ('+absR+'%)':'Weak ('+absR+'%)';
-  document.getElementById('str-absorb').className='struct-val '+(absR>=80?'up':absR>=60?'amb':'dn');
-  document.getElementById('str-gradient').textContent=absGrad.lbl+(MODE!=='full'?' (frozen)':'');
-  document.getElementById('str-gradient').className='struct-val '+(absGrad.lbl.includes('↑')?'up':absGrad.lbl.includes('↓')&&!absGrad.lbl.includes('Frozen')?'dn':'neu');
-  document.getElementById('str-cascade').textContent=cascade.type+(MODE!=='full'?' (yesterday)':'');
-  document.getElementById('str-cascade').className='struct-val '+(cascade.met>=4?'dn':cascade.met>=2?'amb':'up');
-  document.getElementById('str-exhaust').textContent=exhaust.signal?'SIGNAL ACTIVE':'No signal';
-  document.getElementById('str-exhaust').className='struct-val '+(exhaust.signal?'up':'neu');
-  document.getElementById('str-signal').textContent=auth.strSignal;
-  document.getElementById('str-signal').className='struct-val '+auth.strClass;
+  // STRUCTURE SECTION — always shows last known values, never empty
+  const strNote=MODE!=='full'?'Last known':'Live';
+  document.getElementById('str-mode-note').textContent=MODE==='full'?'':'(last known — not updated)';
+  document.getElementById('str-elast').innerHTML=`${elast.regime} <span class="str-stale">(${elast.tag})</span>`;
+  document.getElementById('str-elast').className='str-val '+(elast.regIdx>=2?'dn':elast.regIdx===0?'up':'neu');
+  document.getElementById('str-absorb').textContent=`${absR>=80?'Strong':absR>=60?'Partial':'Weak'} (${absR}%)${MODE!=='full'?' ★':''}`;
+  document.getElementById('str-absorb').className='str-val '+(absR>=80?'up':absR>=60?'amb':'dn');
+  document.getElementById('str-grad').textContent=absGrad.lbl;document.getElementById('str-grad').className='str-val '+(absGrad.lbl.includes('↑')?'up':absGrad.lbl.includes('↓')&&!absGrad.lbl.includes('Not')?'dn':'neu');
+  document.getElementById('str-cascade').textContent=cascade.type+(MODE!=='full'?' (last known)':'');document.getElementById('str-cascade').className='str-val '+(cascade.met>=4?'dn':cascade.met>=2?'amb':'up');
+  document.getElementById('str-exhaust').textContent=exhaust.signal?'SIGNAL ACTIVE':'No signal';document.getElementById('str-exhaust').className='str-val '+(exhaust.signal?'up':'neu');
+  // Structural signal (terminal governs → structural → behavior)
+  let strSignal,strCls;
+  if(term.bearStr<=35){strSignal='Regime weakening — stabilisation dominant';strCls='up';}
+  else if(elast.isConfirmed&&elast.trend.includes('↓')&&absGrad.lbl.includes('↑')){strSignal='Confirmed stabilisation';strCls='up';}
+  else if(elast.isConfirmed&&elast.trend.includes('↑')){strSignal='Confirmed deterioration';strCls='dn';}
+  else if(exhaust.signal){strSignal='Flow exhaustion — watch closely';strCls='amb';}
+  else{strSignal='No confirmed structural shift';strCls='neu';}
+  document.getElementById('str-signal').textContent=strSignal;document.getElementById('str-signal').className='str-val '+strCls;
 
-  // BEHAVIOR
-  document.getElementById('beh-state').textContent=auth.behavState;document.getElementById('beh-state').className='behav-state '+(auth.behavClass==='dn'?'dn':auth.behavClass==='up'?'up':'amb');
-  document.getElementById('beh-sub').textContent=auth.behavSub;
-  const bnote=document.getElementById('beh-note');
-  if(auth.behavNote){bnote.style.display='';bnote.textContent=auth.behavNote;bnote.style.background=accept.state==='accepted'&&flowGate.passes?'var(--gbg)':'var(--abg)';bnote.style.color=accept.state==='accepted'&&flowGate.passes?'var(--green)':'var(--amber)';}
-  else bnote.style.display='none';
-  const acceptColors={accepted:'var(--green)',rejected:'var(--red)',neutral:'var(--amber)',invalid:'var(--muted)',distorted:'var(--amber)',unknown:'var(--muted)'};
-  let acceptLabel;
-  if(accept.state==='accepted'&&flowGate.passes)acceptLabel='Accepted (confirmed)';
-  else if(accept.state==='accepted')acceptLabel='Accepted (provisional)';
-  else if(accept.state==='rejected')acceptLabel='Rejected';
-  else if(accept.state==='invalid')acceptLabel='Invalid (range too narrow)';
-  else if(accept.state==='distorted')acceptLabel='Distorted (gap-driven)';
-  else acceptLabel='Unknown — enter High+Open';
-  document.getElementById('beh-accept').textContent=acceptLabel;document.getElementById('beh-accept').style.color=acceptColors[accept.state]||'var(--muted)';
-  document.getElementById('beh-accept-sub').textContent=accept.reason||'';
-  document.getElementById('beh-bn').textContent=bnDiv.meaningful?bnDiv.signal:bnDiv.div+'% — <0.5%, ignored';
-  document.getElementById('beh-bn').className=bnDiv.meaningful?bnDiv.cls:'neu';
+  // BEHAVIOR SECTION — always shows live price, classification mode-dependent
+  document.getElementById('beh-nifty').textContent=(nChg>=0?'+':'')+Math.round(nChg)+' pts ('+(nChg>=0?'+':'')+nPct.toFixed(2)+'%)';document.getElementById('beh-nifty').className='beh-val '+(nChg>=0?'up':'dn');
+  document.getElementById('beh-bn').textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+' pts ('+(bnChg>=0?'+':'')+bnPct.toFixed(2)+'%)';document.getElementById('beh-bn').className='beh-val '+(bnChg>=0?'up':'dn');
+  document.getElementById('beh-bndiv').textContent=bnDiv.meaningful?bnDiv.signal:bnDiv.div+'% — not significant';document.getElementById('beh-bndiv').className='beh-val '+(bnDiv.meaningful?bnDiv.cls:'neu');
+  const accColors={accepted:'up',rejected:'dn',neutral:'amb',invalid:'neu',distorted:'neu',unknown:'neu'};
+  document.getElementById('beh-accept').textContent=accept.state==='unknown'?'Enter High+Open':accept.state;document.getElementById('beh-accept').className='beh-val '+(accColors[accept.state]||'neu');
+  // Behavior classification
+  const bc=document.getElementById('beh-classify');
+  if(MODE==='carryforward'){bc.className='beh-classify beh-live';const nChgStr=(nChg>=0?'+':'')+Math.round(nChg)+' pts';bc.textContent=`Live: Nifty ${nChgStr} vs last close (${lastH.nifty||'—'}). Price movement visible but not classified until flow data arrives. Prior regime: ${lastH.phase||'—'}.`;}
+  else if(priceConflict){bc.className='beh-classify beh-counter';bc.textContent='Counter-trend rally — price conflicts with FII positioning. Price flag only; does not affect SC or regime.';}
+  else if(MODE==='preflow'&&nChg!==0){bc.className='beh-classify beh-provisional';bc.textContent=nChg>60?'Price rising — provisional. Flow unconfirmed.':'Price falling — consistent with prior regime. Provisional until flow arrives.';}
+  else if(!priceConflict&&nChg>60&&ls>=0.50){bc.className='beh-classify beh-confirm';bc.textContent='Trend confirming — price aligns with bullish FII positioning.';}
+  else if(!priceConflict&&nChg<-60&&ls<0.50){bc.className='beh-classify beh-confirm';bc.textContent='Trend confirming — price aligns with bearish FII positioning.';}
+  else{bc.className='beh-classify beh-neutral';bc.textContent='Flat or inconclusive price action.';}
 
-  // CONFIDENCE
-  document.getElementById('uc-label').textContent=uc.label;document.getElementById('uc-label').style.color=uc.label==='HIGH'?'var(--green)':uc.label==='MED'?'var(--amber)':uc.label==='LOW'?'var(--red)':'var(--muted)';
-  document.getElementById('uc-tag').textContent=uc.label+(uc.label!=='NONE'?' — '+MODE:'');document.getElementById('uc-tag').className='uc-tag '+uc.tag;
+  // CONFIDENCE SECTION
+  document.getElementById('uc-val').textContent=uc.label;document.getElementById('uc-val').style.color=uc.label==='HIGH'?'var(--green)':uc.label==='MED'?'var(--amber)':uc.label==='LOW'?'var(--red)':'var(--muted)';
+  document.getElementById('uc-tag').textContent='Update Confidence: '+uc.label;document.getElementById('uc-tag').className='conf-tag '+uc.tag;
   document.getElementById('uc-reason').textContent=uc.reason;
-  const upen=document.getElementById('uc-penalty');
-  if(uc.penalty){upen.style.display='';upen.textContent=uc.penalty;}else upen.style.display='none';
+  const ucPen=document.getElementById('uc-penalty');if(uc.penalty){ucPen.style.display='';ucPen.textContent=uc.penalty;}else ucPen.style.display='none';
+
+  // INTERPRETATION
+  document.getElementById('interp-text').textContent=interpText;
+  document.getElementById('interp-tag').textContent=interpTag;document.getElementById('interp-tag').className='interp-tag '+interpTagClass;
+  document.getElementById('iq-1').textContent=q1;document.getElementById('iq-1').style.color=q1.includes('Panic')||q1.includes('Break')?'var(--red)':q1.includes('Accum')?'var(--green)':'var(--amber)';
+  document.getElementById('iq-2').textContent=q2;document.getElementById('iq-2').style.color=q2.includes('Weak')||q2.includes('Soft')?'var(--green)':'var(--amber)';
+  document.getElementById('iq-3').textContent=q3;
+  document.getElementById('iq-4').textContent=q4;document.getElementById('iq-4').style.color=q4.includes('No ')?'var(--amber)':q4.includes('Yes')?'var(--green)':'var(--muted)';
 
   // BIAS + TRIGGERS
-  document.getElementById('auth-bias').textContent=auth.bias;
+  let bias;
+  if(term.bearStr<=30)bias='Reversal attempt possible — terminal weakening';
+  else if(term.bearStr<=60&&elast.isConfirmed&&elast.trend.includes('↓'))bias='Bearish softening — watch stabilisation signals';
+  else if(exhaust.signal)bias='Flow exhaustion — monitor next session FII data';
+  else if(priceConflict&&nChg>60)bias='Counter-trend — state locked, await flow';
+  else if(phase.phase.includes('Break')||phase.phase.includes('Panic'))bias='Bearish continuation — high-alignment regime';
+  else bias=phase.desc;
+  document.getElementById('auth-bias').textContent=bias;
   const trgs=[];
-  if(priceConflict)trgs.push({t:'Counter-trend — phase locked',c:'to'});
+  if(priceConflict)trgs.push({t:'Counter-trend',c:'ta'});
   if(exhaust.signal)trgs.push({t:'Flow exhaustion',c:'tg'});
   if(cascade.met>=3)trgs.push({t:'Cascade conditions',c:'tr'});
   if(pdiD.pdi>=75)trgs.push({t:'PDI late-stage',c:'tp'});
   if(term.bearStr<=40)trgs.push({t:term.bearStr+'% bearish strength',c:'tg'});
   if(accept.state==='accepted'&&flowGate.passes)trgs.push({t:'Stabilisation confirmed',c:'tg'});
-  const tcolors={to:'color:#fdba74;border-color:rgba(249,115,22,.3)',tr:'color:#fca5a5;border-color:rgba(255,100,100,.3)',tg:'color:#86efac;border-color:rgba(74,222,128,.3)',tp:'color:#c4b5fd;border-color:rgba(167,139,250,.3)'};
-  document.getElementById('auth-triggers').innerHTML=trgs.map(t=>`<span style="font-size:10px;padding:3px 9px;border-radius:4px;border:1px solid rgba(255,255,255,.1);${tcolors[t.c]||''};display:flex;align-items:center;gap:4px"><span style="width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0"></span>${t.t}</span>`).join('');
+  document.getElementById('trigs').innerHTML=trgs.map(t=>`<span class="trig ${t.c}"><span class="tdot"></span>${t.t}</span>`).join('')||'<span style="font-size:10px;color:var(--muted)">No active triggers</span>';
 
-  // ── DIAGNOSTIC LAYERS ──
-  // L1
-  document.getElementById('l1-cash').textContent=(fii>=0?'+':'')+'₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' (yesterday)':'');
-  document.getElementById('l1-cash').className='dv '+(fii>=0?'up':'dn');
+  // DIAGNOSTIC LAYERS
+  document.getElementById('l1-cash').textContent=(fii>=0?'+':'')+'₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' ★':'');document.getElementById('l1-cash').className='dv '+(fii>=0?'up':'dn');
   document.getElementById('l1-ls').textContent=ls.toFixed(2)+' → '+lsZ.lbl;document.getElementById('l1-ls').style.color=lsZ.col;
   document.getElementById('l1-stance').textContent=fii<0?'Selling (exiting India)':'Buying';document.getElementById('l1-stance').className='dv '+(fii>=0?'up':'dn');
-  document.getElementById('l1-stype').textContent=cascade.type.split(' —')[0]+(MODE!=='full'?' — Frozen (yesterday)':'');
-  document.getElementById('l1-stype').className='dv '+(cascade.met>=4?'dn':cascade.met>=2?'amb':'up');
+  document.getElementById('l1-stype').textContent=cascade.type+(MODE!=='full'?' (last known)':'');document.getElementById('l1-stype').className='dv '+(cascade.met>=4?'dn':cascade.met>=2?'amb':'up');
   document.getElementById('ls-fill').style.width=Math.round(ls*100)+'%';document.getElementById('ls-fill').style.background=lsZ.bc;
   document.getElementById('l1-st').textContent=lsZ.lbl;document.getElementById('l1-st').className='cst '+lsZ.cls;
-  document.getElementById('l1-plain').textContent=lsZ.exp;
-
-  // L2
   document.getElementById('l2-nifty').textContent=(nChg>=0?'+':'')+Math.round(nChg)+' pts ('+(nChg>=0?'+':'')+nPct.toFixed(2)+'%)';document.getElementById('l2-nifty').className='dv '+(nChg>=0?'up':'dn');
   document.getElementById('l2-bn').textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+' pts ('+(bnChg>=0?'+':'')+bnPct.toFixed(2)+'%)';document.getElementById('l2-bn').className='dv '+(bnChg>=0?'up':'dn');
   document.getElementById('l2-bndiv').textContent=`${bnDiv.div}% — ${bnDiv.signal}`;document.getElementById('l2-bndiv').className='dv '+(bnDiv.meaningful?bnDiv.cls:'neu');
-  let pStateLbl;
-  if(priceConflict)pStateLbl='Counter-trend (flag only — SC unaffected)';
-  else if(nChg<-60&&ls<0.50)pStateLbl='Trend confirming — bearish';
-  else if(nChg>60&&ls>=0.50)pStateLbl='Trend confirming — bullish';
-  else pStateLbl='Flat / No signal';
-  document.getElementById('l2-pstate').textContent=pStateLbl;document.getElementById('l2-pstate').className='dv '+(priceConflict?'amb':nChg<-60?'dn':nChg>60?'up':'neu');
-  document.getElementById('l2-st').textContent=priceConflict?'Counter-trend':nChg<-60&&ls<0.50?'Aligned bearish':'—';
-  document.getElementById('l2-plain').textContent='Lowest authority layer. Price annotates only. Does not affect SC or regime.';
-
-  // L3
-  document.getElementById('l3-fii').textContent='₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' (yesterday)':'');
-  document.getElementById('l3-dii').textContent='₹'+Math.round(dii).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' (yesterday)':'');
-  document.getElementById('l3-ratio').textContent=fii<0?absR+'% covered'+(MODE!=='full'?' (yesterday)':''):'Flows aligned';
+  document.getElementById('l2-pstate').textContent=priceConflict?'Counter-trend (flag only)':nChg<-60&&ls<0.50?'Trend confirming — bearish':nChg>60&&ls>=0.50?'Trend confirming — bullish':'Flat / No signal';
+  document.getElementById('l2-pstate').className='dv '+(priceConflict?'amb':nChg<-60?'dn':nChg>60&&ls>=0.50?'up':'neu');
+  document.getElementById('l2-st').textContent=priceConflict?'Counter-trend':nChg<-60&&ls<0.50?'Aligned':'—';
+  document.getElementById('l3-fii').textContent='₹'+Math.abs(Math.round(fii)).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' ★':'');
+  document.getElementById('l3-dii').textContent='₹'+Math.round(dii).toLocaleString('en-IN')+' Cr'+(MODE!=='full'?' ★':'');
+  document.getElementById('l3-ratio').textContent=fii<0?absR+'% covered'+(MODE!=='full'?' (last known)':''):'Flows aligned';
   let l3q,l3st;
   if(fii>=0){l3q='Constructive';l3st='sg';}else if(absR>=90){l3q='Strong cover';l3st='sg';}else if(absR>=70){l3q='Partial cover';l3st='sa';}else{l3q='Weak cover';l3st='sr';}
   document.getElementById('l3-qual').textContent=l3q;document.getElementById('l3-qual').className='dv '+(l3st==='sr'?'dn':l3st==='sg'?'up':'amb');
   document.getElementById('l3-st').textContent=l3q;document.getElementById('l3-st').className='cst '+l3st;
-  document.getElementById('l3-plain').textContent=`Coverage ${absR}%. ${absR>=80?'Market cushioned.':absR>=60?'Partial buffer.':'Selling pressure high.'}`;
-
-  // L4 Macro
   macro.sigs.forEach((s,i)=>{const ks=['in10y','us10y','inr','brent'];document.getElementById('m-'+ks[i]).textContent=s.v;const se=document.getElementById('ms-'+ks[i]);se.textContent=s.s;se.className='ms '+(s.c==='dn'?'dn':s.c==='up'?'up':'neu');document.getElementById('mw-'+ks[i]).textContent=s.w;});
   document.getElementById('l4-st').textContent=macro.lbl;document.getElementById('l4-st').className='cst '+macro.cls;
 
-  // ELASTICITY DIAGNOSTIC
+  // ELASTICITY
   document.getElementById('elast-today').textContent=MODE!=='full'?'Provisional':elast.today+' pts';
-  document.getElementById('elast-rlbl').textContent=elast.regime+(MODE!=='full'?' (provisional)':'');
-  document.getElementById('elast-cbadge').textContent='Confidence: '+elast.confLabel+(MODE!=='full'?' (provisional)':'');
-  document.getElementById('elast-cbadge').style.color=elast.confColor;document.getElementById('elast-cbadge').style.background=`${elast.confColor}18`;document.getElementById('elast-cbadge').style.border=`1px solid ${elast.confColor}40`;
-  ['ez1','ez2','ez3','ez4'].forEach((id,i)=>{const el=document.getElementById(id);el.style.borderWidth='2px';el.style.borderStyle=i===elast.regIdx&&MODE==='full'?'solid':'dashed';el.style.opacity=i===elast.regIdx?'1':'0.5';});
+  document.getElementById('elast-cbadge').textContent='Confidence: '+elast.confLabel;document.getElementById('elast-cbadge').style.color=elast.confColor;document.getElementById('elast-cbadge').style.background=`${elast.confColor}18`;document.getElementById('elast-cbadge').style.border=`1px solid ${elast.confColor}40`;
+  ['ez1','ez2','ez3','ez4'].forEach((id,i)=>{const el=document.getElementById(id);el.style.borderWidth='2px';el.style.borderStyle=i===elast.regIdx&&MODE==='full'?'solid':'dashed';el.style.opacity=i===elast.regIdx?'1':'0.45';});
   document.getElementById('elast-avg').textContent=elast.avg;document.getElementById('elast-trend').textContent=elast.trend;document.getElementById('elast-tsub').textContent=elast.tsub;
   document.getElementById('elast-tag').textContent=elast.tag;document.getElementById('elast-tag').className='eiv '+(elast.tag==='Confirmed'?'up':elast.tag==='Provisional'?'amb':'dn');
   document.getElementById('elast-tag-sub').textContent=elast.tagSub;
-  document.getElementById('elast-influence').textContent=elast.influence;document.getElementById('elast-influence').className='eiv '+(elast.isConfirmed&&elast.trend.includes('↓')?'up':elast.isConfirmed&&elast.trend.includes('↑')?'dn':'neu');
+  document.getElementById('elast-inf').textContent=elast.influence;document.getElementById('elast-inf').className='eiv '+(elast.isConfirmed&&elast.trend.includes('↓')?'up':elast.isConfirmed&&elast.trend.includes('↑')?'dn':'neu');
 
-  // CASCADE DIAGNOSTIC
-  document.getElementById('casc-conds').innerHTML=cascade.conds.map(c=>`<div class="cond-row"><span class="cond-n">${c.n}${MODE!=='full'?' ❄':''}</span><div style="display:flex;align-items:center;gap:8px"><span class="cond-v">${c.v}</span><span class="${c.met?'cm':'cu'}">${c.met?'✓':'○'}</span></div></div>`).join('');
-  document.getElementById('casc-chip').setAttribute('style',cascade.typeStyle+';font-size:11px;padding:4px 12px;border-radius:6px');
-  document.getElementById('casc-chip').textContent=cascade.met+'/5 — '+cascade.type+(MODE!=='full'?' (yesterday)':'');
-  document.getElementById('casc-verdict').textContent=cascade.verdict+(MODE!=='full'?' Based on yesterday\'s data.':'');
+  // CASCADE
+  document.getElementById('casc-conds').innerHTML=cascade.conds.map(c=>`<div class="cond-row"><span class="cond-n">${c.n}${MODE!=='full'?' ★':''}</span><div style="display:flex;align-items:center;gap:7px"><span class="cond-v">${c.v}</span><span class="${c.met?'cm':'cu'}">${c.met?'✓':'○'}</span></div></div>`).join('');
+  document.getElementById('casc-chip').setAttribute('style',cascade.typeStyle+';font-size:11px;padding:4px 11px;border-radius:6px');
+  document.getElementById('casc-chip').textContent=cascade.met+'/5 — '+cascade.type;
+  document.getElementById('casc-verdict').textContent=cascade.verdict+(MODE!=='full'?' (Last known values — ★)':'');
   document.getElementById('casc-verdict').style.background=cascade.met>=4?'rgba(239,68,68,.08)':cascade.met>=2?'rgba(249,115,22,.06)':'rgba(74,222,128,.06)';
   document.getElementById('casc-verdict').style.color=cascade.met>=4?'#fca5a5':cascade.met>=2?'#fdba74':'#86efac';
 
-  // ABSORPTION GRADIENT DIAGNOSTIC
-  if(MODE!=='full')document.getElementById('abs-card').classList.add('frozen');else document.getElementById('abs-card').classList.remove('frozen');
-  document.getElementById('absgrad-lbl').textContent=absGrad.lbl;document.getElementById('absgrad-lbl').className=absGrad.lbl.includes('↑')?'up':absGrad.lbl.includes('↓')&&!absGrad.lbl.includes('Frozen')?'dn':'neu';
+  // ABSORPTION GRADIENT
+  document.getElementById('absgrad-lbl').textContent=absGrad.lbl;document.getElementById('absgrad-lbl').className=absGrad.lbl.includes('↑')?'up':absGrad.lbl.includes('↓')&&!absGrad.lbl.includes('Not')?'dn':'neu';
   const aMax=Math.max(...absGrad.pts.map(p=>p.ratio),100);
-  document.getElementById('abs-bars').innerHTML=absGrad.pts.map((p,i)=>{const nx=absGrad.pts[i+1];const arr=nx?(p.ratio>nx.ratio?'↓':p.ratio<nx.ratio?'↑':'→'):'';const bc=p.ratio>=80?'#22c55e':p.ratio>=60?'#f59e0b':'#ef4444';return`<div class="abr"><span class="abd-lbl">${p.date}${p.frozen?' ❄':''}</span><div class="abt"><div class="abf" style="width:${(p.ratio/aMax*100).toFixed(0)}%;background:${bc}"></div></div><span class="abv ${p.ratio>=80?'up':p.ratio>=60?'amb':'dn'}">${p.ratio}%</span><span class="aba ${arr==='↓'?'dn':arr==='↑'?'up':'neu'}">${arr}</span></div>`;}).join('');
-  document.getElementById('abs-verdict').textContent=absGrad.verdict+(MODE!=='full'?' (frozen)':'');
+  document.getElementById('abs-bars').innerHTML=absGrad.pts.map((p,i)=>{const nx=absGrad.pts[i+1];const arr=nx?(p.ratio>nx.ratio?'↓':p.ratio<nx.ratio?'↑':'→'):'';const bc=p.ratio>=80?'#22c55e':p.ratio>=60?'#f59e0b':'#ef4444';return`<div class="abr"><span class="abd-lbl">${p.date}${p.frozen?' ★':''}</span><div class="abt"><div class="abf" style="width:${(p.ratio/aMax*100).toFixed(0)}%;background:${bc}"></div></div><span class="abv ${p.ratio>=80?'up':p.ratio>=60?'amb':'dn'}">${p.ratio}%</span><span class="aba ${arr==='↓'?'dn':arr==='↑'?'up':'neu'}">${arr}</span></div>`;}).join('');
+  document.getElementById('abs-verdict').textContent=absGrad.verdict;
 
   // TERMINAL GRID
   const tcg=document.getElementById('tc-grid').children;
   term.conds.forEach((c,i)=>{tcg[i].className='tci '+(c.met?'tc-met':c.partial?'tc-partial':'tc-unmet');tcg[i].children[0].textContent=c.met?'✓':c.partial?'◑':'○';document.getElementById(c.id).textContent=c.sub;});
 
-  // SAVE (full mode only)
+  // SAVE (full only)
   if(MODE==='full'){
     try{
       const tradingDate=document.getElementById('in-date').value||undefined;
-      const sr=await fetch('/api/saveday',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:tradingDate,nifty,niftyChg:nChg,fii,dii,ls,absRatio:absR,vix,phase:phase.phase,pdi:pdiD.pdi,conviction:scScore,downDays:dd,fromHigh:fh})});
+      const sr=await fetch('/api/saveday',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({date:tradingDate,nifty,niftyChg:nChg,fii,dii,ls,absRatio:absR,vix,phase:phase.phase,pdi:pdiD.pdi,conviction:scScore,interpretation:interpText,downDays:dd,fromHigh:fh})});
       const sj=await sr.json();
       if(sj.history){const sD=new Set(sj.history.map(h=>h.date));const sX=SEED.filter(s=>!sD.has(s.date));H=[...sj.history,...sX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);}renderH();
     }catch(e){console.log('Save failed:',e);}
   }
   renderH();
   document.getElementById('last-upd').textContent=new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'})+` (${MODE})`;
-  toast(MODE==='full'?'✓ Full mode — SC updated & saved':MODE==='preflow'?`⏳ Pre-flow — SC preserved (${scScore}), UC: ${uc.label}`:'—');
+  toast(MODE==='full'?'✓ Full mode — SC & interpretation saved':MODE==='preflow'?`⏳ Pre-flow — SC preserved (${scScore}), cautious interpretation`:'📋 Carry-forward — showing last confirmed interpretation from '+lastH.date);
 }
 
 window.addEventListener('DOMContentLoaded',async()=>{
