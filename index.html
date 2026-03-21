@@ -860,7 +860,7 @@ function answerFourQuestions(phase,scScore,term,elast,absR,priceConflict,nChg,mo
     const ph=lH.phase||phase.phase;
     if(ph.includes('Panic')||ph.includes('Break'))q4='Treat cautiously — prior regime bearish. Price move unconfirmed without flow data.';
     else if(ph.includes('Accum'))q4='Provisionally — prior regime bullish. Confirm with next flow session.';
-    else q4='Provisionally — prior regime active. Enter FII/DII to classify today's price.';
+    else q4='Provisionally — prior regime active. Enter FII/DII to classify today price.';
   }else if(priceConflict&&nChg>60)q4='No — counter-trend rally. Price conflicts with FII positioning. Await flow.';
   else if(!priceConflict&&nChg<-60&&ls<0.50)q4='Yes — price confirming FII bearish direction.';
   else if(!priceConflict&&nChg>60&&ls>=0.50)q4='Yes — price confirming FII bullish positioning.';
