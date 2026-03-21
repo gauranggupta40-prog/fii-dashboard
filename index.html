@@ -574,7 +574,12 @@ async function fetchAll(){
     if(d.in10y?.cur>0)document.getElementById('in-in10y').value=d.in10y.cur.toFixed(2);
     document.getElementById('src-row').innerHTML=(ok.length?`<span class="sbadge"><span class="sdot slive"></span>Live: ${ok.join(', ')}</span>`:'')+`<span class="sbadge"><span class="sdot smanual"></span>Manual: FII/DII, L/S</span>`+(fail.length?`<span class="sbadge"><span class="sdot serr"></span>Enter: ${fail.join(', ')}</span>`:'');
     if(ok.length>0){toast(`✓ ${ok.join(', ')} fetched`);analyse();}else toast('⚠ Fetch failed — enter manually');
-  }catch(e){toast('⚠ Server error');console.error(e);}
+  }catch(e){
+    toast('⚠ Server unreachable — using manual mode. Enter data and hit Analyse.');
+    console.error('fetchAll error:', e);
+    // Still run analyse with whatever is in the inputs + seed data
+    analyse();
+  }
   hideL();
 }
 function setTk(vid,cid,data,pre){
@@ -584,9 +589,23 @@ function setTk(vid,cid,data,pre){
 
 // ═══ HISTORY ═══
 async function loadH(){
-  try{const r=await fetch('/api/history');const j=await r.json();
-    if(j.history?.length>0){const sD=new Set(j.history.map(h=>h.date));const sX=SEED.filter(s=>!sD.has(s.date));H=[...j.history,...sX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);}
-  }catch(e){}renderH();
+  try{
+    const r=await fetch('/api/history');
+    const j=await r.json();
+    if(j.history?.length>0){
+      const sD=new Set(j.history.map(h=>h.date));
+      const sX=SEED.filter(s=>!sD.has(s.date));
+      H=[...j.history,...sX].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);
+    } else {
+      // Server returned empty — use full seed
+      H=[...SEED];
+    }
+  }catch(e){
+    // Fetch failed — use seed data so history table always has something
+    H=[...SEED];
+    console.log('loadH error (using seed):', e);
+  }
+  renderH();
 }
 function renderH(){
   const today=new Date().toISOString().split('T')[0];
@@ -934,8 +953,11 @@ async function analyse(){
 
   const [q1,q2,q3,q4]=answerFourQuestions(phase,scScore,term,elast,absR,priceConflict,nChg,MODE,lastH,ls);
 
-  // TICKERS
-  if(!FD.nifty&&nifty){document.getElementById('t-nifty').textContent='₹'+Math.round(nifty).toLocaleString('en-IN');const el=document.getElementById('tc-nifty');el.textContent=(nChg>=0?'+':'')+Math.round(nChg)+'pts';el.className='tch '+(nChg>=0?'up':'dn');}
+  // TICKERS — use lastH values if auto-fetch hasn't run yet
+  const niftyDisplay=nifty||(lastH.nifty||0);
+  const prevDisplay=prev||(lastH.nifty||0);
+  const nChgDisplay=niftyDisplay-prevDisplay;
+  if(!FD.nifty&&niftyDisplay){document.getElementById('t-nifty').textContent='₹'+Math.round(niftyDisplay).toLocaleString('en-IN');const el=document.getElementById('tc-nifty');el.textContent=(nChgDisplay>=0?'+':'')+Math.round(nChgDisplay)+'pts';el.className='tch '+(nChgDisplay>=0?'up':'dn');}
   if(!FD.bnifty&&bnifty){document.getElementById('t-bnifty').textContent='₹'+Math.round(bnifty).toLocaleString('en-IN');const el=document.getElementById('tc-bnifty');el.textContent=(bnChg>=0?'+':'')+Math.round(bnChg)+'pts';el.className='tch '+(bnChg>=0?'up':'dn');}
   if(MODE==='preflow'){const ps=nChg>80?`+${Math.round(nChg)} pts (counter-trend)`:nChg<-80?`${Math.round(nChg)} pts (confirming)`:' Flat';document.getElementById('pf-price-sig').textContent='Price today:'+ps;}
 
@@ -1100,7 +1122,12 @@ window.addEventListener('DOMContentLoaded',async()=>{
   const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
   ist.setDate(ist.getDate()-1);
   document.getElementById('in-date').value=ist.getFullYear()+'-'+(String(ist.getMonth()+1).padStart(2,'0'))+'-'+(String(ist.getDate()).padStart(2,'0'));
-  renderH();await loadH();fetchAll();
+  renderH();
+  await loadH();
+  // Always run analyse after loadH so primary panel shows seed data immediately
+  // even before fetchAll completes
+  analyse();
+  fetchAll(); // will re-run analyse() on success
 });
 </script>
 </body>
