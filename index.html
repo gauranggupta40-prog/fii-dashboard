@@ -240,6 +240,40 @@ select{font-family:var(--sans);}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;font-size:12px;padding:9px 15px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .25s;z-index:300;max-width:300px;line-height:1.4;}
 .toast.show{opacity:1;transform:translateY(0);}
 @media(max-width:700px){.tg5,.g2,.eg,.tc-grid,.ig4,.pp-sections,.interp-qs{grid-template-columns:1fr 1fr;}}
+
+/* NEXT SESSION OUTLOOK */
+.outlook-block{padding:14px 18px;border-top:2px solid var(--border);background:var(--bg);}
+.outlook-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.outlook-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);display:flex;align-items:center;gap:7px;}
+.outlook-not-pred{font-size:9px;font-weight:500;padding:2px 8px;border-radius:4px;background:rgba(180,83,9,.08);color:var(--amber);border:1px solid rgba(180,83,9,.2);letter-spacing:.04em;}
+.outlook-grid{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:10px;}
+.outlook-cues{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
+.outlook-cues-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.cue-row{display:flex;align-items:flex-start;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);}
+.cue-row:last-of-type{border-bottom:none;}
+.cue-key{font-size:11px;color:var(--muted);}
+.cue-val{font-size:11px;font-weight:500;text-align:right;max-width:60%;}
+.outlook-context{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
+.outlook-context-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.ctx-row{display:flex;align-items:baseline;gap:6px;padding:3px 0;font-size:11px;}
+.ctx-dot{width:4px;height:4px;border-radius:50%;background:var(--muted);flex-shrink:0;margin-top:4px;}
+.ctx-key{color:var(--muted);flex-shrink:0;}
+.ctx-val{font-weight:500;}
+.outlook-cases{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.outlook-case{border-radius:8px;padding:11px 13px;border:1px solid;}
+.oc-base{background:var(--rbg);border-color:var(--rbd);}
+.oc-alt{background:var(--abg);border-color:var(--abd);}
+.oc-inv{background:var(--gbg);border-color:var(--gbd);}
+.oc-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+.oc-base .oc-lbl{color:var(--red);}
+.oc-alt .oc-lbl{color:var(--amber);}
+.oc-inv .oc-lbl{color:var(--green);}
+.oc-text{font-size:11px;line-height:1.6;}
+.oc-base .oc-text{color:var(--red);}
+.oc-alt .oc-text{color:var(--amber);}
+.oc-inv .oc-text{color:var(--green);}
+.outlook-inputs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;padding:10px 18px;border-top:1px solid var(--border);background:var(--card);}
+.oi-lbl{font-size:9px;color:var(--muted);font-weight:500;margin-bottom:3px;}
 </style>
 </head>
 <body>
@@ -356,6 +390,49 @@ select{font-family:var(--sans);}
       <div class="interp-q"><div class="iq-lbl">Strengthening or weakening?</div><div class="iq-ans" id="iq-2">—</div></div>
       <div class="interp-q"><div class="iq-lbl">Structural picture?</div><div class="iq-ans" id="iq-3">—</div></div>
       <div class="interp-q"><div class="iq-lbl">Trust current price?</div><div class="iq-ans" id="iq-4">—</div></div>
+    </div>
+  </div>
+
+  <!-- NEXT SESSION OUTLOOK -->
+  <div class="outlook-block" id="outlook-block">
+    <div class="outlook-header">
+      <div class="outlook-title">
+        <span>🔶</span>
+        <span>Next Session Outlook</span>
+      </div>
+      <span class="outlook-not-pred">Contextual — not predictive</span>
+    </div>
+    <div class="outlook-grid">
+      <div class="outlook-cues">
+        <div class="outlook-cues-lbl">Global Cues</div>
+        <div class="cue-row"><span class="cue-key">US Futures</span><span class="cue-val" id="olk-us-fut">—</span></div>
+        <div class="cue-row"><span class="cue-key">Gift Nifty</span><span class="cue-val" id="olk-gift">—</span></div>
+        <div class="cue-row"><span class="cue-key">Crude</span><span class="cue-val" id="olk-crude">—</span></div>
+        <div class="cue-row"><span class="cue-key">USD/INR</span><span class="cue-val" id="olk-inr">—</span></div>
+        <div class="cue-row" style="border-bottom:none"><span class="cue-key">Cue bias</span><span class="cue-val" id="olk-cue-bias" style="font-weight:600">—</span></div>
+      </div>
+      <div class="outlook-context">
+        <div class="outlook-context-lbl">Context (from State + Structure)</div>
+        <div class="ctx-row"><span class="ctx-dot"></span><span class="ctx-key">Regime:</span><span class="ctx-val" id="olk-regime">—</span></div>
+        <div class="ctx-row"><span class="ctx-dot"></span><span class="ctx-key">Structure:</span><span class="ctx-val" id="olk-struct">—</span></div>
+        <div class="ctx-row"><span class="ctx-dot"></span><span class="ctx-key">FIIs:</span><span class="ctx-val" id="olk-fii-ctx">—</span></div>
+        <div class="ctx-row"><span class="ctx-dot"></span><span class="ctx-key">Terminal:</span><span class="ctx-val" id="olk-terminal">—</span></div>
+        <div class="ctx-row"><span class="ctx-dot"></span><span class="ctx-key">Cues align with regime:</span><span class="ctx-val" id="olk-align">—</span></div>
+      </div>
+    </div>
+    <div class="outlook-cases">
+      <div class="outlook-case oc-base">
+        <div class="oc-lbl">Base Case</div>
+        <div class="oc-text" id="olk-base">—</div>
+      </div>
+      <div class="outlook-case oc-alt">
+        <div class="oc-lbl">Alternate</div>
+        <div class="oc-text" id="olk-alt">—</div>
+      </div>
+      <div class="outlook-case oc-inv">
+        <div class="oc-lbl">Invalidation</div>
+        <div class="oc-text" id="olk-inv">—</div>
+      </div>
     </div>
   </div>
 
@@ -521,6 +598,40 @@ select{font-family:var(--sans);}
     <div class="ig"><label class="il">Consecutive Down Days</label><input type="number" id="in-dd" value="0" min="0" max="30" step="1"></div>
     <div class="ig"><label class="il">% Below Recent High</label><input type="number" id="in-fh" value="12.0" step="0.1" min="0" max="50"></div>
     <div class="ig" style="grid-column:span 2"><label class="il">Trading Date <span>change if entering yesterday's data</span></label><input type="date" id="in-date" style="font-family:var(--sans)"></div>
+  </div>
+  <div style="margin-top:10px;padding:10px 12px;background:var(--abg);border:1px solid var(--abd);border-radius:7px;">
+    <div style="font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:8px">🔶 Next Session Cues <span style="font-weight:400;opacity:.7">(optional — for outlook section)</span></div>
+    <div class="ig4">
+      <div class="ig"><label class="il">US Futures <span>+/- direction</span></label>
+        <select id="in-us-fut" style="font-family:var(--sans)">
+          <option value="unknown">Not entered</option>
+          <option value="strong_up">Strong up (&gt;+0.5%)</option>
+          <option value="mild_up">Mild up (0 to +0.5%)</option>
+          <option value="flat">Flat</option>
+          <option value="mild_dn">Mild down (0 to -0.5%)</option>
+          <option value="strong_dn">Strong down (&lt;-0.5%)</option>
+        </select>
+      </div>
+      <div class="ig"><label class="il">Gift Nifty <span>pts vs prev close</span></label>
+        <input type="number" id="in-gift" placeholder="e.g. +120 or -80" step="10">
+      </div>
+      <div class="ig"><label class="il">Crude direction <span>Brent trend</span></label>
+        <select id="in-crude-dir" style="font-family:var(--sans)">
+          <option value="unknown">Not entered</option>
+          <option value="rising">Rising (bearish India)</option>
+          <option value="stable">Stable</option>
+          <option value="falling">Falling (bullish India)</option>
+        </select>
+      </div>
+      <div class="ig"><label class="il">USD/INR trend <span>direction</span></label>
+        <select id="in-inr-dir" style="font-family:var(--sans)">
+          <option value="unknown">Not entered</option>
+          <option value="weakening">Weakening (bearish)</option>
+          <option value="stable">Stable</option>
+          <option value="strengthening">Strengthening (bullish)</option>
+        </select>
+      </div>
+    </div>
   </div>
   <button class="abtn" onclick="analyse()">
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="white" stroke-width="1.5"/><path d="M7 4v3l2 2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -869,6 +980,139 @@ function answerFourQuestions(phase,scScore,term,elast,absR,priceConflict,nChg,mo
   return[q1,q2,q3,q4];
 }
 
+// ═══ NEXT SESSION OUTLOOK ENGINE ═══
+// Hard constraints:
+//   - No single-direction prediction
+//   - External cues cannot override regime
+//   - Regime (STATE) always governs; cues only add context
+function generateOutlook(phase, term, elast, absR, exhaust, cascade, fii, ls,
+                          usFut, giftNifty, crudeDir, inrDir) {
+
+  // ── Global cue score: negative = bearish pressure, positive = bullish ──
+  let cueScore = 0;
+  const cueLines = {};
+
+  // US Futures
+  if (usFut === 'strong_dn') { cueScore -= 2; cueLines.usFut = 'Strong down — negative'; }
+  else if (usFut === 'mild_dn') { cueScore -= 1; cueLines.usFut = 'Mild down — cautious'; }
+  else if (usFut === 'flat')   { cueScore += 0; cueLines.usFut = 'Flat — neutral'; }
+  else if (usFut === 'mild_up') { cueScore += 1; cueLines.usFut = 'Mild up — supportive'; }
+  else if (usFut === 'strong_up') { cueScore += 2; cueLines.usFut = 'Strong up — positive'; }
+  else { cueLines.usFut = 'Not entered'; }
+
+  // Gift Nifty
+  const gift = parseFloat(giftNifty) || 0;
+  if (gift <= -100) { cueScore -= 2; cueLines.gift = gift + ' pts — negative gap risk'; }
+  else if (gift < -30) { cueScore -= 1; cueLines.gift = gift + ' pts — mild negative'; }
+  else if (gift > 100) { cueScore += 2; cueLines.gift = '+' + gift + ' pts — positive gap'; }
+  else if (gift > 30)  { cueScore += 1; cueLines.gift = '+' + gift + ' pts — mild positive'; }
+  else if (gift !== 0) { cueLines.gift = gift + ' pts — roughly flat'; }
+  else { cueLines.gift = 'Not entered'; }
+
+  // Crude
+  if (crudeDir === 'rising')  { cueScore -= 1; cueLines.crude = 'Rising — bearish India'; }
+  else if (crudeDir === 'falling') { cueScore += 1; cueLines.crude = 'Falling — supportive'; }
+  else if (crudeDir === 'stable')  { cueLines.crude = 'Stable — neutral'; }
+  else { cueLines.crude = 'Not entered'; }
+
+  // INR
+  if (inrDir === 'weakening')     { cueScore -= 1; cueLines.inr = 'Weakening — FII cost rises'; }
+  else if (inrDir === 'strengthening') { cueScore += 1; cueLines.inr = 'Strengthening — supportive'; }
+  else if (inrDir === 'stable')        { cueLines.inr = 'Stable — neutral'; }
+  else { cueLines.inr = 'Not entered'; }
+
+  // ── Regime context (STATE governs — cues only annotate) ──
+  const isBearish = phase.phase.includes('Panic') || phase.phase.includes('Break') || phase.phase.includes('Distribution');
+  const isBullish = phase.phase.includes('Accum');
+  const regimeWeak = term.bearStr <= 40;
+  const regimeActive = term.bearStr > 60;
+
+  // Cue bias label
+  let cueBias, cueBiasColor;
+  if (cueScore <= -3)      { cueBias = 'Strongly negative'; cueBiasColor = 'var(--red)'; }
+  else if (cueScore <= -1) { cueBias = 'Mildly negative'; cueBiasColor = 'var(--amber)'; }
+  else if (cueScore === 0) { cueBias = 'Neutral'; cueBiasColor = 'var(--muted)'; }
+  else if (cueScore >= 3)  { cueBias = 'Strongly positive'; cueBiasColor = 'var(--green)'; }
+  else                     { cueBias = 'Mildly positive'; cueBiasColor = 'var(--green)'; }
+
+  // Cues align with regime?
+  let cueAlignment;
+  if (isBearish && cueScore < 0) cueAlignment = 'Yes — cues reinforce bearish regime';
+  else if (isBearish && cueScore > 0) cueAlignment = 'No — cues diverge from regime (regime governs)';
+  else if (isBullish && cueScore > 0) cueAlignment = 'Yes — cues reinforce bullish regime';
+  else if (isBullish && cueScore < 0) cueAlignment = 'No — cues diverge from regime (regime governs)';
+  else cueAlignment = 'Partially — mixed cues';
+
+  // Context lines
+  const regimeCtx = phase.phase + (regimeWeak ? ' (weakening)' : regimeActive ? ' (active)' : ' (softening)');
+  const structCtx = elast.isConfirmed
+    ? 'Elasticity ' + elast.trend.toLowerCase() + ', absorption ' + (absR >= 80 ? 'strong' : absR >= 60 ? 'partial' : 'weak')
+    : 'Elasticity unconfirmed. Absorption ' + (absR >= 80 ? 'strong' : absR >= 60 ? 'partial' : 'weak') + ' (' + absR + '%)';
+  const fiiCtx = fii < -3000 ? 'Heavy selling pressure (' + Math.round(fii) + ' Cr)' :
+                 fii < 0 ? 'Selling (' + Math.round(fii) + ' Cr)' :
+                 fii > 0 ? 'Buying (' + Math.round(fii) + ' Cr)' : 'Unknown (pre-flow)';
+  const termCtx = term.bearStr <= 30 ? 'Bearish strength at ' + term.bearStr + '% — exit zone'
+                : term.bearStr <= 60 ? 'Bearish strength at ' + term.bearStr + '% — weakening'
+                : 'Bearish strength at ' + term.bearStr + '% — regime active';
+
+  // ── THREE CONDITIONAL CASES ──
+  // BASE CASE: what happens if current conditions persist
+  let base;
+  if (isBearish && regimeActive) {
+    if (cueScore <= -1)
+      base = 'Downside continuation likely. Bearish regime active and global cues are negative. Watch for gap-down open — if early absorption fails, selling likely to extend.';
+    else if (cueScore >= 2)
+      base = 'Gap-up open possible but regime remains bearish. Base case is a gap-up that gets sold into, maintaining distribution pattern.';
+    else
+      base = 'Range-bound to weak open expected. Bearish regime intact — any strength likely to face FII supply.';
+  } else if (isBearish && regimeWeak) {
+    if (cueScore <= -1)
+      base = 'Weak open likely. Regime weakening but global cues negative — limits recovery attempt. Range-bound session with bearish tilt.';
+    else
+      base = 'Stabilisation attempt possible. Bearish regime weakening + neutral/positive cues create conditions for a base-building session.';
+  } else if (isBullish) {
+    if (cueScore >= 1)
+      base = 'Positive open likely. Accumulation regime + supportive global cues. Dips are potential entries.';
+    else
+      base = 'Accumulation regime intact. Mixed cues may create volatile open — watch for FII continuation as primary signal.';
+  } else {
+    base = 'Open direction uncertain. Regime in transition — global cues will have outsized influence on early session direction.';
+  }
+
+  // ALTERNATE CASE: what flips the base case
+  let alt;
+  if (isBearish && regimeActive) {
+    if (exhaust.signal)
+      alt = 'If flow exhaustion continues into next session (FII selling < 60% of 3-day avg) → intraday bounce possible. Likely sold into unless absorption also improves.';
+    else if (absR >= 80)
+      alt = 'If DII absorption remains strong and selling pressure eases → intraday recovery attempt. Only meaningful if L/S begins moving toward 0.45+.';
+    else if (cueScore >= 2)
+      alt = 'If global strength sustains through the session → counter-regime bounce. Requires strong DII buying + FII selling reduction to become more than a single-day move.';
+    else
+      alt = 'If early absorption appears (DII active at open) + global cues stabilise → intraday bounce possible. Would still likely be sold into at higher levels.';
+  } else if (isBearish && regimeWeak) {
+    alt = 'If FII flows turn positive and global cues strengthen → regime shift attempt. L/S crossing 0.50 would be the confirming signal.';
+  } else if (isBullish) {
+    alt = 'If FII flows disappoint (unexpected selling) → pullback possible despite bullish regime. Dips remain buys unless L/S drops below 0.50.';
+  } else {
+    alt = 'If global cues strongly positive and FII cash turns net buyer → bullish regime activation. If negative + selling resumes → breakdown risk.';
+  }
+
+  // INVALIDATION: what conditions change the outlook entirely
+  let inv;
+  if (isBearish) {
+    const absReq = absR < 80 ? 'DII absorption rising above 80%' : 'DII absorption sustaining above 80%';
+    const flowReq = Math.abs(fii) > 3000 ? 'FII selling reducing below ₹3,000 Cr' : 'FII turning net buyer';
+    inv = absReq + ' + ' + flowReq + ' required together to shift session bias. Either condition alone is insufficient — both must confirm simultaneously.';
+  } else if (isBullish) {
+    inv = 'FII cash turning net seller + L/S dropping below 0.45 would invalidate bullish session bias. Watch for unexpected selling in first hour.';
+  } else {
+    inv = 'Strong FII flow data (either direction) + sustained absorption change would invalidate the neutral outlook and trigger directional regime activation.';
+  }
+
+  return { cueLines, cueBias, cueBiasColor, cueAlignment, regimeCtx, structCtx, fiiCtx, termCtx, base, alt, inv };
+}
+
 // ═══ MAIN ANALYSE ═══
 async function analyse(){
   const fiiRaw=g('in-fii'),diiRaw=g('in-dii'),lsRaw=g('in-ls');
@@ -1035,6 +1279,40 @@ async function analyse(){
   document.getElementById('iq-2').textContent=q2;document.getElementById('iq-2').style.color=q2.includes('Weak')||q2.includes('Soft')?'var(--green)':'var(--amber)';
   document.getElementById('iq-3').textContent=q3;
   document.getElementById('iq-4').textContent=q4;document.getElementById('iq-4').style.color=q4.includes('No ')?'var(--amber)':q4.includes('Yes')?'var(--green)':'var(--muted)';
+
+  // ── NEXT SESSION OUTLOOK ──
+  const usFut = document.getElementById('in-us-fut').value;
+  const giftNifty = document.getElementById('in-gift').value;
+  const crudeDir = document.getElementById('in-crude-dir').value;
+  const inrDir = document.getElementById('in-inr-dir').value;
+  const outlook = generateOutlook(phase, term, elast, absR, exhaust, cascade, fii, ls,
+                                   usFut, giftNifty, crudeDir, inrDir);
+
+  // Render cue inputs
+  document.getElementById('olk-us-fut').textContent = outlook.cueLines.usFut;
+  document.getElementById('olk-us-fut').className = 'cue-val ' + (outlook.cueLines.usFut.includes('negative')||outlook.cueLines.usFut.includes('down') ? 'dn' : outlook.cueLines.usFut.includes('positive')||outlook.cueLines.usFut.includes('up') ? 'up' : 'neu');
+  document.getElementById('olk-gift').textContent = outlook.cueLines.gift;
+  document.getElementById('olk-gift').className = 'cue-val ' + (outlook.cueLines.gift.includes('negative') ? 'dn' : outlook.cueLines.gift.includes('positive') ? 'up' : 'neu');
+  document.getElementById('olk-crude').textContent = outlook.cueLines.crude;
+  document.getElementById('olk-crude').className = 'cue-val ' + (outlook.cueLines.crude.includes('bearish') ? 'dn' : outlook.cueLines.crude.includes('supportive') ? 'up' : 'neu');
+  document.getElementById('olk-inr').textContent = outlook.cueLines.inr;
+  document.getElementById('olk-inr').className = 'cue-val ' + (outlook.cueLines.inr.includes('Weakening') ? 'dn' : outlook.cueLines.inr.includes('supportive') ? 'up' : 'neu');
+  const cueBiasEl = document.getElementById('olk-cue-bias');
+  cueBiasEl.textContent = outlook.cueBias;
+  cueBiasEl.style.color = outlook.cueBiasColor;
+
+  // Context
+  document.getElementById('olk-regime').textContent = outlook.regimeCtx;
+  document.getElementById('olk-struct').textContent = outlook.structCtx;
+  document.getElementById('olk-fii-ctx').textContent = outlook.fiiCtx;
+  document.getElementById('olk-terminal').textContent = outlook.termCtx;
+  document.getElementById('olk-align').textContent = outlook.cueAlignment;
+  document.getElementById('olk-align').className = 'ctx-val ' + (outlook.cueAlignment.includes('No') ? 'amb' : 'neu');
+
+  // Three cases
+  document.getElementById('olk-base').textContent = outlook.base;
+  document.getElementById('olk-alt').textContent = outlook.alt;
+  document.getElementById('olk-inv').textContent = outlook.inv;
 
   // BIAS + TRIGGERS
   let bias;
