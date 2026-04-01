@@ -560,7 +560,7 @@ select{font-family:var(--sans);}
 <div class="sh"><span class="stl">10-Day Memory</span><div class="sl"></div></div>
 <div class="card">
   <div style="font-size:11px;color:var(--muted);margin-bottom:4px">SC and interpretation saved each full-mode session. Carry-forward uses stored values directly.</div>
-  <table class="ht"><thead><tr><th>Date</th><th>Nifty</th><th>Chg</th><th>FII</th><th>DII</th><th>Cover%</th><th>L/S</th><th>VIX</th><th>PDI</th><th>SC</th><th>Phase</th></tr></thead>
+  <table class="ht"><thead><tr><th>Date</th><th>Nifty</th><th>Chg</th><th>FII</th><th>DII</th><th>Cover%</th><th>L/S</th><th>VIX</th><th>PDI</th><th>SC</th><th>Phase</th><th></th></tr></thead>
   <tbody id="hist-body"></tbody></table>
 </div>
 
@@ -722,7 +722,7 @@ function renderH(){
   const today=new Date().toISOString().split('T')[0];
   const tb=document.getElementById('hist-body');
   if(!H.length){tb.innerHTML='<tr><td colspan="11" style="color:var(--muted);font-family:var(--sans)">No data</td></tr>';return;}
-  tb.innerHTML=H.map(h=>`<tr class="${h.date===today?'today-row':''}"><td>${h.date}${h.date===today?' ★':''}</td><td>${h.nifty?Math.round(h.nifty):'—'}</td><td class="${(h.niftyChg||0)>=0?'up':'dn'}">${h.niftyChg?(h.niftyChg>0?'+':'')+Math.round(h.niftyChg):'—'}</td><td class="${(h.fii||0)<0?'dn':'up'}">${h.fii?(h.fii>0?'+':'')+Math.round(h.fii):'—'}</td><td class="${(h.dii||0)>=0?'up':'dn'}">${h.dii?(h.dii>0?'+':'')+Math.round(h.dii):'—'}</td><td>${h.absRatio!=null?h.absRatio+'%':'—'}</td><td>${h.ls||'—'}</td><td>${h.vix||'—'}</td><td>${h.pdi!=null?h.pdi:'—'}</td><td style="font-weight:600">${h.conviction!=null?h.conviction:'—'}</td><td style="font-size:10px;font-family:var(--sans)">${(h.phase||'—').slice(0,22)}</td></tr>`).join('');
+  tb.innerHTML=H.map(h=>`<tr class="${h.date===today?'today-row':''}"><td>${h.date}${h.date===today?' ★':''}</td><td>${h.nifty?Math.round(h.nifty):'—'}</td><td class="${(h.niftyChg||0)>=0?'up':'dn'}">${h.niftyChg?(h.niftyChg>0?'+':'')+Math.round(h.niftyChg):'—'}</td><td class="${(h.fii||0)<0?'dn':'up'}">${h.fii?(h.fii>0?'+':'')+Math.round(h.fii):'—'}</td><td class="${(h.dii||0)>=0?'up':'dn'}">${h.dii?(h.dii>0?'+':'')+Math.round(h.dii):'—'}</td><td>${h.absRatio!=null?h.absRatio+'%':'—'}</td><td>${h.ls||'—'}</td><td>${h.vix||'—'}</td><td>${h.pdi!=null?h.pdi:'—'}</td><td style="font-weight:600">${h.conviction!=null?h.conviction:'—'}</td><td style="font-size:10px;font-family:var(--sans)">${(h.phase||'—').slice(0,22)}</td><td><button onclick="loadEdit('${h.date}')" style="font-size:9px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;font-family:var(--sans)">Edit</button></td></tr>`).join('');
 }
 
 // ═══ CALCULATION FUNCTIONS ═══
@@ -1394,6 +1394,36 @@ async function analyse(){
   renderH();
   document.getElementById('last-upd').textContent=new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'})+` (${MODE})`;
   toast(MODE==='full'?'✓ Full mode — SC & interpretation saved':MODE==='preflow'?`⏳ Pre-flow — SC preserved (${scScore}), cautious interpretation`:'📋 Carry-forward — showing last confirmed interpretation from '+lastH.date);
+}
+
+// Load a history entry into input fields for editing
+function loadEdit(date){
+  const h=H.find(x=>x.date===date);
+  if(!h){toast('Entry not found');return;}
+  // Pre-fill all inputs
+  document.getElementById('in-fii').value=h.fii||'';
+  document.getElementById('in-dii').value=h.dii||'';
+  document.getElementById('in-ls').value=h.ls||'';
+  document.getElementById('in-vix').value=h.vix||'';
+  document.getElementById('in-nifty').value=h.nifty||'';
+  // prev nifty: find the entry after this date in history
+  const idx=H.findIndex(x=>x.date===date);
+  const prevH=H[idx+1];
+  document.getElementById('in-prev').value=prevH?.nifty||'';
+  document.getElementById('in-bnifty').value=h.bnifty||'';
+  document.getElementById('in-pbn').value=h.prevBN||'';
+  document.getElementById('in-dd').value=h.downDays||0;
+  document.getElementById('in-fh').value=h.fromHigh||0;
+  document.getElementById('in-date').value=date;
+  // Market structure — best guess from stored phase
+  const ph=h.phase||'';
+  const sel=document.getElementById('in-struct');
+  if(ph.includes('Gap Down'))sel.value='gap_dn';
+  else if(ph.includes('Unstable')||ph.includes('Gap Up'))sel.value='gap_up_fade';
+  else sel.value='lower_highs';
+  // Scroll to input section
+  document.getElementById('in-fii').scrollIntoView({behavior:'smooth',block:'center'});
+  toast('✏ Editing '+date+' — correct data then hit Analyse & Save');
 }
 
 window.addEventListener('DOMContentLoaded',async()=>{
